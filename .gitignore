@@ -1,0 +1,11 @@
+/vendor/*
+#/config/app.php
+/tmp/*
+/logs/*
+/.idea/*
+/node_modules/*
+/composer.lock
+/webroot/css/
+/webroot/font/
+/webroot/js/
+/webroot/img/
