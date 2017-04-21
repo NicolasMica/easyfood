@@ -1,0 +1,32 @@
+@import url('http://fonts.googleapis.com/icon?family=Material+Icons');
+@import "~materialize-css/sass/materialize.scss";
+
+$nav-height: 100px;
+
+body{
+    background: #3d2f55; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, #953960, #3d2f55); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #953960, #3d2f55); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #953960, #3d2f55); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #953960, #3d2f55); /* Standard syntax */
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.brand-logo {
+    margin-left: 16px;
+}
+
+.nav-top {
+    margin-top: 20px;
+}

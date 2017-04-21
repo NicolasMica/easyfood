@@ -221,4 +221,4 @@ if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
 
-Plugin::load('Inspirat/Authenticate', ['bootstrap' => false, 'routes' => true]);
+Plugin::load('Migrations');

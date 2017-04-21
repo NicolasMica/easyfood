@@ -1,0 +1,43 @@
+@each $color_name, $color in $colors {
+    @each $color_type, $color_value in $color {
+        @if $color_type == "base" {
+            .#{$color_name} {
+                background-color: $color_value !important;
+            }
+            .#{$color_name}-text {
+                color: $color_value !important;
+            }
+        } @else if $color_name != "shades" and $color_name != "dark" and $color_name != "light"  {
+            .#{$color_name}.#{$color_type} {
+                background-color: $color_value !important;
+            }
+            .#{$color_name}-text.text-#{$color_type} {
+                color: $color_value !important;
+            }
+        }
+    }
+}
+
+// Shade classes
+@each $color, $color_value in $shades {
+    .#{$color} {
+        background-color: $color_value !important;
+    }
+    .#{$color}-text {
+        color: $color_value !important;
+    }
+}
+
+// Light text
+@each $color, $color_value in $light {
+    .light-#{$color}-text {
+        color: $color_value !important;
+    }
+}
+
+// Dark text
+@each $color, $color_value in $dark {
+    .dark-#{$color}-text {
+        color: $color_value !important;
+    }
+}

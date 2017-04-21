@@ -36,5 +36,12 @@ class AppView extends View
      */
     public function initialize()
     {
+        parent::initialize();
+        $this->loadHelper('Asset');
+
+        $this->Form->setTemplates([
+            'input' => '<input type="{{type}}" name="{{name}}" {{attrs}} class="validate" />',
+            'inputContainer' => '{{content}}'
+        ]);
     }
 }

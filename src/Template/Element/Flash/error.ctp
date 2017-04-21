@@ -1,6 +1,4 @@
-<?php
-if (!isset($params['escape']) || $params['escape'] !== false) {
-    $message = h($message);
-}
-?>
-<div class="message error" onclick="this.classList.add('hidden');"><?= $message ?></div>
+<?= $this->element('Flash/default', [
+    'icon'=> "<i class='material-icons red-text left'>close</i>",
+    'message' => $message
+]) ?>

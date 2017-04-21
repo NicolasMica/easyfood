@@ -1,0 +1,18 @@
+@function color($color, $shade: 'base') {
+    @if map-has-key($colors, $color) {
+        $curr_color: map-get($colors, $color);
+        @if map-has-key($curr_color, $shade) {
+            @return map-get($curr_color, $shade);
+        }
+    }
+    @warn "Unknown `#{$color}` in $colors.";
+    @return null;
+}
+
+@function tint($color, $percentage) {
+    @return mix(white, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+    @return mix(black, $color, $percentage);
+}

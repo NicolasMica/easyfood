@@ -16,6 +16,8 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
+use DateTime;
 
 /**
  * Application Controller
@@ -43,13 +45,44 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Cookie');
+        $this->loadComponent('Security');
+        $this->loadComponent('Csrf');
 
-        /*
-         * Enable the following components for recommended CakePHP security settings.
-         * see http://book.cakephp.org/3.0/en/controllers/components/security.html
-         */
-        //$this->loadComponent('Security');
-        //$this->loadComponent('Csrf');
+        $this->loadComponent('Auth', [
+            'loginAction' => [
+                'controller' => 'Users',
+                'action' => 'sign'
+            ],
+            'authenticate' => [
+                'Form' => [
+                    'fields' => ['email' => 'email', 'password' => 'password']
+                ]
+            ]
+        ]);
+
+        $this->Cookie->configKey('auth_token', [
+            'expires' => '+13 months',
+            'httpOnly' => true
+        ]);
+
+        $this->Auth->deny();
+
+        if ($this->Cookie->check('auth_token')) {
+            $token = TableRegistry::get('Tokens')->find('all')
+                ->contain('Users')
+                ->where([
+                    'name' => 'auth_token',
+                    'content' => $this->Cookie->read('auth_token'),
+                    'expires >' => new DateTime()
+                ])->first();
+
+            if ($token) {
+                $this->Auth->setUser($token->user);
+            } else {
+                $this->Cookie->delete('auth_token');
+            }
+        }
     }
 
     /**

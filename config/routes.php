@@ -49,7 +49,25 @@ Router::scope('/', function (RouteBuilder $routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    $routes->connect('/', ['controller' => 'Plats', 'action' => 'index'], ['_name' => 'plats']);
+
+    $routes->connect('/restaurants', ['controller' => 'Restaurants', 'action' => 'index'], ['_name' => 'restaurants']);
+
+    $routes->scope('/utilisateurs', ['_namePrefix' => 'users:', 'controller' => 'Users'], function (RouteBuilder $routes) {
+
+        $routes->connect('/authentification', ['action' => 'sign'], ['_name' => 'sign']);
+
+        $routes->connect('/connexion', ['action' => 'login'], ['_name' => 'login']);
+
+        $routes->connect('/inscription', ['action' => 'register'], ['_name' => 'register']);
+
+        $routes->connect('/mot-de-passe-oublie', ['action' => 'forgot'], ['_name' => 'forgot']);
+
+        $routes->connect('/reinitialiser/:token', ['action' => 'reset'], [
+            '_name' => 'reset',
+            'pass' => ['token']
+        ]);
+    });
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
