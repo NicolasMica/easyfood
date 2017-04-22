@@ -30,3 +30,17 @@ body{
 .nav-top {
     margin-top: 20px;
 }
+
+.input-help {
+    display: inline-block;
+    margin-top: -16px;
+
+    font-size: .8em;
+    color: color('red', 'base');
+}
+
+.no-row-marg {
+    .row {
+        margin-bottom: 0;
+    }
+}

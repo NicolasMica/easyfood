@@ -59,7 +59,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
         $routes->connect('/connexion', ['action' => 'login'], ['_name' => 'login']);
 
-        $routes->connect('/inscription', ['action' => 'register'], ['_name' => 'register']);
+        $routes->connect('/inscription', ['action' => 'sign'], ['_name' => 'register', '_method' => 'POST']);
 
         $routes->connect('/mot-de-passe-oublie', ['action' => 'forgot'], ['_name' => 'forgot']);
 

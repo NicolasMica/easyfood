@@ -41,7 +41,9 @@ class AppView extends View
 
         $this->Form->setTemplates([
             'input' => '<input type="{{type}}" name="{{name}}" {{attrs}} class="validate" />',
-            'inputContainer' => '{{content}}'
+            'inputContainer' => '{{content}}',
+            'error' => '<span class="input-help">{{content}}</span>',
+            'inputContainerError' => '{{content}}{{error}}',
         ]);
     }
 }

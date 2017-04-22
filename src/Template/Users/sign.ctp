@@ -6,7 +6,7 @@
         <div class="col s12 m6 l4">
             <div class="card">
                 <?= $this->Form->create(null, ['url' => ['_name' => 'users:login']]) ?>
-                    <div class="div card-content">
+                    <div class="card-content">
                         <span class="card-title">Connexion</span>
                         <div class="input-field">
                             <?= $this->Form->control('email', ['id' => 'logEmail', 'label' => false, 'required' => true, 'aria-required' => true]) ?>
@@ -30,8 +30,8 @@
         <!-- Register Form -->
         <div class="col s12 m6 l8">
             <div class="card">
-                <?= $this->Form->create(null, ['url' => ['_name' => 'users:register']]) ?>
-                    <div class="card-content">
+                <?= $this->Form->create($user, ['url' => ['_name' => 'users:register']]) ?>
+                    <div class="card-content no-row-marg">
                         <span class="card-title">Inscription</span>
                         <div class="row">
                             <div class="col s12 m6 input-field">
@@ -42,13 +42,17 @@
                                 <?= $this->Form->input('firstname', ['id' => 'reg2', 'required' => true, 'aria-required' => true, 'label' => false]) ?>
                                 <label for="reg2">Prénom</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col s12 m6 input-field">
-                                <?= $this->Form->select('gender', ['' => 'Civilité', 'Homme' => 'Homme', 'Femme' => 'Femme'], ['label' => false, 'disabled' => [''], 'default' => ['']]) ?>
+                                <?= $this->Form->select('gender', ['' => 'Civilité', 'Homme' => 'Homme', 'Femme' => 'Femme'], ['label' => false, 'disabled' => [''], 'default' => [''], 'required' => true, 'aria-required' => true]) ?>
                             </div>
                             <div class="col s12 m6 input-field">
                                 <?= $this->Form->input('email', ['id' => 'reg4', 'required' => true, 'aria-required' => true, 'label' => false]) ?>
                                 <label for="reg4" data-error="Veuillez indiquer une adresse e-mail valide.">Adresse E-mail</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col s12 m6 input-field">
                                 <?= $this->Form->input('password', ['id' => 'reg5', 'required' => true, 'aria-required' => true, 'label' => false]) ?>
                                 <label for="reg5">Mot de passe</label>
@@ -57,13 +61,17 @@
                                 <?= $this->Form->input('confirm', ['id' => 'reg6', 'required' => true, 'aria-required' => true, 'label' => false, 'type' => 'password']) ?>
                                 <label for="reg6">Confirmation</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col s12 m6 input-field">
                                 <?= $this->Form->input('address', ['id' => 'reg7', 'required' => true, 'aria-required' => true, 'label' => false]) ?>
                                 <label for="reg7">Adresse</label>
                             </div>
                             <div class="col s12 m6 input-field">
-                                <?= $this->Form->select('city',  $cities, ['label' => false, 'disabled' => [''], 'default' => ['']]) ?>
+                                <?= $this->Form->select('city_id',  $cities, ['label' => false, 'disabled' => [''], 'default' => [''], 'required' => true, 'aria-required' => true]) ?>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col s12 input-field">
                                 <?= $this->Form->checkbox('newsletter', ['id' => 'reg9', 'class' => false, 'label' => false]) ?>
                                 <label for="reg9">Recevoir les newsletters</label>

@@ -67,8 +67,11 @@ class AppController extends Controller
         ]);
 
         $this->Auth->deny();
+    }
 
-        if ($this->Cookie->check('auth_token')) {
+    public function beforeFilter(Event $event)
+    {
+        if ($this->Cookie->check('auth_token') && !$this->Auth->user()) {
             $token = TableRegistry::get('Tokens')->find('all')
                 ->contain('Users')
                 ->where([
