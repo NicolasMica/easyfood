@@ -56,9 +56,10 @@ class AppController extends Controller
             ],
             'authenticate' => [
                 'Form' => [
-                    'fields' => ['email' => 'email', 'password' => 'password']
+                    'fields' => ['username' => 'email', 'password' => 'password']
                 ]
-            ]
+            ],
+            'authError' => __("Vous devez être connecté pour accéder à cette page"),
         ]);
 
         $this->Cookie->configKey('auth_token', [

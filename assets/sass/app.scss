@@ -33,14 +33,17 @@ body{
 
 .input-help {
     display: inline-block;
-    margin-top: -16px;
 
     font-size: .8em;
     color: color('red', 'base');
+
+    ul {
+        margin: 0;
+    }
 }
 
 .no-row-marg {
-    .row {
-        margin-bottom: 0;
+    input, select {
+        margin-bottom: 0 !important;
     }
 }

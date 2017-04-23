@@ -19,30 +19,62 @@
         <div class="col s12">
             <nav class="nav-top">
                 <div class="nav-wrapper green">
-                    <a href="<?= $this->Url->build('/') ?>" class="brand-logo">EASY FOOD</a>
+                    <a href="<?= $this->Url->build('/') ?>" class="brand-logo">EasyFood</a>
                     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                     <ul class="right hide-on-med-and-down">
-                        <li><a href="#"><i class="material-icons left" aria-hidden="true">location_city</i>Villes</a></li>
-                        <li><a href="<?= $this->Url->build(['_name' => 'plats']) ?>"><i class="material-icons left" aria-hidden="true">restaurant</i>Plats</a></li>
-                        <li><a href="<?= $this->Url->build(['_name' => 'restaurants']) ?>"><i class="material-icons left" aria-hidden="true">home</i> Restaurants</a></li>
-                        <li><a href="#"><i class="material-icons left" aria-hidden="true">cake</i>Spécialités</a></li>
+                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'plats'])) ? 'class="active"' : null ?>>
+                            <a href="<?= $this->Url->build(['_name' => 'plats']) ?>">
+                                <i class="material-icons left" aria-hidden="true">restaurant</i>Plats
+                            </a>
+                        </li>
+                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'restaurants'])) ? 'class="active"' : null ?>>
+                            <a href="<?= $this->Url->build(['_name' => 'restaurants']) ?>">
+                                <i class="material-icons left" aria-hidden="true">location_city</i> Restaurants
+                            </a>
+                        </li>
                         <?php if($this->request->session()->read('Auth.User')): ?>
-                            <li><a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>"><i class="material-icons left">person</i> Mon compte</a></li>
-                            <li><a href="<?= $this->Url->build(['_name' => 'users:logout']) ?>"><i class="material-icons left">power_settings_new</i> Déconnexion</a></li>
+                            <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:profile'])) ? 'class="active"' : null ?>>
+                                <a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>">
+                                    <i class="material-icons left">person</i> Préférences</a>
+                            </li>
+                            <li>
+                                <?= $this->Form->postLink("<i class='material-icons left'>power_settings_new</i> Déconnexion", ['_name' => 'users:logout'], ['escape' => false]) ?>
+                            </li>
                         <?php else: ?>
-                            <li><a href="<?= $this->Url->build(['_name' => 'users:sign']) ?>"><i class="material-icons left">person</i> Connexion</a></li>
+                            <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:sign'])) ? 'class="active"' : null ?> >
+                                <a href="<?= $this->Url->build(['_name' => 'users:sign']) ?>">
+                                    <i class="material-icons left">person</i> Connexion</a>
+                            </li>
                         <?php endif; ?>
                     </ul>
                     <ul class="side-nav" id="mobile-demo">
-                        <li><a href="#"><i class="material-icons left" aria-hidden="true">location_city</i>Villes</a></li>
-                        <li><a href="<?= $this->Url->build(['_name' => 'plats']) ?>"><i class="material-icons left" aria-hidden="true">restaurant</i>Plats</a></li>
-                        <li><a href="<?= $this->Url->build(['_name' => 'restaurants']) ?>"><i class="material-icons left" aria-hidden="true">home</i> Restaurants</a></li>
-                        <li><a href="#"><i class="material-icons left" aria-hidden="true">cake</i>Spécialités</a></li>
+                        <li><a class="subheader">Navigation</a></li>
+                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'plats'])) ? 'class="active"' : null ?>>
+                            <a href="<?= $this->Url->build(['_name' => 'plats']) ?>">
+                                <i class="material-icons left" aria-hidden="true">restaurant</i>Plats
+                            </a>
+                        </li>
+                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'restaurants'])) ? 'class="active"' : null ?>>
+                            <a href="<?= $this->Url->build(['_name' => 'restaurants']) ?>">
+                                <i class="material-icons left" aria-hidden="true">location_city</i> Restaurants
+                            </a>
+                        </li>
+                        <li><div class="divider"></div></li>
+                        <li>
+                            <a class="subheader">Utilisateur</a></li>
                         <?php if($this->request->session()->read('Auth.User')): ?>
-                            <li><a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>"><i class="material-icons left">person</i> Mon compte</a></li>
-                            <li><a href="<?= $this->Url->build(['_name' => 'users:logout']) ?>"><i class="material-icons left">power_settings_new</i> Déconnexion</a></li>
+                            <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:profile'])) ? 'class="active"' : null ?>>
+                                <a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>">
+                                    <i class="material-icons left">person</i> Préférences</a>
+                            </li>
+                            <li>
+                                <?= $this->Form->postLink("<i class='material-icons left'>power_settings_new</i> Déconnexion", ['_name' => 'users:logout'], ['escape' => false]) ?>
+                            </li>
                         <?php else: ?>
-                            <li><a href="<?= $this->Url->build(['_name' => 'users:sign']) ?>"><i class="material-icons left">person</i> Connexion</a></li>
+                            <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:sign'])) ? 'class="active"' : null ?> >
+                                <a href="<?= $this->Url->build(['_name' => 'users:sign']) ?>">
+                                    <i class="material-icons left">person</i> Connexion</a>
+                            </li>
                         <?php endif; ?>
                     </ul>
                 </div>

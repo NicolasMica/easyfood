@@ -3,18 +3,18 @@
 <div class="container">
     <div class="row">
         <!-- Login Form -->
-        <div class="col s12 m6 l4">
+        <div class="col s12 m5 l4">
             <div class="card">
                 <?= $this->Form->create(null, ['url' => ['_name' => 'users:login']]) ?>
                     <div class="card-content">
                         <span class="card-title">Connexion</span>
                         <div class="input-field">
                             <?= $this->Form->control('email', ['id' => 'logEmail', 'label' => false, 'required' => true, 'aria-required' => true]) ?>
-                            <label for="logEmail" data-error="Une adresse e-mail valide est requise">Adresse E-mail</label>
+                            <label for="logEmail">Adresse e-mail</label>
                         </div>
                         <div class="input-field">
                             <?= $this->Form->control('password', ['id' => 'logPass', 'label' => false, 'required' => true, 'aria-required' => true]) ?>
-                            <label for="logPass" data-error="Veuillez indiquer votre mot de passe">Mot de passe</label>
+                            <label for="logPass">Mot de passe</label>
                         </div>
                         <div class="input-field">
                             <?= $this->Form->checkbox('remember', ['id' => 'logRemember', 'class' => false, 'label' => false]) ?>
@@ -28,9 +28,10 @@
             </div>
         </div>
         <!-- Register Form -->
-        <div class="col s12 m6 l8">
+        <div class="col s12 m7 l8">
             <div class="card">
                 <?= $this->Form->create($user, ['url' => ['_name' => 'users:register']]) ?>
+                <?php $this->Form->unlockField('city_id'); $this->Form->unlockField('gender'); ?>
                     <div class="card-content no-row-marg">
                         <span class="card-title">Inscription</span>
                         <div class="row">
@@ -46,10 +47,11 @@
                         <div class="row">
                             <div class="col s12 m6 input-field">
                                 <?= $this->Form->select('gender', ['' => 'Civilité', 'Homme' => 'Homme', 'Femme' => 'Femme'], ['label' => false, 'disabled' => [''], 'default' => [''], 'required' => true, 'aria-required' => true]) ?>
+                                <?php if ($this->Form->isFieldError('gender')) echo $this->Form->error('gender'); ?>
                             </div>
                             <div class="col s12 m6 input-field">
                                 <?= $this->Form->input('email', ['id' => 'reg4', 'required' => true, 'aria-required' => true, 'label' => false]) ?>
-                                <label for="reg4" data-error="Veuillez indiquer une adresse e-mail valide.">Adresse E-mail</label>
+                                <label for="reg4">Adresse E-mail</label>
                             </div>
                         </div>
                         <div class="row">
@@ -69,6 +71,7 @@
                             </div>
                             <div class="col s12 m6 input-field">
                                 <?= $this->Form->select('city_id',  $cities, ['label' => false, 'disabled' => [''], 'default' => [''], 'required' => true, 'aria-required' => true]) ?>
+                                <?php if ($this->Form->isFieldError('city_id')) echo $this->Form->error('city_id'); ?>
                             </div>
                         </div>
                         <div class="row">

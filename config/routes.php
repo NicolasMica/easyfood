@@ -57,9 +57,11 @@ Router::scope('/', function (RouteBuilder $routes) {
 
         $routes->connect('/authentification', ['action' => 'sign'], ['_name' => 'sign']);
 
-        $routes->connect('/connexion', ['action' => 'login'], ['_name' => 'login']);
+        $routes->connect('/connexion', ['action' => 'login'], ['_name' => 'login', '_method' => 'POST']);
 
         $routes->connect('/inscription', ['action' => 'sign'], ['_name' => 'register', '_method' => 'POST']);
+
+        $routes->connect('/deconnexion', ['action' => 'logout'], ['_name' => 'logout', '_method' => 'POST']);
 
         $routes->connect('/mot-de-passe-oublie', ['action' => 'forgot'], ['_name' => 'forgot']);
 
@@ -67,12 +69,13 @@ Router::scope('/', function (RouteBuilder $routes) {
             '_name' => 'reset',
             'pass' => ['token']
         ]);
-    });
 
-    /**
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
-    $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+        $routes->connect('/preferences', ['action' => 'profile'], ['_name' => 'profile']);
+
+        $routes->connect('/preferences/mot-de-passe', ['action' => 'password'], ['_name' => 'password']);
+
+        $routes->connect('/preferences/suppression', ['action' => 'delete'], ['_name' => 'delete', '_method' => 'DELETE']);
+    });
 
     /**
      * Connect catchall routes for all controllers.
