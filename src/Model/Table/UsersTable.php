@@ -157,6 +157,18 @@ class UsersTable extends Table
         return $validator;
     }
 
+    public function validationResetPassword(Validator $validator) {
+        $validator
+            ->notEmpty('password', __("Ce champ est obligatoire"))
+            ->minLength('password', 6, __("Ce champ doit contenir au minimum 6 caractères"));
+
+        $validator
+            ->notEmpty('confirm',  __("Ce champ est obligatoire"))
+            ->sameAs('confirm', 'password', __("Ce champ doit être identique au nouveau mot de passe"));
+
+        return $validator;
+    }
+
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.

@@ -4,27 +4,38 @@
     <div class="row">
         <!-- Login Form -->
         <div class="col s12 m5 l4">
-            <div class="card">
-                <?= $this->Form->create(null, ['url' => ['_name' => 'users:login']]) ?>
-                    <div class="card-content">
-                        <span class="card-title">Connexion</span>
-                        <div class="input-field">
-                            <?= $this->Form->control('email', ['id' => 'logEmail', 'label' => false, 'required' => true, 'aria-required' => true]) ?>
-                            <label for="logEmail">Adresse e-mail</label>
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <?= $this->Form->create(null, ['url' => ['_name' => 'users:login']]) ?>
+                        <div class="card-content">
+                            <span class="card-title">Connexion</span>
+                            <div class="input-field">
+                                <?= $this->Form->control('email', ['id' => 'logEmail', 'label' => false, 'required' => true, 'aria-required' => true]) ?>
+                                <label for="logEmail">Adresse e-mail</label>
+                            </div>
+                            <div class="input-field">
+                                <?= $this->Form->control('password', ['id' => 'logPass', 'label' => false, 'required' => true, 'aria-required' => true]) ?>
+                                <label for="logPass">Mot de passe</label>
+                            </div>
+                            <div class="input-field">
+                                <?= $this->Form->checkbox('remember', ['id' => 'logRemember', 'class' => false, 'label' => false]) ?>
+                                <label for="logRemember">Garder ma session active</label>
+                            </div>
                         </div>
-                        <div class="input-field">
-                            <?= $this->Form->control('password', ['id' => 'logPass', 'label' => false, 'required' => true, 'aria-required' => true]) ?>
-                            <label for="logPass">Mot de passe</label>
+                        <div class="card-action right-align">
+                            <?= $this->Form->button('Connexion', ['class' => 'btn green waves-effect']) ?>
                         </div>
-                        <div class="input-field">
-                            <?= $this->Form->checkbox('remember', ['id' => 'logRemember', 'class' => false, 'label' => false]) ?>
-                            <label for="logRemember">Garder ma session active</label>
+                        <?= $this->Form->end() ?>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <?= $this->Html->link("Mot de passe oublié ?", ['_name' => 'users:forgot'], ['class' => 'blue-text waves-effect']) ?>
                         </div>
                     </div>
-                    <div class="card-action right-align">
-                        <?= $this->Form->button('Connexion', ['class' => 'btn green waves-effect']) ?>
-                    </div>
-                <?= $this->Form->end() ?>
+                </div>
             </div>
         </div>
         <!-- Register Form -->

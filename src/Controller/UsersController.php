@@ -3,7 +3,9 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\I18n\Time;
+use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Cake\Validation\Validator;
 
@@ -105,7 +107,7 @@ class UsersController extends AppController
             $this->Cookie->delete('auth_token');
             $this->Auth->logout();
         }
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
     /**
@@ -113,14 +115,102 @@ class UsersController extends AppController
      */
     public function forgot () {
         if ($this->Auth->user()) $this->Auth->redirectUrl();
+
+        $errors = null;
+
+        if ($this->request->is('POST')) {
+
+            $validator = new Validator();
+
+            $validator
+                ->notEmpty('email', __("Ce champ est obligatoire"))
+                ->email('email', false, __("Ce champ doit contenir une adresse e-mail valide"));
+
+            $errors = $validator->errors($this->request->getData());
+
+            if (empty($errors)) {
+                $userReg = TableRegistry::get('Users');
+                $user = $userReg->find()->where(['email' => $this->request->getData('email')])->first();
+
+                if ($user) {
+
+                    $key = Security::hash($user->get('id') . '-' . uniqid() . '-' . time());
+
+                    $regToken = TableRegistry::get('Tokens');
+                    $token = $regToken->newEntity([
+                        'name' => 'password_reset',
+                        'content' => $key,
+                        'expires' => new Time('+24 hours'),
+                        'user_id' => $user->get('id')
+                    ]);
+
+                    $regToken->save($token);
+
+                    $email = new Email();
+                    $email->setTransport('mailtrap')
+                        ->setLayout(null)
+                        ->setTemplate('password')
+                        ->setEmailFormat('both')
+                        ->setSubject("Demande de réinitialisation de mot de passe")
+                        ->setTo($user->get('email'), $user->get('fullname'))
+                        ->setFrom('no-reply@easyfood.dev', 'EasyFood')
+                        ->setViewVars([
+                            'link' => Router::url(['_name' => 'users:reset', 'token' => $key], true)
+                        ])
+                        ->send();
+
+                    $this->Flash->success(__("E-mail de réinitialisation de mot de passe envoyé à l'adresse indiquée."));
+                } else {
+                    $this->Flash->error(__("Aucun compte ne correspond à cette adresse e-mail"));
+                }
+            }
+        }
+
+        $this->set(compact('errors'));
     }
 
     /**
      * Password reset action
      * @param $token
+     * @return \Cake\Http\Response|null
      */
     public function reset ($token) {
         if ($this->Auth->user()) $this->Auth->redirectUrl();
+
+        $tokenReg = TableRegistry::get('Tokens');
+        $token = $tokenReg->find()->where(['content' => $token])->contain('Users')->first();
+
+        if ($token === null) {
+            $this->Flash->error(__("Le ticket de réinitialisation de mot de passe est invalide."));
+            return $this->redirect('/');
+        }
+
+        $user = $token->get('user');
+
+        if ($token->get('expires')->isPast()) {
+            $tokenReg->delete($token);
+            $this->Flash->warning(__("Le ticket de réinitialisation de mot de passe a éxpiré. Ce dernier vient donc d'être invalidé."));
+            return $this->redirect('/');
+        }
+
+        if ($this->request->is(['POST', 'PUT'])) {
+            $userReg = TableRegistry::get('Users');
+            $userReg->patchEntity($user, $this->request->getData(), ['validate' => 'resetPassword']);
+            if ($userReg->save($user)) {
+                $tokenReg->deleteAll([
+                    'name' => 'password_reset',
+                    'user_id' => $user->get('id')
+                ]);
+
+                $this->Flash->success(__("Mot de passe réinitialiser avec succès ! Vous pouvez dès à présent vous connecter à l'aide de votre nouveau mot de passe."));
+
+                $this->redirect(['_name' => 'users:sign']);
+            } else {
+                $this->Flash->error(__("Des champs ne sont pas valides, veuillez corriger les erreurs"));
+            }
+        }
+
+        $this->set(compact('user'));
     }
 
     /**
@@ -168,7 +258,7 @@ class UsersController extends AppController
                 $this->Flash->error(__("Des champs ne sont pas valides, veuillez corriger les erreurs"));
             }
         }
-        $this->redirect($this->referer());
+        return $this->redirect($this->referer());
     }
 
     /**
@@ -192,6 +282,6 @@ class UsersController extends AppController
             }
         }
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 }
