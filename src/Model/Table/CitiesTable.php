@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -76,5 +77,14 @@ class CitiesTable extends Table
         $rules->add($rules->existsIn(['department_id'], 'Departments'));
 
         return $rules;
+    }
+
+    /**
+     * @param Event $event
+     * @param Query $query
+     */
+    public function beforeFind(Event $event, Query $query)
+    {
+        $query->orderAsc('name');
     }
 }

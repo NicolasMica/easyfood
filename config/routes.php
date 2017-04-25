@@ -49,9 +49,27 @@ Router::scope('/', function (RouteBuilder $routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Plats', 'action' => 'index'], ['_name' => 'plats']);
+    $routes->connect('/', ['controller' => 'Dishes', 'action' => 'index'], ['_name' => 'plats']);
 
-    $routes->connect('/restaurants', ['controller' => 'Restaurants', 'action' => 'index'], ['_name' => 'restaurants']);
+    $routes->scope('/plats', ['_namePrefix' => 'dishes:', 'controller' => 'Plats'], function (RouteBuilder $routes) {
+
+        $routes->connect('recherche', ['action' => 'search'], ['_name' => 'search']);
+
+    });
+
+
+    $routes->scope('/restaurants', ['_namePrefix' => 'resto:', 'controller' => 'Restaurants'], function (RouteBuilder $routes) {
+
+        $routes->connect('/', ['action' => 'index'], ['_name' => 'index']);
+
+        $routes->connect('/:slug-:id', ['action' => 'view'], [
+            '_name' => 'view',
+            'pass' => ['slug', 'id'],
+            'slug' => '[a-z0-9\-]+',
+            'id' => '[0-9]+'
+        ]);
+
+    });
 
     $routes->scope('/utilisateurs', ['_namePrefix' => 'users:', 'controller' => 'Users'], function (RouteBuilder $routes) {
 

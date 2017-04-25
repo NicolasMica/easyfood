@@ -30,10 +30,8 @@
                     </div>
                 </div>
                 <div class="col s12">
-                    <div class="card">
-                        <div class="card-content">
-                            <?= $this->Html->link("Mot de passe oublié ?", ['_name' => 'users:forgot'], ['class' => 'blue-text waves-effect']) ?>
-                        </div>
+                    <div class="card-panel">
+                        <?= $this->Html->link("Mot de passe oublié ?", ['_name' => 'users:forgot'], ['class' => 'blue-text waves-effect']) ?>
                     </div>
                 </div>
             </div>

@@ -1,38 +1,21 @@
-<?php
-use Cake\Core\Configure;
-use Cake\Error\Debugger;
+<?php $this->assign('title', "Page introuvable"); ?>
 
-$this->layout = 'error';
-
-if (Configure::read('debug')):
-    $this->layout = 'dev_error';
-
-    $this->assign('title', $message);
-    $this->assign('templateName', 'error400.ctp');
-
-    $this->start('file');
-?>
-<?php if (!empty($error->queryString)) : ?>
-    <p class="notice">
-        <strong>SQL Query: </strong>
-        <?= h($error->queryString) ?>
-    </p>
-<?php endif; ?>
-<?php if (!empty($error->params)) : ?>
-        <strong>SQL Query Params: </strong>
-        <?php Debugger::dump($error->params) ?>
-<?php endif; ?>
-<?= $this->element('auto_table_warning') ?>
-<?php
-    if (extension_loaded('xdebug')):
-        xdebug_print_function_stack();
-    endif;
-
-    $this->end();
-endif;
-?>
-<h2><?= h($message) ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <h4><?= $this->fetch('title') ?></h4>
+                <p>La page à laquelle vous essayez d'accéder semble ne pas exister. Vérifiez le lien dans la barre de navigation.</p>
+                <p>Vous essayez peut-être d'accèder à l'une de ces pages:</p>
+                <?= $this->Html->link("<i class='material-icons left'>arrow_back</i> Page précédente", 'javascript:history.back()', ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                <?= $this->Html->link("<i class='material-icons left'>restaurant</i> Accueil", ['_name' => 'plats'], ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                <?= $this->Html->link("<i class='material-icons left'>location_city</i> Restaurants", ['_name' => 'resto:index'], ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                <?php if ($this->request->session()->check('Auth.User')): ?>
+                    <?= $this->Html->link("<i class='material-icons left'>person</i> Préférences", ['_name' => 'users:profile'], ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                <?php else: ?>
+                    <?= $this->Html->link(__("Connexion & Inscription"), ['_name' => 'users:sign'], ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

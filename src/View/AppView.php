@@ -45,5 +45,14 @@ class AppView extends View
             'error' => '<span class="input-help">{{content}}</span>',
             'inputContainerError' => '{{content}}{{error}}',
         ]);
+
+        $this->Paginator->setTemplates([
+            'nextActive' => '<li class="waves-effect"><a rel="next" href="{{url}}">{{text}}</a></li>',
+            'nextDisabled' => '<li class="disabled"><a href="" onclick="return false;">{{text}}</a></li>',
+            'prevActive' => '<li class="waves-effect"><a rel="prev" href="{{url}}">{{text}}</a></li>',
+            'prevDisabled' => '<li class="disabled"><a href="" onclick="return false;">{{text}}</a></li>',
+            'number' => '<li class="waves-effect"><a href="{{url}}">{{text}}</a></li>',
+            'current' => '<li class="active deep-purple lighten-1"><a href="">{{text}}</a></li>'
+        ]);
     }
 }

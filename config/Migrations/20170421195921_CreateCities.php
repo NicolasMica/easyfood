@@ -20,6 +20,12 @@ class CreateCities extends AbstractMigration
             'null' => false,
         ]);
 
+        $table->addColumn('code', 'string', [
+            'default' => null,
+            'limit' => 255,
+            'null' => false,
+        ]);
+
         $table->addColumn('department_id', 'integer', [
             'default' => null,
             'limit' => 11,

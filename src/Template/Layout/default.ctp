@@ -27,12 +27,12 @@
                                 <i class="material-icons left" aria-hidden="true">restaurant</i>Plats
                             </a>
                         </li>
-                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'restaurants'])) ? 'class="active"' : null ?>>
-                            <a href="<?= $this->Url->build(['_name' => 'restaurants']) ?>">
+                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'resto:index'])) ? 'class="active"' : null ?>>
+                            <a href="<?= $this->Url->build(['_name' => 'resto:index']) ?>">
                                 <i class="material-icons left" aria-hidden="true">location_city</i> Restaurants
                             </a>
                         </li>
-                        <?php if($this->request->session()->read('Auth.User')): ?>
+                        <?php if($this->request->session()->check('Auth.User')): ?>
                             <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:profile'])) ? 'class="active"' : null ?>>
                                 <a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>">
                                     <i class="material-icons left">person</i> Préférences</a>
@@ -54,15 +54,15 @@
                                 <i class="material-icons left" aria-hidden="true">restaurant</i>Plats
                             </a>
                         </li>
-                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'restaurants'])) ? 'class="active"' : null ?>>
-                            <a href="<?= $this->Url->build(['_name' => 'restaurants']) ?>">
+                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'resto:index'])) ? 'class="active"' : null ?>>
+                            <a href="<?= $this->Url->build(['_name' => 'resto:index']) ?>">
                                 <i class="material-icons left" aria-hidden="true">location_city</i> Restaurants
                             </a>
                         </li>
                         <li><div class="divider"></div></li>
                         <li>
                             <a class="subheader">Utilisateur</a></li>
-                        <?php if($this->request->session()->read('Auth.User')): ?>
+                        <?php if($this->request->session()->check('Auth.User')): ?>
                             <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:profile'])) ? 'class="active"' : null ?>>
                                 <a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>">
                                     <i class="material-icons left">person</i> Préférences</a>
@@ -85,13 +85,22 @@
         <div class="col s12">
             <nav>
                 <div class="nav-wrapper white">
-                    <form>
+                    <?= $this->Form->create(null, ['url' => ['_name' => 'dishes:search']]) ?>
                         <div class="input-field">
-                            <input id="search" type="search" placeholder="Rechecher..." required>
-                            <label class="label-icon" for="search"><i class="material-icons grey-text text-darken-2">search</i></label>
+                            <?= $this->Form->input('search', [
+                                'type' => 'search',
+                                'placeholder' => __("Rehcercher..."),
+                                'required' => true,
+                                'aria-required' => true,
+                                'id' => 'search',
+                                'label' => false
+                            ]) ?>
+                            <label class="label-icon" for="search">
+                                <i class='material-icons grey-text text-darken-2'>search</i>
+                            </label>
                             <i class="material-icons">close</i>
                         </div>
-                    </form>
+                    <?= $this->Form->end() ?>
                 </div>
             </nav>
         </div>
@@ -107,17 +116,28 @@
             <footer class="page-footer green">
                 <div class="container">
                     <div class="row">
-                        <div class="col l6 s12">
+                        <div class="col m7 l6 s12">
                             <h5 class="white-text">&Agrave; Propos</h5>
-                            <p class="grey-text text-lighten-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A animi deleniti dolorum error, est et eum fugiat iure libero mollitia natus provident saepe tempora velit voluptates. A repellat tempore velit.</p>
+                            <p class="grey-text text-lighten-4">Site développé en utilisant le langage <?= $this->Html->link('PHP', 'http://php.net/', ['class' => 'green-text text-lighten-5 strong-text']) ?> avec le framework <?= $this->Html->link('CakePHP', 'https://cakephp.org/', ['class' => 'green-text text-lighten-5 strong-text']) ?>. La base de données est géré par <?= $this->Html->link('MySQL', 'https://www.mysql.fr/', ['class' => 'green-text text-lighten-5 strong-text']) ?>. L'interface est réalisée à l'aide de <?= $this->Html->link('Materialize', 'https://materializecss.com/', ['class' => 'green-text text-lighten-5 strong-text']) ?>, <?= $this->Html->link('Flexbox Grid', 'https://flexboxgrid.org/', ['class' => 'green-text text-lighten-5 strong-text']) ?> ainsi que <?= $this->Html->link('VueJs', 'https://vuejs.org/', ['class' => 'green-text text-lighten-5 strong-text']) ?>. Le tout est transpilé  à l'aide de <?= $this->Html->link('Laravel Mix', 'https://github.com/JeffreyWay/laravel-mix', ['class' => 'green-text text-lighten-5 strong-text']) ?>.</p>
                         </div>
-                        <div class="col l4 offset-l2 s12">
-                            <h5 class="white-text">Partenaires</h5>
+                        <div class="col m5 l4 offset-l2 s12">
+                            <h5 class="white-text">Liens utiles</h5>
                             <ul>
-                                <li><a class="grey-text text-lighten-3" href="#!">Mollitia</a></li>
-                                <li><a class="grey-text text-lighten-3" href="#!">Saepe Tempora</a></li>
-                                <li><a class="grey-text text-lighten-3" href="#!">Dolor Sit</a></li>
-                                <li><a class="grey-text text-lighten-3" href="#!">Voluptates</a></li>
+                                <li>
+                                    <?= $this->Html->link('CakePHP', 'https://cakephp.org/', ['class' => 'green-text text-lighten-5']) ?>
+                                </li>
+                                <li>
+                                    <?= $this->Html->link('Materialize', 'https://materializecss.com/', ['class' => 'green-text text-lighten-5']) ?>
+                                </li>
+                                <li>
+                                    <?= $this->Html->link('Flexbox Grid', 'https://flexboxgrid.org/', ['class' => 'green-text text-lighten-5']) ?>
+                                </li>
+                                <li>
+                                    <?= $this->Html->link('VueJs', 'https://vuejs.org/', ['class' => 'green-text text-lighten-5']) ?>
+                                </li>
+                                <li>
+                                    <?= $this->Html->link('Laravel Mix', 'https://github.com/JeffreyWay/laravel-mix', ['class' => 'green-text text-lighten-5']) ?>
+                                </li>
                             </ul>
                         </div>
                     </div>

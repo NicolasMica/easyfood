@@ -27,7 +27,7 @@ class UsersController extends AppController
      * Register action
      */
     public function sign () {
-        if ($this->Auth->user()) $this->Auth->redirectUrl();
+        if ($this->Auth->user()) return $this->redirect($this->Auth->redirectUrl());
 
         $user = null;
 
@@ -40,6 +40,7 @@ class UsersController extends AppController
             if ($regUser->save($user)) {
                 $this->Flash->success(__("Inscription terminée avec succès ! Vous pouvez dès à présent vous connecter."));
                 $this->Auth->setUser($user);
+                $this->redirect(['_name' => 'users:profile']);
             } else {
                 $this->Flash->error(__("Des champs ne sont pas valides, veuillez corriger les erreurs"));
             }
@@ -60,7 +61,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function login () {
-        if ($this->Auth->user()) $this->Auth->redirectUrl();
+        if ($this->Auth->user()) return $this->redirect($this->Auth->redirectUrl());
 
         if ($this->request->is('post')) {
 
@@ -114,7 +115,7 @@ class UsersController extends AppController
      * Password request action
      */
     public function forgot () {
-        if ($this->Auth->user()) $this->Auth->redirectUrl();
+        if ($this->Auth->user()) return $this->redirect($this->Auth->redirectUrl());
 
         $errors = null;
 
@@ -175,7 +176,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function reset ($token) {
-        if ($this->Auth->user()) $this->Auth->redirectUrl();
+        if ($this->Auth->user()) return $this->redirect($this->Auth->redirectUrl());
 
         $tokenReg = TableRegistry::get('Tokens');
         $token = $tokenReg->find()->where(['content' => $token])->contain('Users')->first();

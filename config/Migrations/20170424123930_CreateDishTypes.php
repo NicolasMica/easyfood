@@ -1,7 +1,7 @@
 <?php
 use Migrations\AbstractMigration;
 
-class CreateDepartments extends AbstractMigration
+class CreateDishTypes extends AbstractMigration
 {
     /**
      * Change Method.
@@ -12,20 +12,12 @@ class CreateDepartments extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('departments');
-
+        $table = $this->table('dish_types');
         $table->addColumn('name', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,
         ]);
-
-        $table->addColumn('code', 'string', [
-            'default' => null,
-            'limit' => 3,
-            'null' => false,
-        ]);
-
         $table->create();
     }
 }
