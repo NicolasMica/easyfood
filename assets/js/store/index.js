@@ -17,6 +17,7 @@ const state = {
     cities: [],
     dishTypes: [],
     restaurants: [],
+    queryResult: [],
     orders: []
 }
 
@@ -25,8 +26,11 @@ const mutations = {
     LOAD_CITIES: (state, entities) => state.cities = entities,
     LOAD_RESTAURANTS: (state, entities) => state.restaurants = entities,
     LOAD_DISH_TYPES: (state, entities) => state.dishTypes = entities,
-    STORE_ORDER: (state, entity) => state.orders.push(entity),
-    DESTROY_ORDER: (state, entity) => state.orders.splice(state.orders.findIndex(order => order === entity), 1)
+    UPDATE_QUERY: (state, entities) => state.queryResult = entities,
+    STORE_ORDER: (state, entity) => state.orders.push({ ...entity, amount: 1}),
+    INCREMENT_ORDER: (state, entity) => state.orders.find(item => item.id === entity.id).amount += 1,
+    DECREMENT_ORDER: (state, entity) => state.orders.find(item => item.id === entity.id).amount -= 1,
+    DESTROY_ORDER: (state, entity) => state.orders = state.orders.filter(item => item.id !== entity.id)
 }
 
 const actions = {
@@ -34,10 +38,11 @@ const actions = {
         return new Promise((resolve, reject) => {
             ajax.get('plats').then(response => {
                 store.commit('LOAD_DISHES', response.data.dishes)
+                store.commit('UPDATE_QUERY', response.data.dishes)
                 resolve(store.state.dishes)
             }).catch(error => {
                 reject(error.response.data)
-            })
+            }).then(() => Event.fire('dishes_loaded'))
         })
     },
     loadOptions (store) {
@@ -61,7 +66,16 @@ const actions = {
             })
         })
     },
-    storeOrder: (store, entity) => store.commit('STORE_ORDER', entity),
+    updateQuery: (store, entities) => store.commit('UPDATE_QUERY', entities),
+    storeOrder: (store, entity) => {
+        let order = store.state.orders.find(item => item.id === entity.id)
+        if (order) {
+            store.commit('INCREMENT_ORDER', entity)
+        } else {
+            store.commit('STORE_ORDER', entity)
+        }
+    },
+    removeOrder: (store, entity) => store.commit('DECREMENT_ORDER', entity),
     destroyOrder: (store, entity) => store.commit('DESTROY_ORDER', entity),
     submitOrder (store, order) {
         return new Promise((resolve, reject) => {
@@ -76,7 +90,8 @@ const actions = {
 
 const getters = {
     orders: (state) => state.orders,
-    dishes: (state) => state.dishes
+    dishes: (state) => state.dishes,
+    queryResult: (state) => state.queryResult
 }
 
 export default new Vuex.Store({

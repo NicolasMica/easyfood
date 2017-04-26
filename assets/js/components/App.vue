@@ -1,24 +1,32 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <search></search>
-            </div>
-            <template v-if="loading">
-                <!-- Loader -->
-                <div class="col-xs-12">
-                    <div class="preloader-container">
-                        <loader></loader>
-                    </div>
-                </div>
-            </template>
-            <template v-else>
-                <!-- Products -->
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="product in products">
-                    <product :product="product"></product>
-                </div>
-            </template>
+    <div id="app">
+        <div class="fixed-action-btn">
+            <a id="cartBtn" class="btn-floating btn-large waves-effect waves-light red" data-activates="cart">
+                <i class="material-icons">shopping_cart</i>
+            </a>
         </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <search></search>
+                </div>
+                <template v-if="loading">
+                    <!-- Loader -->
+                    <div class="col-xs-12">
+                        <div class="preloader-container">
+                            <loader></loader>
+                        </div>
+                    </div>
+                </template>
+                <template v-else>
+                    <!-- Products -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="product in products">
+                        <product :product="product"></product>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <cart></cart>
     </div>
 </template>
 
@@ -26,42 +34,23 @@
     import Vuex from 'vuex'
     import Product from './Product.vue'
     import Search from './Search.vue'
+    import Cart from './Cart.vue'
 
     export default {
         name: 'App',
-        components: { Product, Search },
+        components: { Product, Search, Cart },
         data () {
             return {
-                loading: true,
-                products: [],
+                loading: true
             }
         },
         computed: {
-            ...Vuex.mapGetters(['dishes'])
+            ...Vuex.mapGetters({
+                products: 'queryResult'
+            })
         },
         methods: {
             ...Vuex.mapActions(['loadDishes']),
-            search (query) {
-                this.products = this.dishes.filter(dish => {
-                    if (query.dishTypes.length > 0) {
-                        let dishTypes = query.dishTypes.find(item => item.id === dish.dish_type.id)
-                        if (dishTypes === undefined) return false
-                    }
-
-                    if (query.cities.length > 0) {
-                        let cities = query.cities.find(item => item.id === dish.restaurant.city_id)
-                        if (cities === undefined) return false
-                    }
-
-                    if (query.restaurants.length > 0) {
-                        let restaurants = query.restaurants.find(item => item.id === dish.restaurant.id)
-                        if (restaurants === undefined) return false
-                    }
-
-                    return true
-                })
-                console.log(this.products)
-            }
         },
         created () {
             this.loadDishes().then(response => {
@@ -72,8 +61,15 @@
             }).then(() => {
                 this.loading = false
             })
-
-            Event.listen('input', query => this.search(query))
+        },
+        mounted () {
+            $('#cartBtn').sideNav({
+                    menuWidth: 300,
+                    edge: 'right',
+                    closeOnClick: false,
+                    draggable: true
+                }
+            )
         }
     }
 </script>

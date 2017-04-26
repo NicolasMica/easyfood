@@ -16,7 +16,7 @@
 
 // components
 @import "~materialize-css/sass/components/global";
-@import "~materialize-css/sass/components/badges";
+//@import "~materialize-css/sass/components/badges";
 @import "~materialize-css/sass/components/icons-material-design";
 //@import "~materialize-css/sass/components/grid";
 @import "~materialize-css/sass/components/navbar";
@@ -25,26 +25,28 @@
 @import "~materialize-css/sass/components/transitions";
 @import "~materialize-css/sass/components/cards";
 @import "~materialize-css/sass/components/toast";
-@import "~materialize-css/sass/components/tabs";
+//@import "~materialize-css/sass/components/tabs";
 @import "~materialize-css/sass/components/tooltip";
 @import "~materialize-css/sass/components/buttons";
 @import "~materialize-css/sass/components/dropdown";
 @import "~materialize-css/sass/components/waves";
 @import "~materialize-css/sass/components/modal";
 @import "~materialize-css/sass/components/collapsible";
-@import "~materialize-css/sass/components/chips";
-@import "~materialize-css/sass/components/materialbox";
+//@import "~materialize-css/sass/components/chips";
+//@import "~materialize-css/sass/components/materialbox";
 @import "~materialize-css/sass/components/forms/forms";
 @import "~materialize-css/sass/components/table_of_contents";
 @import "~materialize-css/sass/components/sideNav";
 @import "~materialize-css/sass/components/preloader";
 @import "~materialize-css/sass/components/slider";
-@import "~materialize-css/sass/components/carousel";
+//@import "~materialize-css/sass/components/carousel";
 @import "~materialize-css/sass/components/tapTarget";
-@import "~materialize-css/sass/components/pulse";
-@import "~materialize-css/sass/components/date_picker/default";
-@import "~materialize-css/sass/components/date_picker/default.date";
-@import "~materialize-css/sass/components/date_picker/default.time";
+//@import "~materialize-css/sass/components/pulse";
+//@import "~materialize-css/sass/components/date_picker/default";
+//@import "~materialize-css/sass/components/date_picker/default.date";
+//@import "~materialize-css/sass/components/date_picker/default.time";
+
+@import "~materialize-css/extras/noUiSlider/nouislider";
 
 @import "~flexboxgrid/dist/flexboxgrid.min";
 
@@ -168,4 +170,23 @@ body{
     min-height: 100px;
     height: 100%;
     width: 100%;
+}
+
+#cart .collection {
+    .circle {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .collection-header h3 {
+        margin: 8px 0;
+    }
+}
+
+.side-nav .collection {
+    margin: 0;
+}
+
+.cursor-interact {
+    cursor: pointer;
 }
