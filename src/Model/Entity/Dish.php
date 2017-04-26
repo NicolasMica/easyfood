@@ -38,6 +38,8 @@ class Dish extends Entity
         'id' => false
     ];
 
+    protected $_virtual = ['picture'];
+
     public function _getPicture () {
         return '/storage/dishes/' . $this->_properties['id'] . '.jpg';
     }

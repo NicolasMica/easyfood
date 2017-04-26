@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -100,5 +101,14 @@ class RestaurantsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    /**
+     * @param Event $event
+     * @param Query $query
+     */
+    public function beforeFind(Event $event, Query $query)
+    {
+        $query->orderAsc('Restaurants.name');
     }
 }

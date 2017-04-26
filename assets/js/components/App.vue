@@ -1,88 +1,79 @@
-<style lang="scss" src="../../sass/app.scss"></style>
-
 <template>
-    <div>
-        <h1>Button type</h1>
-        <button class="btn">Default Button</button>
-        <button class="btn indigo">Colored Button</button>
-        <button class="btn-outline pink">Outline Button</button>
-        <button class="btn-flat teal">Flat Button</button>
-        <hr>
-        <h1>Button shape</h1>
-        <button class="btn circle">
-            <i class="icon">code</i>
-        </button>
-        <button class="btn indigo">Default Button</button>
-        <button class="btn raised pink">Raised Button</button>
-        <button class="btn rounded teal">Rounded Button</button>
-        <hr>
-        <h1>Button icon</h1>
-        <button class="btn">
-            <i class="icon">code</i>
-            Default Button
-        </button>
-        <button class="btn raised indigo">
-            <i class="icon right">code</i>
-            Default Button
-        </button>
-        <button class="btn-outline rounded pink">
-            <i class="icon">code</i>
-            Default Button
-        </button>
-        <button class="btn-flat teal">
-            <i class="icon">code</i>
-            <i class="icon right">code</i>
-            Default Button
-        </button>
-        <hr>
-        <h1>Button labeled</h1>
-        <button class="btn labeled">
-            <span class="label">Label</span>
-            Default Button
-        </button>
-        <button class="btn raised indigo labeled">
-            <span class="label">Label</span>
-            Raised Button
-        </button>
-        <button class="btn-outline rounded pink labeled">
-            <span class="label right">
-                <i class="icon">code</i>
-                Label
-            </span>
-            Rounded Button
-        </button>
-        <button class="btn-flat teal labeled">
-            <span class="label">
-                <i class="icon">code</i>
-                Left
-            </span>
-            <span class="label right">
-                <i class="icon right">code</i>
-                Right
-            </span>
-            Flat Button
-        </button>
-        <hr>
-        <h1>Button animation</h1>
-        <button class="btn indigo">
-            <i class="icon right animated slide-left">send</i>
-            Send
-        </button>
-        <button class="btn-outline pink">
-            <i class="icon animated spin">loop</i>
-            Loading
-        </button>
-        <hr>
-        <h1>Typography</h1>
-        <div class="display-1">Display 1em</div>
-        <div class="display-2">Display 2em</div>
-        <div class="display-3">Display 3em</div>
-        <div class="display-4">Display 4em</div>
-        <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <search></search>
+            </div>
+            <template v-if="loading">
+                <!-- Loader -->
+                <div class="col-xs-12">
+                    <div class="preloader-container">
+                        <loader></loader>
+                    </div>
+                </div>
+            </template>
+            <template v-else>
+                <!-- Products -->
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="product in products">
+                    <product :product="product"></product>
+                </div>
+            </template>
+        </div>
     </div>
 </template>
 
 <script type="text/babel">
+    import Vuex from 'vuex'
+    import Product from './Product.vue'
+    import Search from './Search.vue'
+
     export default {
+        name: 'App',
+        components: { Product, Search },
+        data () {
+            return {
+                loading: true,
+                products: [],
+            }
+        },
+        computed: {
+            ...Vuex.mapGetters(['dishes'])
+        },
+        methods: {
+            ...Vuex.mapActions(['loadDishes']),
+            search (query) {
+                this.products = this.dishes.filter(dish => {
+                    if (query.dishTypes.length > 0) {
+                        let dishTypes = query.dishTypes.find(item => item.id === dish.dish_type.id)
+                        if (dishTypes === undefined) return false
+                    }
+
+                    if (query.cities.length > 0) {
+                        let cities = query.cities.find(item => item.id === dish.restaurant.city_id)
+                        if (cities === undefined) return false
+                    }
+
+                    if (query.restaurants.length > 0) {
+                        let restaurants = query.restaurants.find(item => item.id === dish.restaurant.id)
+                        if (restaurants === undefined) return false
+                    }
+
+                    return true
+                })
+                console.log(this.products)
+            }
+        },
+        created () {
+            this.loadDishes().then(response => {
+                this.products = response
+            }).catch((error) => {
+                console.error(error)
+                Materialize.toast("<i class='material-icons left red-text'>close</i>Une erreur s'est produite ! Le chargement des plats à échoué.", 3000)
+            }).then(() => {
+                this.loading = false
+            })
+
+            Event.listen('input', query => this.search(query))
+        }
     }
 </script>

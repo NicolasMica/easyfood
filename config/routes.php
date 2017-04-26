@@ -51,9 +51,15 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/', ['controller' => 'Dishes', 'action' => 'index'], ['_name' => 'plats']);
 
-    $routes->scope('/plats', ['_namePrefix' => 'dishes:', 'controller' => 'Plats'], function (RouteBuilder $routes) {
+    $routes->connect('/villes', ['controller' => 'Cities', 'action' => 'index'], ['_name' => 'cities']);
 
-        $routes->connect('recherche', ['action' => 'search'], ['_name' => 'search']);
+    $routes->scope('/plats', ['_namePrefix' => 'dishes:', 'controller' => 'Dishes'], function (RouteBuilder $routes) {
+
+        $routes->connect('/', ['action' => 'index'], ['_name' => 'index']);
+
+        $routes->connect('/recherche', ['action' => 'search'], ['_name' => 'search']);
+
+        $routes->connect('/types', ['action' => 'types'], ['_name' => 'types']);
 
     });
 

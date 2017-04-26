@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\Query;
+use Cake\ORM\TableRegistry;
 
 /**
  * Dishes Controller
@@ -29,21 +30,29 @@ class DishesController extends AppController
     public function index()
     {
         $dishes = $this->Dishes->find('published')
-            ->select(['Dishes.id', 'Dishes.name', 'Dishes.selling_price', 'Dishes.restaurant_id'])
             ->contain([
                 'Restaurants' => function (Query $q) {
-                    return $q->select(['Restaurants.id', 'Restaurants.name']);
+                    return $q->select(['Restaurants.id', 'Restaurants.name', 'Restaurants.city_id']);
                 },
                 'DishTypes' => function (Query $q) {
                     return $q->enableAutoFields();
                 }
-            ])
-            ->order('RAND()')
-//            ->distinct('Dishes.restaurant_id')
-            ->limit(6);
+            ])->all();
 
-        $this->set(['dishes' => $this->paginate($dishes)]);
+        $this->set(compact('dishes'));
         $this->set('_serialize', ['dishes']);
+    }
+
+    public function types () {
+        $dishTypes = TableRegistry::get('DishTypes')->find()
+            ->distinct('DishTypes.id')
+            ->matching('Dishes', function (Query $q) {
+                return $q->where(['Dishes.active' => true]);
+            })
+            ->all();
+
+        $this->set(compact('dishTypes'));
+        $this->set('_serialize', ['dishTypes']);
     }
 
     public function search () {

@@ -18,7 +18,7 @@
 @import "~materialize-css/sass/components/global";
 @import "~materialize-css/sass/components/badges";
 @import "~materialize-css/sass/components/icons-material-design";
-@import "~materialize-css/sass/components/grid";
+//@import "~materialize-css/sass/components/grid";
 @import "~materialize-css/sass/components/navbar";
 @import "~materialize-css/sass/components/roboto";
 @import "~materialize-css/sass/components/typography";
@@ -46,8 +46,44 @@
 @import "~materialize-css/sass/components/date_picker/default.date";
 @import "~materialize-css/sass/components/date_picker/default.time";
 
+@import "~flexboxgrid/dist/flexboxgrid.min";
 
 $nav-height: 100px;
+
+// Flexbox overwrite
+.container {
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 90%;
+}
+
+@media #{$medium-and-up} {
+    .container {
+        width: 85%;
+    }
+}
+
+@media #{$large-and-up} {
+    .container {
+        width: 70%;
+    }
+}
+
+.row {
+    margin-bottom: 20px;
+}
+
+.col {
+    display: flex;
+}
+
+.col .card {
+    width: 100%;
+}
+
+.row {
+
+}
 
 body{
     background: #3d2f55; /* For browsers that do not support gradients */
@@ -107,4 +143,29 @@ body{
 
 .strong-text {
     font-weight: bold;
+}
+
+.preloader-dimmer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: transparent;
+    z-index: 9999;
+    .preloader-wrapper {
+        margin: 0 auto;
+    }
+}
+
+.preloader-container {
+    position: relative;
+
+    min-height: 100px;
+    height: 100%;
+    width: 100%;
 }

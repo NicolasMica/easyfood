@@ -41,7 +41,12 @@ class CitiesTable extends Table
         $this->belongsTo('Departments', [
             'foreignKey' => 'department_id'
         ]);
+
         $this->hasMany('Users', [
+            'foreignKey' => 'city_id'
+        ]);
+
+        $this->hasMany('Restaurants', [
             'foreignKey' => 'city_id'
         ]);
     }
@@ -85,6 +90,6 @@ class CitiesTable extends Table
      */
     public function beforeFind(Event $event, Query $query)
     {
-        $query->orderAsc('name');
+        $query->orderAsc('Cities.name');
     }
 }

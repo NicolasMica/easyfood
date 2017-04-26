@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\Query;
 
 /**
  * Restaurants Controller
@@ -18,7 +19,12 @@ class RestaurantsController extends AppController
      */
     public function index()
     {
-        $restaurants = $this->paginate($this->Restaurants);
+        $restaurants = $this->Restaurants->find()
+            ->distinct('Restaurants.id')
+            ->matching('Dishes', function (Query $q) {
+                return $q->where(['Dishes.active' => true]);
+            })
+            ->all();
 
         $this->set(compact('restaurants'));
         $this->set('_serialize', ['restaurants']);

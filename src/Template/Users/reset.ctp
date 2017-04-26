@@ -2,16 +2,16 @@
 
 <div class="container">
     <div class="row">
-        <div class="col s12">
+        <div class="col-xs-12">
             <div class="card">
                 <?= $this->Form->create($user) ?>
                     <div class="card-content no-row-marg">
                         <span class="card-title"><?= $this->fetch('title') ?></span>
                         <div class="row">
-                            <div class="col s12 m6 input-field">
+                            <div class="col-xs-12 col-md-6 input-field">
                                 <?= $this->Form->control('password', ['required' => true, 'aria-required' => true, 'label' => "Nouveau mot de passe", 'value' => false]) ?>
                             </div>
-                            <div class="col s12 m6 input-field">
+                            <div class="col-xs-12 col-md-6 input-field">
                                 <?= $this->Form->control('confirm', ['type' => 'password', 'required' => true, 'aria-required' => true, 'label' => "Confirmation"]) ?>
                             </div>
                         </div>

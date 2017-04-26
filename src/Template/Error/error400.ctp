@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col s12">
+        <div class="col-xs-12">
             <div class="card-panel">
                 <h4><?= $this->fetch('title') ?></h4>
                 <p>La page à laquelle vous essayez d'accéder semble ne pas exister. Vérifiez le lien dans la barre de navigation.</p>

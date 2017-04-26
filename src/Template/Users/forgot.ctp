@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col s12">
+        <div class="col-xs-12">
             <div class="card">
                 <?= $this->Form->create(null) ?>
                     <div class="card-content no-row-marg">

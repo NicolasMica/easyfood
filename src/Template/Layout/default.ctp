@@ -16,7 +16,7 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col s12">
+        <div class="col-xs-12">
             <nav class="nav-top">
                 <div class="nav-wrapper green">
                     <a href="<?= $this->Url->build('/') ?>" class="brand-logo">EasyFood</a>
@@ -24,12 +24,7 @@
                     <ul class="right hide-on-med-and-down">
                         <li  <?= ($this->request->here == $this->Url->build(['_name' => 'plats'])) ? 'class="active"' : null ?>>
                             <a href="<?= $this->Url->build(['_name' => 'plats']) ?>">
-                                <i class="material-icons left" aria-hidden="true">restaurant</i>Plats
-                            </a>
-                        </li>
-                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'resto:index'])) ? 'class="active"' : null ?>>
-                            <a href="<?= $this->Url->build(['_name' => 'resto:index']) ?>">
-                                <i class="material-icons left" aria-hidden="true">location_city</i> Restaurants
+                                <i class="material-icons left" aria-hidden="true">restaurant</i> Accueil
                             </a>
                         </li>
                         <?php if($this->request->session()->check('Auth.User')): ?>
@@ -51,12 +46,7 @@
                         <li><a class="subheader">Navigation</a></li>
                         <li  <?= ($this->request->here == $this->Url->build(['_name' => 'plats'])) ? 'class="active"' : null ?>>
                             <a href="<?= $this->Url->build(['_name' => 'plats']) ?>">
-                                <i class="material-icons left" aria-hidden="true">restaurant</i>Plats
-                            </a>
-                        </li>
-                        <li  <?= ($this->request->here == $this->Url->build(['_name' => 'resto:index'])) ? 'class="active"' : null ?>>
-                            <a href="<?= $this->Url->build(['_name' => 'resto:index']) ?>">
-                                <i class="material-icons left" aria-hidden="true">location_city</i> Restaurants
+                                <i class="material-icons left" aria-hidden="true">restaurant</i> Accueil
                             </a>
                         </li>
                         <li><div class="divider"></div></li>
@@ -81,30 +71,6 @@
             </nav>
         </div>
     </div>
-    <div class="row">
-        <div class="col s12">
-            <nav>
-                <div class="nav-wrapper white">
-                    <?= $this->Form->create(null, ['url' => ['_name' => 'dishes:search']]) ?>
-                        <div class="input-field">
-                            <?= $this->Form->input('search', [
-                                'type' => 'search',
-                                'placeholder' => __("Rehcercher..."),
-                                'required' => true,
-                                'aria-required' => true,
-                                'id' => 'search',
-                                'label' => false
-                            ]) ?>
-                            <label class="label-icon" for="search">
-                                <i class='material-icons grey-text text-darken-2'>search</i>
-                            </label>
-                            <i class="material-icons">close</i>
-                        </div>
-                    <?= $this->Form->end() ?>
-                </div>
-            </nav>
-        </div>
-    </div>
 </div>
 
 <?= $this->Flash->render() ?>
@@ -112,15 +78,15 @@
 
 <div class="container">
     <div class="row">
-        <div class="col s12">
+        <div class="col-xs-12">
             <footer class="page-footer green">
                 <div class="container">
                     <div class="row">
-                        <div class="col m7 l6 s12">
+                        <div class="col-xs-12 col-sm-7 col-md-6">
                             <h5 class="white-text">&Agrave; Propos</h5>
                             <p class="grey-text text-lighten-4">Site développé en utilisant le langage <?= $this->Html->link('PHP', 'http://php.net/', ['class' => 'green-text text-lighten-5 strong-text']) ?> avec le framework <?= $this->Html->link('CakePHP', 'https://cakephp.org/', ['class' => 'green-text text-lighten-5 strong-text']) ?>. La base de données est géré par <?= $this->Html->link('MySQL', 'https://www.mysql.fr/', ['class' => 'green-text text-lighten-5 strong-text']) ?>. L'interface est réalisée à l'aide de <?= $this->Html->link('Materialize', 'https://materializecss.com/', ['class' => 'green-text text-lighten-5 strong-text']) ?>, <?= $this->Html->link('Flexbox Grid', 'https://flexboxgrid.org/', ['class' => 'green-text text-lighten-5 strong-text']) ?> ainsi que <?= $this->Html->link('VueJs', 'https://vuejs.org/', ['class' => 'green-text text-lighten-5 strong-text']) ?>. Le tout est transpilé  à l'aide de <?= $this->Html->link('Laravel Mix', 'https://github.com/JeffreyWay/laravel-mix', ['class' => 'green-text text-lighten-5 strong-text']) ?>.</p>
                         </div>
-                        <div class="col m5 l4 offset-l2 s12">
+                        <div class="col-xs-12 col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-2">
                             <h5 class="white-text">Liens utiles</h5>
                             <ul>
                                 <li>

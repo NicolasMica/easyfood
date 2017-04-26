@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\Routing\Router;
 use Cake\Utility\Text;
 
 /**
@@ -38,7 +39,13 @@ class Restaurant extends Entity
         'id' => false
     ];
 
+    protected $_virtual = ['slug', 'link'];
+
     public function _getSlug () {
         return Text::slug(strtolower($this->_properties['name']));
+    }
+
+    public function _getLink () {
+        return Router::url(['_name' => 'resto:view', 'slug' => $this->_getSlug(), 'id' => $this->_properties['id']]);
     }
 }
