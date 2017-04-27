@@ -19,7 +19,7 @@ class DishesController extends AppController
 
         $this->loadComponent('Paginator');
 
-        $this->Auth->allow(['index']);
+        $this->Auth->allow(['index', 'types']);
     }
 
     /**
@@ -37,7 +37,9 @@ class DishesController extends AppController
                 'DishTypes' => function (Query $q) {
                     return $q->enableAutoFields();
                 }
-            ])->all();
+            ])
+            ->cache('dishes')
+            ->all();
 
         $this->set(compact('dishes'));
         $this->set('_serialize', ['dishes']);
@@ -49,6 +51,7 @@ class DishesController extends AppController
             ->matching('Dishes', function (Query $q) {
                 return $q->where(['Dishes.active' => true]);
             })
+            ->cache('dish_types')
             ->all();
 
         $this->set(compact('dishTypes'));

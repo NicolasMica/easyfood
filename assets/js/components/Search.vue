@@ -80,6 +80,11 @@
         },
         methods: {
             ...Vuex.mapActions(['loadOptions', 'updateQuery']),
+            /**
+             * Associe les objets correspondants aux IDs dans value et met à jour this.form
+             * @param name string - Nom de la propriété de this.form à modifier
+             * @param value array - Tableau des ID sélectionnés
+             */
             updateSelect (name, value) {
                 if (value === null) value = []
                 let items = value.map(id => this[name].find(item => id == item.id))
@@ -87,6 +92,11 @@
 
                 this.filter(this.form)
             },
+            /**
+             * Met à jour this.form.price
+             * @param min string|float|int - Prix minimum
+             * @param max string|float|int - Prix maximum
+             */
             updateSlider (min, max) {
                 let price = {
                     min: parseFloat(min.replace(' €', '')),
@@ -96,6 +106,10 @@
 
                 this.filter(this.form)
             },
+            /**
+             * Génère un tableau d'objets Dish correspondant au résultat de la recherche
+             * @param query object - Correspond à this.form
+             */
             filter (query) {
                 let resultSet = this.dishes.filter(dish => {
                     if (query.dishTypes.length > 0) {
@@ -136,20 +150,20 @@
             })
 
             Event.listen('dishes_loaded', () => {
-                let max = null
-                let prices = []
-                this.dishes.forEach(dish => {
-                    let candidate = parseFloat(dish.selling_price)
-                    prices.push(candidate)
-                    if (candidate > max) max = candidate
-                })
-
-                this.form.price.max = max
+                // Supprime les doublons
+                let prices = this.dishes.map(item => parseFloat(item.selling_price))
+                prices = prices.filter((value, index, array) => array.indexOf(value) === index)
+                // Ordonne dans l'ordre croissant
                 prices = prices.sort((x, y) => x - y)
-                prices.pop()
 
+                // Affecte la première et dernière valeurs et les supprimes du tableau
+                this.form.price.max = prices.pop()
+                this.form.price.min = prices.shift()
+
+                // Transforme le tableau en objet { 'X%': Y }
+                // X correspond au % d'index du tableau parcouru et Y la valeur associé à cet index
                 prices = prices.reduce((obj, v, i) => {
-                    let size = (prices.length + 2)
+                    let size = (prices.length + 1)
                     let index = (i + 1)
                     let value = parseFloat((index / size) * 100).toFixed(0)
                     obj[value + "%"] = v
@@ -157,7 +171,7 @@
                 }, {})
 
                 window.materialSlider.noUiSlider.updateOptions({
-                    range: {  'min': 0, ...prices, 'max': max }
+                    range: {  'min': this.form.price.min, ...prices, 'max': this.form.price.max }
                 })
             })
         },
@@ -177,7 +191,7 @@
                 })
             })
 
-            window.materialSlider = document.getElementById('frmPriceRange')
+            window.materialSlider = document.querySelector('#frmPriceRange')
 
             window.noUiSlider.create(window.materialSlider, {
                 start: [0, 100],

@@ -47,8 +47,8 @@
                         </div>
                     </div>
                     <div class="card-action clearfix">
-                        <a href="#deleteConfirm" class="btn red modal-trigger"><i class="material-icons left">delete</i> Supprimer mon compte</a>
-                        <?= $this->Form->button("<i class='material-icons left'>check</i> Sauvegarder", ['class' => 'btn green right']) ?>
+                        <a href="#deleteConfirm" class="btn red modal-trigger waves-effect waves-light"><i class="material-icons left">delete</i> Supprimer mon compte</a>
+                        <?= $this->Form->button("<i class='material-icons left'>check</i> Sauvegarder", ['class' => 'btn green right waves-effect waves-light']) ?>
                     </div>
                 <?= $this->Form->end() ?>
             </div>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="card-action right-align">
-                        <?= $this->Form->button("<i class='material-icons left'>check</i> Sauvegarder", ['class' => 'btn green']) ?>
+                        <?= $this->Form->button("<i class='material-icons left'>check</i> Sauvegarder", ['class' => 'btn green waves-effect waves-light']) ?>
                     </div>
                 <?= $this->Form->end() ?>
             </div>

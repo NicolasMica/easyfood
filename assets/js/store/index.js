@@ -9,7 +9,7 @@ const ajax = axios.create({
         ContentType: 'application/json',
         Accept: 'application/json'
     },
-    baseURL: 'http://easyfood.dev/'
+    baseURL: '//easyfood.dev'
 })
 
 const state = {
@@ -22,6 +22,13 @@ const state = {
 }
 
 const mutations = {
+    /**
+     * Stock le tableau d'objets dans le propriété dishes du state
+     * @param state object - Le state du store
+     * @param entities array - La liste d'entités (objets Dish)
+     *
+     * Toutes les méthodes de l'objet mutations ont le même rôle, muter l'objet state
+     */
     LOAD_DISHES: (state, entities) => state.dishes = entities,
     LOAD_CITIES: (state, entities) => state.cities = entities,
     LOAD_RESTAURANTS: (state, entities) => state.restaurants = entities,
@@ -34,6 +41,11 @@ const mutations = {
 }
 
 const actions = {
+    /**
+     * Récupères tous les objets Dish en ajax
+     * @param store object - L'instance de l'objet Store
+     * @returns {Promise}
+     */
     loadDishes (store) {
         return new Promise((resolve, reject) => {
             ajax.get('plats').then(response => {
@@ -45,6 +57,11 @@ const actions = {
             }).then(() => Event.fire('dishes_loaded'))
         })
     },
+    /**
+     * Récupère les objets City, Restaurant & DishType associé à un objet Dish
+     * @param store object - Instance de l'objet Store
+     * @returns {Promise}
+     */
     loadOptions (store) {
         return new Promise((resolve, reject) => {
             axios.all([
@@ -66,7 +83,17 @@ const actions = {
             })
         })
     },
+    /**
+     * Passe le tableau d'objets Dish d'une recherche aux mutateurs
+     * @param store object - Instance de l'objet Store
+     * @param entities array - Tableau d'objet Dish
+     */
     updateQuery: (store, entities) => store.commit('UPDATE_QUERY', entities),
+    /**
+     * Passe l'objet à un mutateur ou l'autre en fonction de l'existence préalable de ce premier
+     * @param store object - Instance de l'objet Store
+     * @param entity object - Objet Dish
+     */
     storeOrder: (store, entity) => {
         let order = store.state.orders.find(item => item.id === entity.id)
         if (order) {
@@ -75,17 +102,18 @@ const actions = {
             store.commit('STORE_ORDER', entity)
         }
     },
+    /**
+     * Passe l'objet au mutateur
+     * @param store object - Instance de l'objet Store
+     * @param entity object - Objet Dish
+     */
     removeOrder: (store, entity) => store.commit('DECREMENT_ORDER', entity),
+    /**
+     * Passe l'objet au mutateur
+     * @param store object - Instance de l'objet Store
+     * @param entity object - Objet Dish
+     */
     destroyOrder: (store, entity) => store.commit('DESTROY_ORDER', entity),
-    submitOrder (store, order) {
-        return new Promise((resolve, reject) => {
-            ajax.post('dishes/submit', order).then(response => {
-                resolve(response.data)
-            }).catch(error => {
-                reject(error.response.data)
-            })
-        })
-    }
 }
 
 const getters = {

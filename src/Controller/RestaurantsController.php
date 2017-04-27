@@ -12,6 +12,12 @@ use Cake\ORM\Query;
 class RestaurantsController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+
     /**
      * Index method
      *
@@ -24,6 +30,7 @@ class RestaurantsController extends AppController
             ->matching('Dishes', function (Query $q) {
                 return $q->where(['Dishes.active' => true]);
             })
+            ->cache('restaurants')
             ->all();
 
         $this->set(compact('restaurants'));

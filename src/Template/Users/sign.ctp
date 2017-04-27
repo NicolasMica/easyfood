@@ -1,11 +1,5 @@
 <?php $this->assign('title', 'Inscription & connexion'); ?>
 
-<?php $this->Html->scriptStart(['block' => true]); ?>
-    $(document).ready(function() {
-        $('select').material_select();
-    });
-<?php $this->Html->scriptEnd(); ?>
-
 <div class="container">
     <div class="row">
         <!-- Login Form -->

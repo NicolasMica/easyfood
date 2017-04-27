@@ -20,8 +20,12 @@
                 </template>
                 <template v-else>
                     <!-- Products -->
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="product in products">
-                        <product :product="product"></product>
+                    <div class="col-xs-12">
+                        <transition-group name="scale" tag="div" class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" :key="product.id" v-for="product in products">
+                                <product :product="product"></product>
+                            </div>
+                        </transition-group>
                     </div>
                 </template>
             </div>
@@ -50,7 +54,7 @@
             })
         },
         methods: {
-            ...Vuex.mapActions(['loadDishes']),
+            ...Vuex.mapActions(['loadDishes'])
         },
         created () {
             this.loadDishes().then(response => {

@@ -38,7 +38,7 @@ class UsersController extends AppController
             $user->set('role_id', 4);
 
             if ($regUser->save($user)) {
-                $this->Flash->success(__("Inscription terminée avec succès ! Vous pouvez dès à présent vous connecter."));
+                $this->Flash->success(__("Inscription terminée avec succès ! Vous êtes dès à présent vous connecter."));
                 $this->Auth->setUser($user);
                 $this->redirect(['_name' => 'users:profile']);
             } else {
@@ -154,7 +154,7 @@ class UsersController extends AppController
                         ->setEmailFormat('both')
                         ->setSubject("Demande de réinitialisation de mot de passe")
                         ->setTo($user->get('email'), $user->get('fullname'))
-                        ->setFrom('no-reply@easyfood.dev', 'EasyFood')
+                        ->setFrom('easyfood.dev', 'EasyFood')
                         ->setViewVars([
                             'link' => Router::url(['_name' => 'users:reset', 'token' => $key], true)
                         ])
