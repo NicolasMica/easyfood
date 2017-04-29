@@ -7,7 +7,7 @@
             </li>
             <transition-group name="scale" tag="li" v-if="orders.length > 0">
                 <div class="collection-item avatar" :key="item.id" v-for="item in orders">
-                    <div class="circle blue" :style="'background-image: url(' + item.picture + ')'"></div>
+                    <div class="circle" :style="'background-image: url(' + item.picture + ')'"></div>
                     <span>{{ item.name }}</span>
                     <p>
                         <small class="grey-text text-darken-3">{{ item.restaurant.name }}</small>
@@ -16,7 +16,7 @@
                         Quantité: <span class="strong-text">{{ item.amount }}</span>
                     </p>
                     <small class="left">
-                        <i @click="removeOrder(item)" class="material-icons red-text waves-effect cursor-interact">remove</i>
+                        <i @click="removeOrder(item)" class="material-icons waves-effect" :class="(item.amount === 1) ? 'grey-text' : 'red-text cursor-interact'">remove</i>
                         <i @click="storeOrder(item)" class="material-icons green-text waves-effect cursor-interact">add</i>
                     </small>
                     <p class="right-align">
@@ -34,7 +34,7 @@
             <div class="collection-item">
                 <p>Total: <span class="flow-text green-text">{{ bill }} €</span></p>
             </div>
-            <a href="#!" class="collection-item waves-effect green-text">
+            <a href="#!" class="collection-item btn-flat waves-effect green-text" :class="(this.orders.length > 0) ? null : 'disabled'">
                 <i class="material-icons right">payment</i> Commander
             </a>
         </div>

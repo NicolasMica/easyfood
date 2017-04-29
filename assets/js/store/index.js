@@ -107,7 +107,7 @@ const actions = {
      * @param store object - Instance de l'objet Store
      * @param entity object - Objet Dish
      */
-    removeOrder: (store, entity) => store.commit('DECREMENT_ORDER', entity),
+    removeOrder: (store, entity) => (entity.amount > 1) ? store.commit('DECREMENT_ORDER', entity) : false,
     /**
      * Passe l'objet au mutateur
      * @param store object - Instance de l'objet Store
