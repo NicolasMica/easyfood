@@ -9,7 +9,7 @@ const ajax = axios.create({
         ContentType: 'application/json',
         Accept: 'application/json'
     },
-    baseURL: (process.env.NODE_ENV !== 'production') ? '//easyfood.dev' : '//easyfood.inspirat.fr'
+    baseURL: (process.env.NODE_ENV !== 'production') ? '//easyfood.dev' : '//nicolas.micallef.pro/easyfood'
 })
 
 const state = {

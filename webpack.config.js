@@ -165,17 +165,7 @@ let rules = [
             {
                 loader: 'file-loader',
                 options: {
-                    name: path => {
-                        if (! /node_modules|bower_components/.test(path)) {
-                            return 'images/[name].[ext]?[hash]';
-                        }
-
-                        return 'images/vendor/' + path
-                            .replace(/\\/g, '/')
-                            .replace(
-                                /((.*(node_modules|bower_components))|images|image|img|assets)\//g, ''
-                            ) + '?[hash]';
-                    },
+                    name: path => 'img/[name].[ext]?[hash]',
                     publicPath: Mix.options.resourceRoot
                 }
             },
@@ -187,17 +177,7 @@ let rules = [
         test: /\.(woff2?|ttf|eot|svg|otf)$/,
         loader: 'file-loader',
         options: {
-            name: path => {
-                if (! /node_modules|bower_components/.test(path)) {
-                    return 'fonts/[name].[ext]?[hash]';
-                }
-
-                return 'fonts/vendor/' + path
-                    .replace(/\\/g, '/')
-                    .replace(
-                        /((.*(node_modules|bower_components))|fonts|font|assets)\//g, ''
-                    ) + '?[hash]';
-            },
+            name: path => 'fonts/[name].[ext]?[hash]',
             publicPath: Mix.options.resourceRoot
         }
     },
