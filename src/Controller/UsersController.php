@@ -24,7 +24,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Register action
+     * Inscription
      */
     public function sign () {
         if ($this->Auth->user()) return $this->redirect($this->Auth->redirectUrl());
@@ -57,8 +57,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Sign in action /w 13 months cookie support
-     * @return \Cake\Http\Response|null
+     * Connexion avec support cookie (13 mois)
      */
     public function login () {
         if ($this->Auth->user()) return $this->redirect($this->Auth->redirectUrl());
@@ -97,7 +96,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Logout action (destroy auth session/cookie)
+     * Déconnexion (suppression session & cookies)
      */
     public function logout () {
         if ($this->request->is('post')) {
@@ -112,7 +111,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Password request action
+     * Demande de réinitialisation de mot de passe (envoi de mail)
      */
     public function forgot () {
         if ($this->Auth->user()) return $this->redirect($this->Auth->redirectUrl());
@@ -171,8 +170,8 @@ class UsersController extends AppController
     }
 
     /**
-     * Password reset action
-     * @param $token
+     * Réinitialisation de mot de passe
+     * @param $token string - Chaîne de caractère unique liée à l'utilisateur
      * @return \Cake\Http\Response|null
      */
     public function reset ($token) {
@@ -215,7 +214,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Profile action
+     * Modification des informations personnelles
      */
     public function profile () {
         $user = TableRegistry::get('Users')->get($this->Auth->user('id'));
@@ -238,13 +237,11 @@ class UsersController extends AppController
             'valueField' => 'name'
         ])->toArray();
 
-//        $errors =
-
         $this->set(compact('user', 'cities', 'pass'));
     }
 
     /**
-     * New password
+     * Modification du mot de passe
      */
     public function password () {
         if ($this->request->is(['post', 'put'])) {
@@ -263,7 +260,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Account deletion action
+     * Suppression du compte
      */
     public function delete () {
         if ($this->request->is('DELETE')) {

@@ -72,6 +72,12 @@ class AppController extends Controller
         $this->Auth->deny();
     }
 
+    /**
+     * Méthode de callback exécutée avant les contrôleurs
+     * Vérifie la présence du couple cookie/token pour la connexion automatique
+     * @param Event $event
+     * @return \Cake\Http\Response|null|void
+     */
     public function beforeFilter(Event $event)
     {
         if ($this->Cookie->check('auth_token') && !$this->Auth->user()) {

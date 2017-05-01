@@ -2,8 +2,6 @@
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
 
-$this->layout = 'error';
-
 if (Configure::read('debug')):
     $this->layout = 'dev_error';
 
@@ -34,10 +32,33 @@ if (Configure::read('debug')):
     endif;
 
     $this->end();
-endif;
 ?>
-<h2><?= __d('cake', 'An Internal Error Has Occurred') ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= h($message) ?>
-</p>
+    <h2><?= __d('cake', 'An Internal Error Has Occurred') ?></h2>
+    <p class="error">
+        <strong><?= __d('cake', 'Error') ?>: </strong>
+        <?= h($message) ?>
+    </p>
+<?php else: ?>
+    <?php $this->assign('title', "Erreur interne"); ?>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card-panel">
+                    <h4><?= $this->fetch('title') ?></h4>
+                    <p>Une erreur s'est produite. Veuillez essayer à nouveau ultérieurement. Si le problème persiste veuillez contacter un administrateur du site afin de signaler le problème.</p>
+                    <p>En attendant vous souhaitez peut-être accèder à l'une de ces pages:</p>
+                    <?= $this->Html->link("<i class='material-icons left'>arrow_back</i> Page précédente", 'javascript:history.back()', ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                    <?= $this->Html->link("<i class='material-icons left'>restaurant</i> Accueil", ['_name' => 'plats'], ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                    <?= $this->Html->link("<i class='material-icons left'>location_city</i> Restaurants", ['_name' => 'resto:index'], ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                    <?php if ($this->request->session()->check('Auth.User')): ?>
+                        <?= $this->Html->link("<i class='material-icons left'>person</i> Préférences", ['_name' => 'users:profile'], ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                    <?php else: ?>
+                        <?= $this->Html->link(__("Connexion & Inscription"), ['_name' => 'users:sign'], ['class' => 'btn-large waves-effect', 'escape' => false]) ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+

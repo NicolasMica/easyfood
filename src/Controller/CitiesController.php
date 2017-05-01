@@ -19,15 +19,11 @@ class CitiesController extends AppController
     }
 
     /**
-     * Index method
-     *
+     * Liste des villes ayant un restaurant avec au minimum un plat
+     * Le résultat de la requête est mis en cache
      * @return \Cake\Network\Response|null
      */
-    public function index()
-    {
-//        $this->paginate = [
-//            'contain' => ['Departments']
-//        ];
+    public function index () {
         $cities = $this->Cities->find()
             ->distinct('Cities.id')
             ->matching('Restaurants.Dishes', function (Query $q) {
