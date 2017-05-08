@@ -38,10 +38,6 @@ class CitiesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Departments', [
-            'foreignKey' => 'department_id'
-        ]);
-
         $this->hasMany('Users', [
             'foreignKey' => 'city_id'
         ]);
@@ -79,8 +75,6 @@ class CitiesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['department_id'], 'Departments'));
-
         return $rules;
     }
 

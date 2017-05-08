@@ -1,9 +1,6 @@
-import jQuery from 'jquery'
-window.$ = window.jQuery = jQuery
+window.$ = window.jQuery = require('materialize-css/node_modules/jquery/dist/jquery')
 
 require('materialize-css')
-
-window.Materialize = Materialize
 
 $(document).ready(function() {
     $(".button-collapse").sideNav()

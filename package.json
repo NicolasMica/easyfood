@@ -16,7 +16,6 @@
   "dependencies": {
     "axios": "^0.16.1",
     "flexboxgrid": "^6.3.1",
-    "jquery": "latest",
     "materialize-css": "^0.98.2",
     "vue": "^2.2.6",
     "vuex": "^2.3.1"

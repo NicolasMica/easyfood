@@ -26,15 +26,6 @@ class CreateCities extends AbstractMigration
             'null' => false,
         ]);
 
-        $table->addColumn('department_id', 'integer', [
-            'default' => null,
-            'limit' => 11,
-            'null' => true,
-        ])->addForeignKey('department_id', 'departments', 'id', [
-            'delete'=> 'SET_NULL',
-            'update'=> 'CASCADE'
-        ]);
-
         $table->create();
     }
 }
