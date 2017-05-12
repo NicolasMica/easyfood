@@ -28,6 +28,12 @@
                             </a>
                         </li>
                         <?php if($this->request->session()->check('Auth.User')): ?>
+                            <?php if ($this->request->session()->read('Auth.User.role_id') === 3): ?>
+                                <li  <?= ($this->request->here == $this->Url->build(['_name' => 'resto:view'])) ? 'class="active"' : null ?>>
+                                    <a href="<?= $this->Url->build(['_name' => 'resto:view']) ?>">
+                                        <i class="material-icons left">location_city</i> Mes restaurants</a>
+                                </li>
+                            <?php endif; ?>
                             <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:profile'])) ? 'class="active"' : null ?>>
                                 <a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>">
                                     <i class="material-icons left">person</i> Préférences</a>

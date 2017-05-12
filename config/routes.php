@@ -68,12 +68,21 @@ Router::scope('/', function (RouteBuilder $routes) {
 
         $routes->connect('/', ['action' => 'index'], ['_name' => 'index']);
 
-        $routes->connect('/:slug-:id', ['action' => 'view'], [
-            '_name' => 'view',
-            'pass' => ['slug', 'id'],
-            'slug' => '[a-z0-9\-]+',
+        $routes->connect('/liste', ['action' => 'view'], ['_name' => 'view']);
+
+        $routes->connect('/supprimer/:id', ['action' => 'delete'], [
+            '_name' => 'delete',
+            'pass' => ['id'],
             'id' => '[0-9]+'
         ]);
+
+        $routes->connect('/modifier/:id', ['action' => 'save'], [
+            '_name' => 'edit',
+            'pass' => ['id'],
+            'id' => '[0-9]+'
+        ]);
+
+        $routes->connect('/ajouter', ['action' => 'save'], ['_name' => 'add']);
 
     });
 

@@ -32,7 +32,7 @@
 @import "~materialize-css/sass/components/waves";
 @import "~materialize-css/sass/components/modal";
 @import "~materialize-css/sass/components/collapsible";
-//@import "~materialize-css/sass/components/chips";
+@import "~materialize-css/sass/components/chips";
 //@import "~materialize-css/sass/components/materialbox";
 @import "~materialize-css/sass/components/forms/forms";
 @import "~materialize-css/sass/components/table_of_contents";
@@ -83,10 +83,6 @@ $nav-height: 100px;
     width: 100%;
 }
 
-.row {
-
-}
-
 body{
     background: #3d2f55; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(left top, #953960, #3d2f55); /* For Safari 5.1 to 6.0 */
@@ -105,6 +101,16 @@ body{
 
 .clearfix:after {
     clear: both;
+}
+
+.material-icons {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.btn-fill {
+    width: 100%;
+    text-align: center;
 }
 
 .brand-logo {
@@ -126,9 +132,15 @@ body{
     }
 }
 
-.no-row-marg {
+.input-field {
+    margin-bottom: 10px;
+
     input, select {
         margin-bottom: 0 !important;
+    }
+
+    .autocomplete-content {
+        margin-top: 0;
     }
 }
 
@@ -138,9 +150,15 @@ body{
     }
 }
 
-.card.card-thin, .card-panel.card-thin {
+.card.card-thin .card-content,
+.card.card-thin .card-action,
+.card-panel.card-thin {
     padding-top: 8px;
     padding-bottom: 8px;
+}
+
+.card-action .row {
+    margin: 0;
 }
 
 .strong-text {

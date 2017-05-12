@@ -9,7 +9,7 @@
         <div class="col-xs-12">
             <div class="card">
                 <?= $this->Form->create($user) ?>
-                    <div class="card-content no-row-marg">
+                    <div class="card-content">
                         <span class="card-title">Informations personnelles</span>
                         <div class="row">
                             <div class="col-xs-12 col-md-6 input-field">
@@ -18,8 +18,6 @@
                             <div class="col-xs-12 col-md-6 input-field">
                                 <?= $this->Form->input('firstname', ['required' => true, 'aria-required' => true, 'label' => "Prénom"]) ?>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-xs-12 col-md-6 input-field">
                                 <?= $this->Form->select('gender', ['Homme' => 'Homme', 'Femme' => 'Femme'], ['label' => false, 'disabled' => [''], 'default' => [''], 'required' => true, 'aria-required' => true]) ?>
                                 <label>Civilité</label>
@@ -28,8 +26,6 @@
                             <div class="col-xs-12 col-md-6 input-field">
                                 <?= $this->Form->input('email', ['required' => true, 'aria-required' => true, 'label' => "Adresse E-mail"]) ?>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-xs-12 col-md-6 input-field">
                                 <?= $this->Form->input('address', ['required' => true, 'aria-required' => true, 'label' => 'Adresse']) ?>
                             </div>
@@ -38,8 +34,6 @@
                                 <label>Ville</label>
                                 <?php if ($this->Form->isFieldError('city_id')) echo $this->Form->error('city_id'); ?>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-xs-12 input-field">
                                 <?= $this->Form->checkbox('newsletter', ['id' => 'prefNews', 'class' => false, 'label' => false]) ?>
                                 <label for="prefNews">Recevoir les newsletters</label>
@@ -58,7 +52,7 @@
         <div class="col-xs-12">
             <div class="card">
                 <?= $this->Form->create($pass, ['url' => ['_name' => 'users:password']]) ?>
-                    <div class="card-content no-row-marg">
+                    <div class="card-content">
                         <span class="card-title">Modifier mon mot de passe</span>
                         <div class="row">
                             <div class="col-xs-12 col-md-4 input-field">
