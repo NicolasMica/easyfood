@@ -17,6 +17,7 @@ mix.setPublicPath('webroot/')
 
 mix.js('assets/js/app.js', 'js/')
     .js('assets/js/dishes.js', 'js/')
+    .js('assets/js/tags.js', 'js/')
     .sass('assets/sass/app.scss', 'css/')
 
 if (mix.config.inProduction) {

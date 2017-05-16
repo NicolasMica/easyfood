@@ -191,14 +191,14 @@ body{
 }
 
 #cart .collection {
-    .circle {
-        background-size: cover;
-        background-position: center;
-    }
-
     .collection-header h3 {
         margin: 8px 0;
     }
+}
+
+.circle {
+    background-size: cover;
+    background-position: center;
 }
 
 .side-nav .collection {

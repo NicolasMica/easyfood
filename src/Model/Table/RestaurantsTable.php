@@ -77,9 +77,9 @@ class RestaurantsTable extends Table
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
-        $validator
-            ->requirePresence('description', 'create')
-            ->notEmpty('description');
+//        $validator
+//            ->requirePresence('description', 'create')
+//            ->notEmpty('description');
 
         $validator
             ->requirePresence('address', 'create')

@@ -1,4 +1,4 @@
-window.$ = window.jQuery = require('materialize-css/node_modules/jquery/dist/jquery')
+window.$ = window.jQuery = require('jquery')
 
 require('materialize-css')
 

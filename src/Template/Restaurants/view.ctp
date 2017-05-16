@@ -2,6 +2,9 @@
 
 <div class="container">
     <div class="row">
+        <div class="col-xs-12 right-align">
+            <?= $this->Html->link("<i class='large material-icons'>add</i> Ajouter un nouveau restaurant", ['_name' => 'resto:add'], ['escape' => false, 'class' => 'btn waves-effect waves-light green']) ?>
+        </div>
         <?php if (count($restaurants)): ?>
             <?php foreach ($restaurants as $resto): ?>
                 <div class="col-xs-12 col-lg-6">

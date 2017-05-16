@@ -2,26 +2,18 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\Routing\Router;
 
 /**
- * Dish Entity
+ * DishTypesRestaurant Entity
  *
  * @property int $id
- * @property string $name
- * @property string $description
- * @property string $supplier_price
- * @property string $selling_price
- * @property bool $active
  * @property int $restaurant_id
  * @property int $dish_type_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
  *
  * @property \App\Model\Entity\Restaurant $restaurant
  * @property \App\Model\Entity\DishType $dish_type
  */
-class Dish extends Entity
+class DishTypesRestaurant extends Entity
 {
 
     /**
@@ -37,10 +29,4 @@ class Dish extends Entity
         '*' => true,
         'id' => false
     ];
-
-    protected $_virtual = ['picture'];
-
-    public function _getPicture () {
-        return Router::url('storage/dishes/' . $this->_properties['id'] . '.jpg');
-    }
 }

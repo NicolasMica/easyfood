@@ -61,6 +61,20 @@ Router::scope('/', function (RouteBuilder $routes) {
 
         $routes->connect('/types', ['action' => 'types'], ['_name' => 'types']);
 
+        $routes->connect('/supprimer/:id', ['action' => 'delete'], [
+            '_name' => 'delete',
+            'pass' => ['id'],
+            'id' => '[0-9]+'
+        ]);
+
+        $routes->connect('/modifier/:id', ['action' => 'save'], [
+            '_name' => 'edit',
+            'pass' => ['id'],
+            'id' => '[0-9]+'
+        ]);
+
+        $routes->connect('/ajouter', ['action' => 'save'], ['_name' => 'add']);
+
     });
 
 
