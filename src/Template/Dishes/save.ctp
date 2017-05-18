@@ -53,7 +53,7 @@ if (isset($dish->id)) {
                                 <?= $this->Form->control('selling_price', ['label' => 'Prix de vente au client final', 'required' => true, 'aria-required' => true]) ?>
                             </div>
                             <div class="col-xs-12 input-field">
-                                <?= $this->Form->control('description', ['label' => "Description du restaurant", 'class' => 'materialize-textarea']) ?>
+                                <?= $this->Form->control('description', ['label' => "Description du plat", 'class' => 'materialize-textarea']) ?>
                             </div>
                         </div>
                     </div>

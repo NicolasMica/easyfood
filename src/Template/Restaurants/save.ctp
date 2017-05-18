@@ -6,7 +6,7 @@ if (isset($resto->id)) {
     $this->assign('title', "Ajouter un nouveau restaurant");
 }
 
-$this->Html->script('tags', ['block' => true]);
+$this->Html->script($this->Asset->path('/js/tags.js'), ['block' => true]);
 
 ?>
 
