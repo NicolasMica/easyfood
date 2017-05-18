@@ -41,6 +41,6 @@ class Dish extends Entity
     protected $_virtual = ['picture'];
 
     public function _getPicture () {
-        return Router::url('storage/dishes/' . $this->_properties['id'] . '.jpg');
+        return Router::url('/storage/dishes/' . $this->_properties['id'] . '.jpg');
     }
 }
