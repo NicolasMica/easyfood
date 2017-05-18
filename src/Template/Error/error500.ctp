@@ -52,7 +52,7 @@ if (Configure::read('debug')):
                     <?= $this->Html->link("<i class='material-icons left'>restaurant</i> Accueil", ['_name' => 'plats'], ['class' => 'btn-large waves-effect', 'escape' => false, 'title' => "Accueil", 'target' => '_self']) ?>
                     <?php if ($this->request->session()->check('Auth.User')): ?>
                         <?php if ($this->request->session()->check('Auth.User.role_id') <= 3): ?>
-                            <?= $this->Html->link("<i class='material-icons left'>location_city</i> Mes restaurants", ['_name' => 'resto:index'], ['class' => 'btn-large waves-effect', 'escape' => false, 'title' => "Mes restaurants", 'target' => '_self']) ?>
+                            <?= $this->Html->link("<i class='material-icons left'>location_city</i> Mes restaurants", ['_name' => 'resto:view'], ['class' => 'btn-large waves-effect', 'escape' => false, 'title' => "Mes restaurants", 'target' => '_self']) ?>
                         <?php endif; ?>
                         <?= $this->Html->link("<i class='material-icons left'>person</i> Préférences", ['_name' => 'users:profile'], ['class' => 'btn-large waves-effect', 'escape' => false, 'title' => "Préférences", 'target' => '_self']) ?>
                     <?php else: ?>
