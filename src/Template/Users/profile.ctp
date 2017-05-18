@@ -83,7 +83,7 @@
         <p><?= __("La suppression de votre compte est définitive et irréversible. La suppression de votre compte entraînera la suppression de toutes vos activités sur le site.") ?></p>
     </div>
     <div class="modal-footer">
-        <?= $this->Form->postLink("<i class='material-icons left'>delete_forever</i> Confirmer", ['_name' => 'users:delete'], ['method' => 'delete', 'class' => 'btn-flat waves-effect waves-red red-text', 'escape' => false]) ?>
+        <?= $this->Form->postLink("<i class='material-icons left'>delete_forever</i> Confirmer", ['_name' => 'users:delete'], ['method' => 'delete', 'class' => 'btn-flat waves-effect waves-red red-text', 'escape' => false, 'title' => "Confirmer la suppression", 'target' => '_self']) ?>
         <a href="#!" class="modal-action modal-close waves-effect btn-flat">Annuler</a>
     </div>
 </div>

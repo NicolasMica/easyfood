@@ -58,7 +58,7 @@ if (isset($dish->id)) {
                         </div>
                     </div>
                     <div class="card-action clearfix">
-                        <?= $this->Html->link("<i class='material-icons'>close</i> Annuler", ['_name' => 'resto:edit', 'id' => $resto->id], ['class' => 'btn waves-effect waves-light red left', 'escape' => false]) ?>
+                        <?= $this->Html->link("<i class='material-icons'>close</i> Annuler", ['_name' => 'resto:edit', 'id' => $resto->id], ['class' => 'btn waves-effect waves-light red left', 'escape' => false, 'title' => "Retour au restaurant", 'target' => '_self']) ?>
                         <?= $this->Form->button("<i class='material-icons'>check</i> Sauvegarder", ['class' => 'btn waves-effect waves-light green right', 'escape' => false]) ?>
                     </div>
                 <?= $this->Form->end() ?>

@@ -41,7 +41,7 @@ $this->Html->script($this->Asset->path('/js/tags.js'), ['block' => true]);
                     </div>
                 </div>
                 <div class="card-action clearfix">
-                    <?= $this->Html->link("<i class='material-icons'>close</i> Annuler", ['_name' => 'resto:view'], ['class' => 'btn waves-effect waves-light red left', 'escape' => false]) ?>
+                    <?= $this->Html->link("<i class='material-icons'>close</i> Annuler", ['_name' => 'resto:view'], ['class' => 'btn waves-effect waves-light red left', 'escape' => false, 'title' => "Annuler", 'target' => '_self']) ?>
                     <?= $this->Form->button("<i class='material-icons'>check</i> Sauvegarder", ['class' => 'btn waves-effect waves-light green right', 'escape' => false]) ?>
                 </div>
                 <?= $this->Form->end() ?>
@@ -61,8 +61,8 @@ $this->Html->script($this->Asset->path('/js/tags.js'), ['block' => true]);
                             <div class="secondary-content right-align">
                                 <span class="green-text"><?= $dish->selling_price ?> €</span>
                                 <br>
-                                <?= $this->Html->link("<i class='material-icons amber-text waves-effect'>edit</i>", ['_name' => 'dishes:edit', 'resto' => $resto->id, 'plat' => $dish->id], ['escape' => false]) ?>
-                                <?= $this->Form->postLink("<i class='material-icons red-text waves-effect'>delete</i>", ['_name' => 'dishes:delete', 'resto' => $resto->id, 'plat' => $dish->id], ['escape' => false, 'confirm' => "Voulez-vous réellement supprimer le plat $dish->name ?"]) ?>
+                                <?= $this->Html->link("<i class='material-icons amber-text waves-effect'>edit</i>", ['_name' => 'dishes:edit', 'resto' => $resto->id, 'plat' => $dish->id], ['escape' => false, 'title' => "Modifier", 'target' => '_self']) ?>
+                                <?= $this->Form->postLink("<i class='material-icons red-text waves-effect'>delete</i>", ['_name' => 'dishes:delete', 'resto' => $resto->id, 'plat' => $dish->id], ['escape' => false, 'confirm' => "Voulez-vous réellement supprimer le plat $dish->name ?", 'title' => "Supprimer", 'target' => '_self']) ?>
                             </div>
                         </li>
                     <?php endforeach; ?>
@@ -70,7 +70,7 @@ $this->Html->script($this->Asset->path('/js/tags.js'), ['block' => true]);
                     <li class="collection-item">Aucun plat associé à ce restaurant pour l'instant.</li>
                 <?php endif; ?>
                 <li class="collection-item center-align">
-                    <?= $this->Html->link("<i class='material-icons'>add</i> Ajouter un plat", ['_name' => 'dishes:add', 'resto' => $resto->id], ['escape' => false, 'class' => 'btn green waves-effect waves-light']) ?>
+                    <?= $this->Html->link("<i class='material-icons'>add</i> Ajouter un plat", ['_name' => 'dishes:add', 'resto' => $resto->id], ['escape' => false, 'class' => 'btn green waves-effect waves-light', 'title' => "Ajouter un plat", 'target' => '_self']) ?>
                 </li>
             </ul>
         </div>

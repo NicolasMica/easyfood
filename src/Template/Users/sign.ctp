@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-xs-12">
                     <div class="card-panel">
-                        <?= $this->Html->link("Mot de passe oublié ?", ['_name' => 'users:forgot'], ['class' => 'blue-text waves-effect']) ?>
+                        <?= $this->Html->link("Mot de passe oublié ?", ['_name' => 'users:forgot'], ['class' => 'blue-text waves-effect', 'title' => "Mot de passe oublié ?", 'target' => '_self']) ?>
                     </div>
                 </div>
             </div>
