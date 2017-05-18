@@ -34,7 +34,10 @@
                                 <label>Ville</label>
                                 <?php if ($this->Form->isFieldError('city_id')) echo $this->Form->error('city_id'); ?>
                             </div>
-                            <div class="col-xs-12 input-field">
+                            <div class="col-xs-12 col-md-6 input-field">
+                                <?= $this->Form->input('role.name', ['label' => 'Rôle du compte', 'disabled' => true, 'readonly' => true]) ?>
+                            </div>
+                            <div class="col-xs-12 col-md-6 input-field">
                                 <?= $this->Form->checkbox('newsletter', ['id' => 'prefNews', 'class' => false, 'label' => false]) ?>
                                 <label for="prefNews">Recevoir les newsletters</label>
                             </div>

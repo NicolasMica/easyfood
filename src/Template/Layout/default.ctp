@@ -29,7 +29,7 @@
                         </li>
                         <?php if($this->request->session()->check('Auth.User')): ?>
                             <?php if ($this->request->session()->read('Auth.User.role_id') === 3): ?>
-                                <li  <?= ($this->request->here == $this->Url->build(['_name' => 'resto:view'])) ? 'class="active"' : null ?>>
+                                <li  <?= ($this->request->controller == 'Restaurants') ? 'class="active"' : null ?>>
                                     <a href="<?= $this->Url->build(['_name' => 'resto:view']) ?>">
                                         <i class="material-icons left">location_city</i> Mes restaurants</a>
                                 </li>
@@ -55,6 +55,12 @@
                                 <i class="material-icons left" aria-hidden="true">restaurant</i> Accueil
                             </a>
                         </li>
+                        <?php if ($this->request->session()->check('Auth.User') && $this->request->session()->read('Auth.User.role_id') === 3): ?>
+                            <li  <?= ($this->request->controller == 'Restaurants') ? 'class="active"' : null ?>>
+                                <a href="<?= $this->Url->build(['_name' => 'resto:view']) ?>">
+                                    <i class="material-icons left">location_city</i> Mes restaurants</a>
+                            </li>
+                        <?php endif; ?>
                         <li><div class="divider"></div></li>
                         <li>
                             <a class="subheader">Utilisateur</a></li>

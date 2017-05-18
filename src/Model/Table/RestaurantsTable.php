@@ -75,15 +75,20 @@ class RestaurantsTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->notEmpty('name', __("Ce champ est obligatoire"))
+            ->minLength('name', 3, __("Ce champ doit contenir au minimum 3 caractères"));
 
-//        $validator
-//            ->requirePresence('description', 'create')
-//            ->notEmpty('description');
+        $validator
+            ->allowEmpty('description')
+            ->minLength('description', 10, __("Ce champ doit contenir au minimum 10 caractères"));
 
         $validator
             ->requirePresence('address', 'create')
-            ->notEmpty('address');
+            ->notEmpty('address', __("Ce champ est obligatoire"));
+
+        $validator
+            ->requirePresence('city_id', 'create', __("Ce champ est obligatoire"))
+            ->notBlank('city_id', __("Veuillez choisir dans la liste"));
 
         return $validator;
     }

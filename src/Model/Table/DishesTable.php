@@ -65,24 +65,34 @@ class DishesTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->notEmpty('name', __("Ce champ est obligatoire"))
+            ->minLength('name', 3, __("Ce champ doit contenir au minimum 3 caractères"));
 
         $validator
             ->requirePresence('description', 'create')
-            ->notEmpty('description');
+            ->allowEmpty('description')
+            ->minLength('description', 10, __("Ce champ doit contenir au minimum 10 caractères"));
 
         $validator
             ->requirePresence('supplier_price', 'create')
-            ->notEmpty('supplier_price');
+            ->notEmpty('supplier_price', __("Ce champ est obligatoire"))
+            ->add('supplier_price', 'validPrice', [
+                'rule' => [$this, 'validatePrice'],
+                'message' => __("Ce champ doit contenir un prix supérieur à 0")
+            ]);
 
         $validator
             ->requirePresence('selling_price', 'create')
-            ->notEmpty('selling_price');
+            ->notEmpty('selling_price', __("Ce champ est obligatoire"))
+            ->add('selling_price', 'validPrice', [
+                'rule' => [$this, 'validatePrice'],
+                'message' => __("Ce champ doit contenir un prix supérieur à 0")
+            ]);
 
         $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
-            ->notEmpty('active');
+            ->notEmpty('active',  __("Ce champ est obligatoire"));
 
         return $validator;
     }
@@ -104,5 +114,9 @@ class DishesTable extends Table
 
     public function findPublished (Query $query, array $options) {
         return $query->where(['active' => true]);
+    }
+
+    public function validatePrice ($value, array $context) {
+        return (bool) preg_match('#^([0-9]+|0)(\.[0-9]{0,2})?$#', $value);
     }
 }

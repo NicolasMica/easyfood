@@ -39,8 +39,10 @@ class RestaurantsController extends AppController
         $this->set('_serialize', ['restaurants']);
     }
 
+    /**
+     * Liste des restaurants de l'utilisateur
+     */
     public function view () {
-        Cache::delete('my_restaurants');
         $restaurants = $this->Restaurants->find()
             ->where(['user_id' => $this->Auth->user('id')])
             ->cache('my_restaurants')
@@ -49,19 +51,14 @@ class RestaurantsController extends AppController
         $this->set(compact('restaurants'));
     }
 
+    /**
+     * Création ou modification d'un restaurant de l'utilisateur
+     * @param null $id - Identifiant du restaurant
+     * @return \Cake\Http\Response|null
+     */
     public function save ($id = null) {
 
         $types = [];
-
-        $cities = TableRegistry::get('Cities')->find('list', [
-            'keyField' => 'id',
-            'valueField' => 'name'
-        ])->toArray();
-
-        $dish_types = TableRegistry::get('DishTypes')->find('list')
-            ->select('name')
-            ->all()
-            ->toArray();
 
         if ($id === null) {
             $resto = $this->Restaurants->newEntity();
@@ -76,8 +73,11 @@ class RestaurantsController extends AppController
                         return $query->select(['id', 'name']);
                     }
                 ])
-                ->where(['id' => $id])
-                ->first();
+                ->where([
+                    'id' => $id,
+                    'user_id' => $this->Auth->user('id')
+                ])
+                ->firstOrFail();
 
             if (!$this->request->getData('dish_types')) {
                 $types = TableRegistry::get('DishTypes')->find('list')
@@ -88,29 +88,63 @@ class RestaurantsController extends AppController
                     ->all()
                     ->toArray();
             }
-
-            if ($resto === null) throw new NotFoundException;
         }
+
+        $cities = TableRegistry::get('Cities')->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name'
+        ])->toArray();
+
+        $dish_types = TableRegistry::get('DishTypes')->find('list')
+            ->select('name')
+            ->all()
+            ->toArray();
 
         if ($this->request->is(['POST', 'PUT', 'PATCH']) && !empty($this->request->getData())) {
 
             $types = explode(',', $this->request->getData('dish_types'));
             $selectedTypes = [];
             foreach ($types as $type) {
-                $selectedTypes[] = $this->Restaurants->DishTypes->findOrCreate(['name' => $type]);
+                $selectedTypes[] = $this->Restaurants->DishTypes->findOrCreate(['name' => ucfirst($type)]);
             }
 
             $resto = $this->Restaurants->patchEntity($resto, $this->request->getData());
             $resto->dish_types = $selectedTypes;
 
             if ($this->Restaurants->save($resto)) {
+                Cache::deleteMany(['my_restaurants', 'restaurants', 'dish_types']);
                 $this->Flash->success(__("Restaurant sauvegardé avec succès !"));
-                if ($id === null) return $this->redirect(['_name' => 'resto:edit', 'id' => $resto->id]);
+                return $this->redirect(['_name' => 'resto:view']);
             } else {
                 $this->Flash->error(__("Des champs ne sont pas valides, veuillez corriger les erreurs"));
             }
         }
 
         $this->set(compact('resto', 'cities', 'dish_types', 'types'));
+    }
+
+    /**
+     * Supression du restaurant
+     * @param $id - Identifiant du restaurant
+     * @return \Cake\Http\Response|null
+     */
+    public function delete ($id) {
+        $this->request->allowMethod(['POST', 'DELETE']);
+
+        $resto = $this->Restaurants->find()
+            ->where([
+                'id' => $id,
+                'user_id' => $this->Auth->user('id')
+            ])
+            ->firstOrFail();
+
+        if ($this->Restaurants->delete($resto)) {
+            Cache::deleteMany(['dishes', 'restaurants', 'my_restaurants']);
+            $this->Flash->success(__("Restaurant supprimé avec succès !"));
+        } else {
+            $this->Flash->error(__("Une erreur s'est produite lors de la suppression du restaurant."));
+        }
+
+        return $this->redirect(['_name' => 'resto:view']);
     }
 }

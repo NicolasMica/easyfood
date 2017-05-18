@@ -17,8 +17,8 @@
                         </div>
                     </div>
                     <div class="card-action clearfix">
-                        <?= $this->Html->link("J'ai retrouvé mon mot de passe", ['_name' => 'users:sign'], ['class' => 'btn-flat waves-effect red-text']) ?>
-                        <?= $this->Form->button("<i class='material-icons left'>check</i> Sauvegarder", ['class' => 'btn-flat green-text right']) ?>
+                        <?= $this->Html->link("J'ai retrouvé mon mot de passe", ['_name' => 'users:sign'], ['class' => 'btn waves-effect waves-light red']) ?>
+                        <?= $this->Form->button("<i class='material-icons left'>check</i> Sauvegarder", ['class' => 'btn waves-effect waves-light green right']) ?>
                     </div>
                 <?= $this->Form->end() ?>
             </div>

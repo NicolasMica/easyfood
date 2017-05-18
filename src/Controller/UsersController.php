@@ -217,7 +217,11 @@ class UsersController extends AppController
      * Modification des informations personnelles
      */
     public function profile () {
-        $user = TableRegistry::get('Users')->get($this->Auth->user('id'));
+        $user = TableRegistry::get('Users')->find()
+        ->contain(['Roles'])
+        ->where(['Users.id' => $this->Auth->user('id')])
+        ->first();
+
         $pass = $this->request->session()->consume('formErrors');
 
         if ($this->request->is(['post', 'put']) && !empty($this->request->getData())) {

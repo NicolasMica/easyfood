@@ -1,6 +1,6 @@
 <?php
 
-if (isset($resto)) {
+if (isset($resto->id)) {
     $this->assign('title', "Modifier le restaurant $resto->name");
 } else {
     $this->assign('title', "Ajouter un nouveau restaurant");
@@ -13,7 +13,7 @@ $this->Html->script('tags', ['block' => true]);
 <div class="container">
     <div class="row">
         <!-- Restaurant -->
-        <div class="col-xs-12 col-sm-8">
+        <div class="col-xs-12 <?= isset($resto->id) ? 'col-sm-8' : null ?>">
             <div class="card">
                 <?= $this->Form->create($resto) ?>
                 <?php $this->Form->unlockField('dish_types');  ?>
@@ -40,19 +40,14 @@ $this->Html->script('tags', ['block' => true]);
                         </div>
                     </div>
                 </div>
-                <div class="card-action">
-                    <div class="row center-xs between-sm">
-                        <div class="col-xs-12 col-sm-6 col-lg-5">
-                            <?= $this->Html->link("<i class='material-icons'>close</i> Annuler", ['_name' => 'resto:view'], ['class' => 'btn-flat btn-fill red-text waves-effect', 'escape' => false]) ?>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-lg-5">
-                            <?= $this->Form->button("<i class='material-icons'>check</i> Sauvegarder", ['class' => 'btn-flat btn-fill green-text waves-effect', 'escape' => false]) ?>
-                        </div>
-                    </div>
+                <div class="card-action clearfix">
+                    <?= $this->Html->link("<i class='material-icons'>close</i> Annuler", ['_name' => 'resto:view'], ['class' => 'btn waves-effect waves-light red left', 'escape' => false]) ?>
+                    <?= $this->Form->button("<i class='material-icons'>check</i> Sauvegarder", ['class' => 'btn waves-effect waves-light green right', 'escape' => false]) ?>
                 </div>
                 <?= $this->Form->end() ?>
             </div>
         </div>
+        <?php if(isset($resto->id)): ?>
         <!-- Dishes -->
         <div class="col-xs-12 col-sm-4">
             <ul class="collection with-header">
@@ -66,16 +61,19 @@ $this->Html->script('tags', ['block' => true]);
                             <div class="secondary-content right-align">
                                 <span class="green-text"><?= $dish->selling_price ?> €</span>
                                 <br>
-                                <?= $this->Html->link("<i class='material-icons amber-text waves-effect'>edit</i>", ['_name' => 'dishes:edit', 'id' => $dish->id], ['escape' => false]) ?>
-                                <?= $this->Form->postLink("<i class='material-icons red-text waves-effect'>delete</i>", ['_name' => 'dishes:delete', 'id' => $dish->id], ['escape' => false, 'confirm' => "Voulez-vous réellement supprimer le plat $dish->name ?"]) ?>
+                                <?= $this->Html->link("<i class='material-icons amber-text waves-effect'>edit</i>", ['_name' => 'dishes:edit', 'resto' => $resto->id, 'plat' => $dish->id], ['escape' => false]) ?>
+                                <?= $this->Form->postLink("<i class='material-icons red-text waves-effect'>delete</i>", ['_name' => 'dishes:delete', 'resto' => $resto->id, 'plat' => $dish->id], ['escape' => false, 'confirm' => "Voulez-vous réellement supprimer le plat $dish->name ?"]) ?>
                             </div>
                         </li>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <li class="collection-item">Aucun plat associé à ce restaurant pour l'instant.</li>
                 <?php endif; ?>
-                <?= $this->Html->link("<i class='material-icons'>add</i> AJOUTER UN PLAT", ['_name' => 'dishes:add'], ['escape' => false, 'class' => 'collection-item green-text waves-effect center-align']) ?>
+                <li class="collection-item center-align">
+                    <?= $this->Html->link("<i class='material-icons'>add</i> Ajouter un plat", ['_name' => 'dishes:add', 'resto' => $resto->id], ['escape' => false, 'class' => 'btn green waves-effect waves-light']) ?>
+                </li>
             </ul>
         </div>
+        <?php endif; ?>
     </div>
 </div>

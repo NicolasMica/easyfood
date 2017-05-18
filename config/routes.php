@@ -61,21 +61,27 @@ Router::scope('/', function (RouteBuilder $routes) {
 
         $routes->connect('/types', ['action' => 'types'], ['_name' => 'types']);
 
-        $routes->connect('/supprimer/:id', ['action' => 'delete'], [
-            '_name' => 'delete',
-            'pass' => ['id'],
-            'id' => '[0-9]+'
-        ]);
-
-        $routes->connect('/modifier/:id', ['action' => 'save'], [
-            '_name' => 'edit',
-            'pass' => ['id'],
-            'id' => '[0-9]+'
-        ]);
-
-        $routes->connect('/ajouter', ['action' => 'save'], ['_name' => 'add']);
-
     });
+
+    $routes->connect('/restaurants/:resto/plats/supprimer/:plat', ['controller' => 'Dishes', 'action' => 'delete'], [
+        '_name' => 'dishes:delete',
+        'pass' => ['resto', 'plat'],
+        'resto' => '[0-9]+',
+        'plat' => '[0-9]+'
+    ]);
+
+    $routes->connect('/restaurants/:resto/plats/modifier/:plat', ['controller' => 'Dishes', 'action' => 'save'], [
+        '_name' => 'dishes:edit',
+        'pass' => ['resto', 'plat'],
+        'resto' => '[0-9]+',
+        'plat' => '[0-9]+'
+    ]);
+
+    $routes->connect('/restaurants/:resto/plats/ajouter', ['controller' => 'Dishes', 'action' => 'save'], [
+        '_name' => 'dishes:add',
+        'pass' => ['resto'],
+        'resto' => '[0-9]+'
+    ]);
 
 
     $routes->scope('/restaurants', ['_namePrefix' => 'resto:', 'controller' => 'Restaurants'], function (RouteBuilder $routes) {
