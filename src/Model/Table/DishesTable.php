@@ -49,6 +49,11 @@ class DishesTable extends Table
         $this->belongsTo('DishTypes', [
             'foreignKey' => 'dish_type_id'
         ]);
+
+        $this->addBehavior('Uploadable', [
+            'saveDest' => WWW_ROOT . 'storage' . DS . 'dishes' . DS,
+            "ext" => ['jpg', 'jpeg', 'png']
+        ]);
     }
 
     /**
@@ -90,8 +95,22 @@ class DishesTable extends Table
             ]);
 
         $validator
+            ->requirePresence('image', 'create', __("Ce champ est obligatoire à la création"))
+            ->add('image', 'file', [
+                'rule' => [$this, 'validatePictureFormat'],
+                'message' => __("L'image doit être au format JPEG ou PNG")
+            ])
+            ->add('image', 'size', [
+                'rule' => [$this, 'validatePictureSize'],
+                'message' => __("La taille maximal de l'image est de 600x600 pixels")
+            ])
+            ->add('image', 'square', [
+                'rule' => [$this, 'validatePictureSquare'],
+                'message' => __("L'image doit être carrée (ex: 300x300)")
+            ]);
+
+        $validator
             ->boolean('active')
-            ->requirePresence('active', 'create')
             ->notEmpty('active',  __("Ce champ est obligatoire"));
 
         return $validator;
@@ -117,6 +136,22 @@ class DishesTable extends Table
     }
 
     public function validatePrice ($value, array $context) {
-        return (bool) preg_match('#^([0-9]+|0)(\.[0-9]{0,2})?$#', $value);
+        return (bool) preg_match('#^([1-9][0-9]*|0)(\.[0-9]{0,2})?$#', $value);
+    }
+
+    public function validatePictureSize ($value, array $context) {
+        $size = getimagesize($value['tmp_name']);
+
+        return $size[0] <= 600 && $size[1] <= 600;
+    }
+
+    public function validatePictureSquare ($value, array $context) {
+        $size = getimagesize($value['tmp_name']);
+
+        return $size[0] === $size[1];
+    }
+
+    public function validatePictureFormat ($value, array $context) {
+        return in_array($value['type'], ['image/jpeg', 'image/jpg', 'image/png']);
     }
 }

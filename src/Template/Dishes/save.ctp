@@ -7,26 +7,31 @@ if (isset($dish->id)) {
 }
 
  $this->Html->scriptStart(['block' => true]); ?>
-    var $selling = $('input[name="selling_price"]'),
+    $(document).ready(function () {
+        $('.materialboxed').materialbox();
+
+        var $selling = $('input[name="selling_price"]'),
         $supplier = $('input[name="supplier_price"]');
 
-    $supplier.on('input', function (event) {
-        var price = $(this).val() * 1.2 + 1;
-        $selling.val(price.toFixed(2));
-    });
+        $supplier.on('input', function (event) {
+            var price = $(this).val() * 1.2 + 1;
+            $selling.val(price.toFixed(2));
+            Materialize.updateTextFields();
+        });
 
-    $selling.on('input', function (event) {
-        var price = ($(this).val() - 1) / (1 + 0.2);
-        $supplier.val(price.toFixed(2));
+        $selling.on('input', function (event) {
+            var price = ($(this).val() - 1) / (1 + 0.2);
+            $supplier.val(price.toFixed(2));
+            Materialize.updateTextFields();
+        });
     });
-
 <?php $this->Html->scriptEnd(); ?>
 
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
             <div class="card">
-                <?= $this->Form->create($dish) ?>
+                <?= $this->Form->create($dish, ['type' => 'file']) ?>
                     <div class="card-content">
                         <span class="card-title"><?= $this->fetch('title') ?></span>
                         <div class="row">
@@ -42,14 +47,40 @@ if (isset($dish->id)) {
                                 <label>Type de plat</label>
                                 <?php if ($this->Form->isFieldError('dish_type_id')) echo $this->Form->error('dish_type_id'); ?>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-lg-4 input-field">
-                                <?= $this->Form->checkbox('active', ['id' => 'active', 'class' => false, 'label' => false]) ?>
-                                <label for="active">Rendre le plat est visible par les clients</label>
+                            <?php if (isset($dish->id)): ?>
+                            <div class="col-xs-12 col-sm-6 col-lg-6">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-9 col-lg-8 input-field file-field">
+                                        <div class="btn">
+                                            <span>Choisir</span>
+                                            <?= $this->Form->file('image', ['label' => false, 'class' => false]) ?>
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path" type="text" placeholder="Photo du plat">
+                                        </div>
+                                        <?php if ($this->Form->isFieldError('image')) echo $this->Form->error('image'); ?>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3 col-lg-4 img-container">
+                                        <?= $this->Html->image($dish->picture, ['alt' => $dish->name, 'class' => 'materialboxed']) ?>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-lg-4 input-field">
+                            <?php else: ?>
+                                <div class="col-xs-12 col-sm-6 input-field file-field">
+                                    <div class="btn">
+                                        <span>Choisir</span>
+                                        <?= $this->Form->file('image', ['label' => false, 'class' => false]) ?>
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path" type="text" placeholder="Photo du plat">
+                                    </div>
+                                    <?php if ($this->Form->isFieldError('image')) echo $this->Form->error('image'); ?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="col-xs-12 col-sm-6 col-lg-3 input-field">
                                 <?= $this->Form->control('supplier_price', ['label' => 'Prix de vente à EasyFood', 'required' => true, 'aria-required' => true]) ?>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-lg-4 input-field">
+                            <div class="col-xs-12 col-sm-6 col-lg-3 input-field">
                                 <?= $this->Form->control('selling_price', ['label' => 'Prix de vente au client final', 'required' => true, 'aria-required' => true]) ?>
                             </div>
                             <div class="col-xs-12 input-field">

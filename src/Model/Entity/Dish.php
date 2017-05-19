@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\Filesystem\Folder;
 use Cake\ORM\Entity;
 use Cake\Routing\Router;
 
@@ -41,6 +42,13 @@ class Dish extends Entity
     protected $_virtual = ['picture'];
 
     public function _getPicture () {
-        return Router::url('/storage/dishes/' . $this->_properties['id'] . '.jpg');
+        if (isset($this->_properties['id'])) {
+            $dir = new Folder(WWW_ROOT . DS . 'storage' . DS . 'dishes' . DS);
+            $files = $dir->find($this->_properties['id'] . '\.(jpg|png|jpeg)');
+
+            if ($files) return Router::url('/storage/dishes/' . $files[0], true);
+        }
+
+        return Router::url('/img/logo.png', true);
     }
 }

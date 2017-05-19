@@ -33,7 +33,7 @@
 @import "~materialize-css/sass/components/modal";
 @import "~materialize-css/sass/components/collapsible";
 @import "~materialize-css/sass/components/chips";
-//@import "~materialize-css/sass/components/materialbox";
+@import "~materialize-css/sass/components/materialbox";
 @import "~materialize-css/sass/components/forms/forms";
 @import "~materialize-css/sass/components/table_of_contents";
 @import "~materialize-css/sass/components/sideNav";
@@ -199,6 +199,16 @@ body{
 .circle {
     background-size: cover;
     background-position: center;
+}
+
+.img-container {
+    max-height: 70px;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        margin-top: -25%;
+    }
 }
 
 .side-nav .collection {

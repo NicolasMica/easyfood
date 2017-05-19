@@ -27,8 +27,8 @@
                         <span class="card-title">Nouveau restaurant</span>
                         <p>Vous n'avez ajouté aucun restaurant pour l'instant. Souhaitez vous en ajouter un maintenant ? Cliquez sur le bouton <b>ajouter</b> ci-dessous.</p>
                     </div>
-                    <div class="card-action right-align">
-                        <?= $this->Html->link("<i class='material-icons left'>add</i> Ajouter", ['_name' => 'resto:add'], ['escape' => false, 'class' => 'btn green waves-effect waves-light', 'title' => "Ajouter", 'target' => '_self']) ?>
+                    <div class="card-action clearfix">
+                        <?= $this->Html->link("<i class='material-icons left'>add</i> Ajouter", ['_name' => 'resto:add'], ['escape' => false, 'class' => 'btn green waves-effect waves-light right', 'title' => "Ajouter", 'target' => '_self']) ?>
                     </div>
                 </div>
             </div>
