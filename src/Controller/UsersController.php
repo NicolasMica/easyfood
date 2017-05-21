@@ -241,7 +241,13 @@ class UsersController extends AppController
             'valueField' => 'name'
         ])->toArray();
 
-        $this->set(compact('user', 'cities', 'pass'));
+        $orders = TableRegistry::get('Orders')->find()
+            ->where(['user_id' => $this->Auth->user('id')])
+            ->limit(10)
+            ->cache($this->Auth->user('id') . '-last-orders')
+            ->all();
+
+        $this->set(compact('user', 'cities', 'pass', 'orders'));
     }
 
     /**

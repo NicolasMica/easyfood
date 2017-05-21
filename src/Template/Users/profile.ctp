@@ -5,6 +5,7 @@
 <?php $this->Html->scriptEnd(); ?>
 
 <div class="container">
+    <!-- Profile -->
     <div class="row">
         <div class="col-xs-12">
             <div class="card">
@@ -51,6 +52,7 @@
             </div>
         </div>
     </div>
+    <!-- Password -->
     <div class="row">
         <div class="col-xs-12">
             <div class="card">
@@ -73,6 +75,43 @@
                         <?= $this->Form->button("<i class='material-icons left'>check</i> Sauvegarder", ['class' => 'btn green waves-effect waves-light']) ?>
                     </div>
                 <?= $this->Form->end() ?>
+            </div>
+        </div>
+    </div>
+    <!-- Orders history -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Historique des commandes</span>
+                    <table class="bordered striped highlight responsive-table">
+                        <thead>
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Moyen de paiement</th>
+                            <th>Date de commande</th>
+                            <th>Prix</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if ($orders):
+                            foreach ($orders as $order): ?>
+                                <tr>
+                                    <td><?= $order->id ?></td>
+                                    <td><?= ($order->payment) ? 'Espece' : 'Carte bancaire' ?></td>
+                                    <td>Le <?= $order->date->format('d/m/Y') ?> à <?= $order->date->format('H:i') ?></td>
+                                    <td><?= $order->total ?> €</td>
+                                    <td><?= $this->Html->link("<i class='material-icons'>remove_red_eye</i> Détail", ['_name' => 'orders:view', 'id' => $order->id], ['class' => 'btn-flat blue-text waves-effect', 'escape' => false]) ?></td>
+                                </tr>
+                            <?php endforeach;
+                        endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action clearfix">
+                    <?= $this->Html->link("<i class='material-icons right'>navigate_next</i> Tout afficher", ['_name' => 'orders:index'], ['class' => 'btn blue waves-effect waves-light right', 'escape' => false]) ?>
+                </div>
             </div>
         </div>
     </div>

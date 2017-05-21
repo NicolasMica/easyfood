@@ -7,7 +7,8 @@ Vue.use(Vuex)
 const ajax = axios.create({
     headers: {
         ContentType: 'application/json',
-        Accept: 'application/json'
+        Accept: 'application/json',
+        'X-CSRF-Token': window.App.token
     },
     baseURL: (process.env.NODE_ENV !== 'production') ? '//easyfood.dev' : '//nicolas.micallef.pro/easyfood'
 })
@@ -37,7 +38,8 @@ const mutations = {
     STORE_ORDER: (state, entity) => state.orders.push({ ...entity, amount: 1}),
     INCREMENT_ORDER: (state, entity) => state.orders.find(item => item.id === entity.id).amount += 1,
     DECREMENT_ORDER: (state, entity) => state.orders.find(item => item.id === entity.id).amount -= 1,
-    DESTROY_ORDER: (state, entity) => state.orders = state.orders.filter(item => item.id !== entity.id)
+    DESTROY_ORDER: (state, entity) => state.orders = state.orders.filter(item => item.id !== entity.id),
+    CLEAR_ORDERS: (state) => state.orders = []
 }
 
 const actions = {
@@ -114,6 +116,21 @@ const actions = {
      * @param entity object - Objet Dish
      */
     destroyOrder: (store, entity) => store.commit('DESTROY_ORDER', entity),
+    /**
+     * Soumet la commande de l'utilisateur
+     * @param store object - Instance de l'objet Store
+     * @param order - Objet contenant les informations de la commande
+     */
+    submitOrder: (store, order) => {
+        return new Promise((resolve, reject) => {
+            ajax.post('commande', { ...order, dishes: store.state.orders }).then(response => {
+                store.commit('CLEAR_ORDERS')
+                resolve(response.data)
+            }).catch(error => {
+                reject(error.response.data)
+            })
+        })
+    }
 }
 
 const getters = {

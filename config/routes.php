@@ -53,6 +53,20 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/villes', ['controller' => 'Cities', 'action' => 'index'], ['_name' => 'cities']);
 
+    $routes->scope('/commande', ['_namePrefix' => 'orders:', 'controller' => 'Orders'], function (RouteBuilder $routes) {
+
+        $routes->connect('/', ['action' => 'add', '_method' => 'POST'], ['_name' => 'add']);
+
+        $routes->connect('/', ['action' => 'index', '_method' => 'GET'], ['_name' => 'index']);
+
+        $routes->connect('/:id', ['action' => 'view'], [
+            '_name' => 'view',
+            'pass' => ['id'],
+            'id' => '[0-9]+'
+        ]);
+
+    });
+
     $routes->scope('/plats', ['_namePrefix' => 'dishes:', 'controller' => 'Dishes'], function (RouteBuilder $routes) {
 
         $routes->connect('/', ['action' => 'index'], ['_name' => 'index']);

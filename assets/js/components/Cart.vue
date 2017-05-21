@@ -5,6 +5,23 @@
             <li class="collection-header">
                 <h3 class="flow-text">Panier</h3>
             </li>
+            <li class="collection-item">
+                <div class="input-field">
+                    <select id="frmPayment" v-model="payment">
+                        <option value="0">Carte bancaire</option>
+                        <option value="1">Espece</option>
+                    </select>
+                    <label for="frmPayment">Méthode de paiement</label>
+                </div>
+                <div class="input-field">
+                    <input type="date" id="frmDate" class="datepicker" name="date">
+                    <label for="frmDate">Date de la livraison</label>
+                </div>
+                <div class="input-field">
+                    <input type="time" id="frmTime" class="timepicker" name="time">
+                    <label for="frmTime">Heure de la livraison</label>
+                </div>
+            </li>
             <transition-group name="scale" tag="li" v-if="orders.length > 0">
                 <div class="collection-item avatar" :key="item.id" v-for="item in orders">
                     <div class="circle" :style="'background-image: url(' + item.picture + ')'"></div>
@@ -29,26 +46,28 @@
                     </div>
                 </div>
             </transition-group>
-        </ul>
-        <div class="collection">
-            <div class="collection-item">
+            <li class="collection-item">
                 <p>Total: <span class="flow-text green-text">{{ bill }} €</span></p>
-            </div>
-            <a href="#!" class="collection-item btn-flat waves-effect green-text" :class="(this.orders.length > 0) ? null : 'disabled'">
+            </li>
+            <a href="#!" class="collection-item btn-flat waves-effect green-text" :class="submittable ? null : 'disabled'" @click.prevent="order">
                 <i class="material-icons right">payment</i> Commander
             </a>
-        </div>
+        </ul>
     </aside>
 </template>
 
 <script type="text/babel">
     import Vuex from 'vuex'
+    import 'materialize-clockpicker/src/js/materialize.clockpicker'
 
     export default {
         name: 'Cart',
         data () {
             return {
-                loading: false
+                loading: false,
+                payment: 0,
+                date: null,
+                time: null
             }
         },
         computed: {
@@ -61,13 +80,91 @@
                 let total = 0
                 this.orders.forEach(item => total += (item.selling_price * item.amount))
                 return total
+            },
+            /**
+             * Génère un objet Date correspondant au choix de l'utilisateur
+             * @returns {number}
+             */
+            timestamp () {
+                let date = new Date(this.date)
+                let time = this.time.split(':')
+                date.setHours(time[0], time[1])
+                return parseInt(date.getTime() / 1000);
+            },
+            submittable () {
+                return this.orders.length > 0 && this.date !== null && this.time !== null
             }
         },
         methods: {
-            ...Vuex.mapActions(['storeOrder', 'removeOrder', 'destroyOrder']),
+            ...Vuex.mapActions(['storeOrder', 'removeOrder', 'destroyOrder', 'submitOrder']),
+            /**
+             * Materialize.toast shortcut wrapper
+             * @param message - Message à afficher
+             * @param delay - Délais d'affichage
+             */
             toast (message, delay = 3000) {
                 Materialize.toast(message, delay)
+            },
+            /**
+             * Soumet la commande (submitOrder wrapper)
+             */
+            order () {
+                this.submitOrder({
+                    date: this.timestamp,
+                    payment: this.payment
+                }).then(response => {
+                    if (response.success) this.reset()
+                    this.toast(response.message, 5000)
+                }).catch(error => {
+                    this.toast(error.message, 5000)
+                })
+            },
+            /**
+             * Réinitialise le panier
+             */
+            reset () {
+                this.payment = 0
+                this.date = null
+                this.time = null
+                $('.datepicker').val(null)
+                $('.timepicker').val(null)
+                Materialize.updateTextFields()
             }
+        },
+        mounted () {
+
+            let _this = this
+
+            $(document).ready(function() {
+
+                $('#cart').find('select').on('change', function () {
+                    _this.payment = $(this).val()
+                })
+
+                $('.datepicker').pickadate({
+                    selectMonths: true,
+                    selectYears: false,
+                    closeOnSelect: true,
+                    min: 'now',
+                    onSet (value) {
+                        _this.date = value.select
+                    },
+                    onClose () {
+                        $('.datepicker').blur();
+                    }
+                })
+
+                $('.timepicker').pickatime({
+                    autoclose: true,
+                    twelvehour: false,
+                    fromnow: 0,
+                    donetext: "Ok",
+                    afterDone (element, value) {
+                        _this.time = value
+                        Materialize.updateTextFields()
+                    }
+                })
+            })
         }
     }
 </script>

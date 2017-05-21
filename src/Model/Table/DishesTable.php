@@ -50,6 +50,12 @@ class DishesTable extends Table
             'foreignKey' => 'dish_type_id'
         ]);
 
+        $this->belongsToMany('Orders', [
+            'foreignKey' => 'dish_id',
+            'targetForeignKey' => 'order_id',
+            'joinTable' => 'dishes_orders'
+        ]);
+
         $this->addBehavior('Uploadable', [
             'saveDest' => WWW_ROOT . 'storage' . DS . 'dishes' . DS,
             "ext" => ['jpg', 'jpeg', 'png']
