@@ -60,6 +60,7 @@ class OrdersController extends AppController
         if ($this->request->is('post')) {
             $order = $this->Orders->newEntity();
 
+            // TODO: fix order problem
             $data = $this->request->getData();
             $data['date'] = new Time($data['date']);
             $data['user_id'] = $this->Auth->user('id');

@@ -37,7 +37,7 @@
                         <i @click="storeOrder(item)" class="material-icons green-text waves-effect cursor-interact">add</i>
                     </small>
                     <p class="right-align">
-                        <span class="green-text">{{ item.selling_price * item.amount }} €</span>
+                        <span class="green-text">{{ parseFloat(item.selling_price * item.amount).toFixed(2) }} €</span>
                     </p>
                     <div class="secondary-content">
                         <a href="#!" @click.prevent="destroyOrder(item) && toast('Plat supprimé du panier avec succès !')">
@@ -74,12 +74,12 @@
             ...Vuex.mapGetters(['orders']),
             /**
              * Calcul le montant total de la commande
-             * @returns {number} - Montant de la facture
+             * @returns {string} - Montant de la facture
              */
             bill () {
                 let total = 0
                 this.orders.forEach(item => total += (item.selling_price * item.amount))
-                return total
+                return total.toFixed(2)
             },
             /**
              * Génère un objet Date correspondant au choix de l'utilisateur

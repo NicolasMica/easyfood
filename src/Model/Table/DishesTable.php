@@ -102,6 +102,7 @@ class DishesTable extends Table
 
         $validator
             ->requirePresence('image', 'create', __("Ce champ est obligatoire à la création"))
+            ->allowEmpty('image', 'update')
             ->add('image', 'file', [
                 'rule' => [$this, 'validatePictureFormat'],
                 'message' => __("L'image doit être au format JPEG ou PNG")

@@ -22,7 +22,7 @@
                                 <tr>
                                     <td><?= $order->id ?></td>
                                     <td><?= ($order->payment) ? 'Espece' : 'Carte bancaire' ?></td>
-                                    <td>Le <?= $order->date->format('d/m/Y') ?> à <?= $order->date->format('H:i') ?></td>
+                                    <td>Le <?= $order->date->format('d/m/Y') ?> à <?= $order->created->format('H:i') ?></td>
                                     <td><?= $order->total ?> €</td>
                                     <td><?= $this->Html->link("<i class='material-icons'>remove_red_eye</i> Détail", ['_name' => 'orders:view', 'id' => $order->id], ['class' => 'btn-flat blue-text waves-effect', 'escape' => false]) ?></td>
                                 </tr>

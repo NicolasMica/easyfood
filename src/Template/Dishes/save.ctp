@@ -53,7 +53,7 @@ if (isset($dish->id)) {
                                     <div class="col-xs-12 col-sm-9 col-lg-8 input-field file-field">
                                         <div class="btn">
                                             <span>Choisir</span>
-                                            <?= $this->Form->file('image', ['label' => false, 'class' => false]) ?>
+                                            <?= $this->Form->file('image', ['label' => false, 'class' => false, 'required' => false]) ?>
                                         </div>
                                         <div class="file-path-wrapper">
                                             <input class="file-path" type="text" placeholder="Photo du plat">
