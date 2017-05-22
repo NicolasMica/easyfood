@@ -25,6 +25,7 @@ class CitiesController extends AppController
      */
     public function index () {
         $cities = $this->Cities->find()
+            ->select(['id', 'name'])
             ->distinct('Cities.id')
             ->matching('Restaurants.Dishes', function (Query $q) {
                 return $q->where(['Dishes.active' => true]);

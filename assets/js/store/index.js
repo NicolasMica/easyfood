@@ -124,7 +124,7 @@ const actions = {
     submitOrder: (store, order) => {
         return new Promise((resolve, reject) => {
             ajax.post('commande', { ...order, dishes: store.state.orders }).then(response => {
-                store.commit('CLEAR_ORDERS')
+                if (response.data.success === true) store.commit('CLEAR_ORDERS')
                 resolve(response.data)
             }).catch(error => {
                 reject(error.response.data)

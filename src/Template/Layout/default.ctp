@@ -68,10 +68,16 @@
                             <?php endif; ?>
                             <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:profile'])) ? 'class="active"' : null ?>>
                                 <a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>" title="Préférences" target="_self">
-                                    <i class="material-icons left">person</i> Préférences</a>
+                                    <i class="material-icons">person</i>
+                                </a>
+                            </li>
+                            <li  <?= ($this->request->controller == 'orders') ? 'class="active"' : null ?>>
+                                <a href="<?= $this->Url->build(['_name' => 'orders:index']) ?>" title="Commandes" target="_self">
+                                    <i class="material-icons">shopping_basket</i>
+                                </a>
                             </li>
                             <li>
-                                <?= $this->Form->postLink("<i class='material-icons left'>power_settings_new</i> Déconnexion", ['_name' => 'users:logout'], ['escape' => false, 'title' => 'Déconnexion', 'target' => '_self']) ?>
+                                <?= $this->Form->postLink("<i class='material-icons'>power_settings_new</i>", ['_name' => 'users:logout'], ['escape' => false, 'title' => 'Déconnexion', 'target' => '_self']) ?>
                             </li>
                         <?php else: ?>
                             <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:sign'])) ? 'class="active"' : null ?> >
@@ -100,6 +106,10 @@
                             <li  <?= ($this->request->here == $this->Url->build(['_name' => 'users:profile'])) ? 'class="active"' : null ?>>
                                 <a href="<?= $this->Url->build(['_name' => 'users:profile']) ?>" title="Préférences" target="_self">
                                     <i class="material-icons left">person</i> Préférences</a>
+                            </li>
+                            <li  <?= ($this->request->controller == 'orders') ? 'class="active"' : null ?>>
+                                <a href="<?= $this->Url->build(['_name' => 'orders:index']) ?>" title="Commandes" target="_self">
+                                    <i class="material-icons left">shopping_basket</i> Commandes</a>
                             </li>
                             <li>
                                 <?= $this->Form->postLink("<i class='material-icons left'>power_settings_new</i> Déconnexion", ['_name' => 'users:logout'], ['escape' => false, 'title' => 'Déconnexion', 'target' => '_self']) ?>

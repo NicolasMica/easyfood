@@ -10,7 +10,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 input-field">
                             <label class="active">Méthode de paiement</label>
-                            <input type="text" value="<?= $order->payment ? 'Carte bancaire' : 'Espece' ?>" readonly="readonly">
+                            <input type="text" value="<?= $order->payment ? 'Espece' : 'Carte bancaire' ?>" readonly="readonly">
                         </div>
                         <div class="col-xs-12 col-sm-6 input-field">
                             <label class="active">Montant de la commande</label>

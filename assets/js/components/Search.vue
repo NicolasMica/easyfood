@@ -12,7 +12,7 @@
                     <!-- Dish types -->
                     <div class="col-xs-12 col-sm-6">
                         <div class="input-field">
-                            <select id="frmDishTypes" name="dishTypes" class="search-filed" multiple>
+                            <select id="frmDishTypes" name="dishTypes" class="search-field" multiple>
                                 <option value="" disabled>Types de plats</option>
                                 <option v-for="type in dishTypes" :key="type.id" :value="type.id">{{ type.name }}</option>
                             </select>
@@ -22,7 +22,7 @@
                     <!-- Cities -->
                     <div class="col-xs-12 col-sm-6">
                         <div class="input-field">
-                            <select id="frmCities" name="cities" class="search-filed" multiple>
+                            <select id="frmCities" name="cities" class="search-field" multiple>
                                 <option value="" disabled>Villes</option>
                                 <option v-for="city in cities" :key="city.id" :value="city.id">{{ city.name }}</option>
                             </select>
@@ -32,7 +32,7 @@
                     <!-- Restaurants -->
                     <div class="col-xs-12 col-sm-6">
                         <div class="input-field">
-                            <select id="frmRestaurants" name="restaurants" class="search-filed" multiple>
+                            <select id="frmRestaurants" name="restaurants" class="search-field" multiple>
                                 <option value="" disabled>Restaurants</option>
                                 <option v-for="restaurant in restaurants" :key="restaurant.id" :value="restaurant.id">{{ restaurant.name }}</option>
                             </select>
@@ -99,8 +99,8 @@
              */
             updateSlider (min, max) {
                 let price = {
-                    min: parseFloat(min.replace(' €', '')),
-                    max: parseFloat(max.replace(' €', ''))
+                    min: parseFloat(min),
+                    max: parseFloat(max)
                 }
                 this.$set(this.form, 'price', price)
 
@@ -200,14 +200,6 @@
                 range: {
                     'min': 0,
                     'max': 100
-                },
-                format: {
-                    to: function ( value ) {
-                        return value + ' €';
-                    },
-                    from: function ( value ) {
-                        return value.replace(' €', '');
-                    }
                 }
             })
 

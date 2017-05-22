@@ -28,6 +28,7 @@ class RestaurantsController extends AppController
      */
     public function index () {
         $restaurants = $this->Restaurants->find()
+            ->select(['id', 'name'])
             ->distinct('Restaurants.id')
             ->matching('Dishes', function (Query $q) {
                 return $q->where(['Dishes.active' => true]);

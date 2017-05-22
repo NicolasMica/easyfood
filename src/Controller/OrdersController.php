@@ -6,6 +6,7 @@ use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\ORM\Query;
+use Cake\Routing\Router;
 
 /**
  * Orders Controller
@@ -15,12 +16,21 @@ use Cake\ORM\Query;
 class OrdersController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->Auth->allow(['add']);
+    }
+
     public function beforeFilter(Event $event)
     {
         $this->Security->setConfig('unlockedActions', ['add']);
     }
 
-    // TODO: list + cache
+    /**
+     * Liste les commandes de l'utilisateur
+     */
     public function index () {
         $orders = $this->Orders->find()
             ->where(['user_id' => $this->Auth->user('id')])
@@ -29,6 +39,10 @@ class OrdersController extends AppController
         $this->set(compact('orders'));
     }
 
+    /**
+     * Récupère les détails d'une commande
+     * @param $id - Identifiant de la commande
+     */
     public function view ($id) {
         $order = $this->Orders->find()
             ->where([
@@ -57,21 +71,40 @@ class OrdersController extends AppController
      */
     public function add()
     {
+        if (!$this->Auth->user()) {
+            return $this->response->withType('application/json')
+                ->withStringBody(json_encode([
+                    'success' => false,
+                    'message' => "<i class='material-icons left amber-text'>warning</i> Vous devez être connecté afin de pouvoir passer une commande.
+                    <a class='btn-flat blue-text waves-effect right' href='" . Router::url(['_name' => 'users:sign'], true) . "' >
+                        <i class='material-icons right'>arrow_forward</i> Connexion
+                    </a>
+                    "
+                ]))->withStatus(401);
+        }
+
         if ($this->request->is('post')) {
-            $order = $this->Orders->newEntity();
+            $order = [];
+            $order['payment'] = $this->request->getData('payment');
+            $order['date'] = new Time($this->request->getData('date'));
+            $order['date']->timezone = 'Europe/Paris';
+            $order['user_id'] = $this->Auth->user('id');
+            $order['total'] = 0;
+            $order['dishes'] = [];
 
-            // TODO: fix order problem
-            $data = $this->request->getData();
-            $data['date'] = new Time($data['date']);
-            $data['user_id'] = $this->Auth->user('id');
-            $data['total'] = 0;
-
-            foreach ($data['dishes'] as $key => $dish) {
-                $data['dishes'][$key]['_joinData']['amount'] = $dish['amount'];
-                $data['total'] += $dish['selling_price'];
+            foreach ($this->request->getData('dishes') as $dish) {
+                $order['total'] += $dish['selling_price'] * $dish['amount'];
+                $order['dishes'][] = [
+                    'id' => $dish['id'],
+                    '_joinData' => [
+                        'amount' => $dish['amount']
+                    ]
+                ];
             }
 
-            $order = $this->Orders->patchEntity($order, $data);
+            $order = $this->Orders->newEntity($order, [
+                'associated' => ['Dishes._joinData']
+            ]);
 
             if ($this->Orders->save($order)) {
                 $message = __('<i class="material-icons left green-text">check</i> Commande enregistrée avec succès !');

@@ -48,6 +48,7 @@ class DishesController extends AppController
      */
     public function types () {
         $dishTypes = TableRegistry::get('DishTypes')->find()
+            ->select(['id', 'name'])
             ->distinct('DishTypes.id')
             ->matching('Dishes', function (Query $q) {
                 return $q->where(['Dishes.active' => true]);
