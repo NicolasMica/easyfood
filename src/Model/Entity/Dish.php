@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use Cake\Filesystem\Folder;
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
 /**
@@ -39,7 +40,31 @@ class Dish extends Entity
         'id' => false
     ];
 
-    protected $_virtual = ['picture'];
+    protected $_virtual = ['picture', 'rejected', 'pendding'];
+
+    public function _getRejected () {
+        if ($this->_properties['active']) return false;
+
+        if ($this->pendding) return false;
+
+        return false;
+    }
+
+    public function _getPendding () {
+        if ($this->_properties['active']) return false;
+
+        if (!$this->has('rejected_dishes')) {
+            TableRegistry::get('Dishes')->loadInto($this, ['RejectedDishes' => [
+                'fields' => ['created', 'dish_id']
+            ]]);
+        }
+
+        foreach ($this->rejected_dishes as $rejected) {
+            if ($rejected->created > $this->_properties['modified']) return false;
+        }
+
+        return true;
+    }
 
     public function _getPicture () {
         if (isset($this->_properties['id'])) {

@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div class="fixed-action-btn">
-            <a id="cartBtn" class="btn-floating btn-large waves-effect waves-light red" data-activates="cart">
+            <a id="cartBtn" class="btn-floating btn-large waves-effect waves-light red" data-activates="cart" @click.prevent="authCheck">
                 <i class="material-icons">shopping_cart</i>
             </a>
         </div>
@@ -39,10 +39,12 @@
     import Product from './Product.vue'
     import Search from './Search.vue'
     import Cart from './Cart.vue'
+    import mixins from '../modules/mixins'
 
     export default {
         name: 'App',
         components: { Product, Search, Cart },
+        mixins: [mixins],
         data () {
             return {
                 loading: true
@@ -56,16 +58,22 @@
         methods: {
             ...Vuex.mapActions(['loadDishes'])
         },
+        /**
+         * Evenement lancé une fois Vue prêt
+         */
         created () {
             this.loadDishes().then(response => {
                 this.products = response
             }).catch((error) => {
                 console.error(error)
-                Materialize.toast("<i class='material-icons left red-text'>close</i>Une erreur s'est produite ! Le chargement des plats à échoué.", 3000)
+                this.toast("<i class='material-icons left red-text'>close</i>Une erreur s'est produite ! Le chargement des plats à échoué.")
             }).then(() => {
                 this.loading = false
             })
         },
+        /**
+         * Evenement lancé une fois le DOM chargé
+         */
         mounted () {
             $('#cartBtn').sideNav({
                     menuWidth: 300,

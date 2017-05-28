@@ -26,13 +26,23 @@ class DishesController extends AppController
      * @return \Cake\Network\Response|null
      */
     public function index () {
-        $dishes = $this->Dishes->find('published')
-            ->contain([
-                'Restaurants' => function (Query $q) {
-                    return $q->select(['Restaurants.id', 'Restaurants.name', 'Restaurants.city_id']);
-                },
+        $query = $this->Dishes->find('published');
+        $dishes = $query->contain([
                 'DishTypes' => function (Query $q) {
                     return $q->enableAutoFields();
+                },
+                'Restaurants' => function (Query $q) {
+                    return $q->select(['id', 'name']);
+                },
+                'Restaurants.Reviews' => function (Query $q) use ($query) {
+                    return $q->select([
+                            'quality' => $query->func()->avg('quality'),
+                            'recipe' => $query->func()->avg('recipe'),
+                            'design' => $query->func()->avg('design'),
+                            'price' => $query->func()->avg('price'),
+                            'restaurant_id'
+                        ])
+                        ->where(['active' => true]);
                 }
             ])
             ->cache('dishes')
@@ -71,6 +81,7 @@ class DishesController extends AppController
         if ($id === null) {
             $dish = $this->Dishes->newEntity();
             $dish->restaurant_id = $resto;
+            $dish->active = false;
         } else {
             $dish = $this->Dishes->find()
                 ->where(['Dishes.id' => $id])
@@ -82,8 +93,7 @@ class DishesController extends AppController
             $dish = $this->Dishes->patchEntity($dish, $this->request->getData());
 
             if ($this->Dishes->save($dish)) {
-                Cache::delete('dishes');
-                $this->Flash->success(__("Plat sauvegardé avec succès !"));
+                $this->Flash->success(__("Plat sauvegardé avec succès ! Demande de validation soumise."));
                 return $this->redirect(['_name' => 'resto:edit', 'id' => $resto]);
             } else {
                 $this->Flash->error(__("Des champs ne sont pas valides, veuillez corriger les erreurs"));
@@ -92,9 +102,9 @@ class DishesController extends AppController
 
         $resto = $this->Dishes->Restaurants->get($resto);
         $dish_types = $this->Dishes->DishTypes->find('list', [
-                'keyField' => 'id',
-                'valueField' => 'name'
-            ])
+            'keyField' => 'id',
+            'valueField' => 'name'
+        ])
             ->matching('Restaurants', function (Query $query) use ($resto) {
                 return $query->where(['restaurant_id' => $resto->id]);
             })
@@ -126,7 +136,6 @@ class DishesController extends AppController
             ->firstOrFail();
 
         if ($this->Dishes->delete($dish)) {
-            Cache::delete('dishes');
             $this->Flash->success(__("Plat supprimé avec succès !"));
         } else {
             $this->Flash->error(__("Une erreur s'est produite lors de la suppression du plat."));

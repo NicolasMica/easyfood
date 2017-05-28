@@ -2,6 +2,8 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\Query;
+use Cake\ORM\TableRegistry;
 
 /**
  * Order Entity
@@ -31,4 +33,22 @@ class Order extends Entity
         '*' => true,
         'id' => false
     ];
+
+    public function _getTotal () {
+        $total = 0;
+
+        if (!$this->has('dishes')) {
+            TableRegistry::get('Orders')->loadInto($this, [
+                'Dishes' => function (Query $query) {
+                    return $query->select(['selling_price']);
+                }
+            ]);
+        }
+
+        foreach ($this->dishes as $dish) {
+            $total += $dish->selling_price * $dish->_joinData->amount;
+        }
+
+        return $total;
+    }
 }

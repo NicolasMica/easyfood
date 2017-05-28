@@ -2,8 +2,6 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\Routing\Router;
-use Cake\Utility\Text;
 
 /**
  * Restaurant Entity
@@ -14,12 +12,13 @@ use Cake\Utility\Text;
  * @property string $address
  * @property int $city_id
  * @property int $user_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\City $city
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Dish[] $dishes
+ * @property \App\Model\Entity\Review[] $reviews
  * @property \App\Model\Entity\DishType[] $dish_types
  */
 class Restaurant extends Entity
@@ -38,14 +37,4 @@ class Restaurant extends Entity
         '*' => true,
         'id' => false
     ];
-
-    protected $_virtual = ['slug', 'link'];
-
-    public function _getSlug () {
-        return Text::slug(strtolower($this->_properties['name']));
-    }
-
-    public function _getLink () {
-        return Router::url(['_name' => 'resto:view', 'slug' => $this->_getSlug(), 'id' => $this->_properties['id']]);
-    }
 }

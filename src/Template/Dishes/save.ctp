@@ -33,7 +33,18 @@ if (isset($dish->id)) {
             <div class="card">
                 <?= $this->Form->create($dish, ['type' => 'file']) ?>
                     <div class="card-content">
-                        <span class="card-title"><?= $this->fetch('title') ?></span>
+                        <span class="card-title">
+                            <?= $this->fetch('title') ?>
+                            <?php if (!$dish->isNew()): ?>
+                                <?php if ($dish->active): ?>
+                                    <i class="material-icons green-text" title="Validé">check</i>
+                                <?php elseif ($dish->pendding): ?>
+                                    <i class="material-icons amber-text" title="En attente">access_time</i>
+                                <?php else: ?>
+                                    <i class="material-icons red-text" title="Invalidé">close</i>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </span>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-lg-4 input-field">
                                 <label class="active">Restaurant</label>
@@ -69,7 +80,7 @@ if (isset($dish->id)) {
                                 <div class="col-xs-12 col-sm-6 input-field file-field">
                                     <div class="btn">
                                         <span>Choisir</span>
-                                        <?= $this->Form->file('image', ['label' => false, 'class' => false]) ?>
+                                        <?= $this->Form->file('image', ['label' => false, 'class' => false, 'required' => false]) ?>
                                     </div>
                                     <div class="file-path-wrapper">
                                         <input class="file-path" type="text" placeholder="Photo du plat">

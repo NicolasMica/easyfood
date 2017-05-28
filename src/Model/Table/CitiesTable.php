@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\City;
+use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -85,5 +87,13 @@ class CitiesTable extends Table
     public function beforeFind(Event $event, Query $query)
     {
         $query->orderAsc('Cities.name');
+    }
+
+    public function afterSave (Event $event, City $entity, ArrayObject $options) {
+        Cache::deleteMany(['cities', 'cities_dishes']);
+    }
+
+    public function afterDelete (Event $event, City $entity, ArrayObject $options) {
+        Cache::deleteMany(['cities', 'cities_dishes']);
     }
 }

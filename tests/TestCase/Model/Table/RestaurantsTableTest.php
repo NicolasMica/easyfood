@@ -26,13 +26,17 @@ class RestaurantsTableTest extends TestCase
     public $fixtures = [
         'app.restaurants',
         'app.cities',
-        'app.departments',
         'app.users',
         'app.roles',
         'app.tokens',
         'app.dishes',
         'app.dish_types',
-        'app.dish_types_restaurants'
+        'app.dish_types_restaurants',
+        'app.rejected_dishes',
+        'app.orders',
+        'app.dishes_orders',
+        'app.reviews',
+        'app.rejected_reviews'
     ];
 
     /**

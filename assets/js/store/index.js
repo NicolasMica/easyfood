@@ -4,6 +4,10 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+/**
+ * Configuration d'axios
+ * @type {AxiosInstance}
+ */
 const ajax = axios.create({
     headers: {
         ContentType: 'application/json',

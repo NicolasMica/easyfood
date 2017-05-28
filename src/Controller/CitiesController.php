@@ -30,7 +30,7 @@ class CitiesController extends AppController
             ->matching('Restaurants.Dishes', function (Query $q) {
                 return $q->where(['Dishes.active' => true]);
             })
-            ->cache('cities')
+            ->cache('cities_dishes')
             ->all();
 
         $this->set(compact('cities'));

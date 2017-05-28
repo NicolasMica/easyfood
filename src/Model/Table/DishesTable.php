@@ -1,6 +1,11 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Dish;
+use ArrayObject;
+use Cake\Cache\Cache;
+use Cake\Datasource\ConnectionManager;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -41,6 +46,11 @@ class DishesTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->addBehavior('Uploadable', [
+            'saveDest' => WWW_ROOT . 'storage' . DS . 'dishes' . DS,
+            "ext" => ['jpg', 'jpeg', 'png']
+        ]);
+
         $this->belongsTo('Restaurants', [
             'foreignKey' => 'restaurant_id',
             'joinType' => 'INNER'
@@ -50,15 +60,14 @@ class DishesTable extends Table
             'foreignKey' => 'dish_type_id'
         ]);
 
+        $this->hasMany('RejectedDishes', [
+            'foreignKey' => 'dish_id'
+        ]);
+
         $this->belongsToMany('Orders', [
             'foreignKey' => 'dish_id',
             'targetForeignKey' => 'order_id',
             'joinTable' => 'dishes_orders'
-        ]);
-
-        $this->addBehavior('Uploadable', [
-            'saveDest' => WWW_ROOT . 'storage' . DS . 'dishes' . DS,
-            "ext" => ['jpg', 'jpeg', 'png']
         ]);
     }
 
@@ -101,7 +110,8 @@ class DishesTable extends Table
             ]);
 
         $validator
-            ->requirePresence('image', 'create', __("Ce champ est obligatoire à la création"))
+            ->requirePresence('image', 'create')
+            ->notEmpty('image', __("Ce champ est obligatoire à la création"), 'create')
             ->allowEmpty('image', 'update')
             ->add('image', 'file', [
                 'rule' => [$this, 'validatePictureFormat'],
@@ -142,6 +152,25 @@ class DishesTable extends Table
         return $query->where(['active' => true]);
     }
 
+    public function findQueue (Query $query, array $options)
+    {
+        $subquery = $this->query()
+            ->select('RejectedDishes.dish_id')
+            ->from('rejected_dishes RejectedDishes')
+            ->where([
+                'RejectedDishes.dish_id = Dishes.id',
+                'RejectedDishes.created > Dishes.modified'
+            ])
+            ->orderDesc('RejectedDishes.created');
+
+        return $query->select(['Dishes.id', 'Dishes.name', 'Dishes.selling_price'])
+            ->from('dishes Dishes')
+            ->where([
+                'Dishes.active' => false,
+                "Dishes.id NOT IN" => $subquery
+            ]);
+    }
+
     public function validatePrice ($value, array $context) {
         return (bool) preg_match('#^([1-9][0-9]*|0)(\.[0-9]{0,2})?$#', $value);
     }
@@ -160,5 +189,13 @@ class DishesTable extends Table
 
     public function validatePictureFormat ($value, array $context) {
         return in_array($value['type'], ['image/jpeg', 'image/jpg', 'image/png']);
+    }
+
+    public function afterSave (Event $event, Dish $entity, ArrayObject $options) {
+        Cache::deleteMany(['dishes', 'pendding_dishes_count']);
+    }
+
+    public function afterDelete (Event $event, Dish $entity, ArrayObject $options) {
+        Cache::deleteMany(['dishes', 'pendding_dishes_count']);
     }
 }

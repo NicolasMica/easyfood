@@ -68,7 +68,7 @@ class RestaurantsController extends AppController
             $resto = $this->Restaurants->find()
                 ->contain([
                     'Dishes' => function (Query $query) {
-                        return $query->select(['id', 'name', 'selling_price', 'restaurant_id']);
+                        return $query->select(['id', 'name', 'selling_price', 'restaurant_id', 'active']);
                     },
                     'Dishes.DishTypes' => function (Query $query) {
                         return $query->select(['id', 'name']);
@@ -86,7 +86,7 @@ class RestaurantsController extends AppController
                     ->matching('Restaurants', function (Query $query) use ($resto) {
                         return $query->where(['Restaurants.id' => $resto->id]);
                     })
-                    ->all()
+                    ->orderAsc('DishTypes.name')
                     ->toArray();
             }
         }
@@ -98,7 +98,7 @@ class RestaurantsController extends AppController
 
         $dish_types = TableRegistry::get('DishTypes')->find('list')
             ->select('name')
-            ->all()
+            ->orderAsc('name')
             ->toArray();
 
         if ($this->request->is(['POST', 'PUT', 'PATCH']) && !empty($this->request->getData())) {
@@ -106,6 +106,7 @@ class RestaurantsController extends AppController
             $types = explode(',', $this->request->getData('dish_types'));
             $selectedTypes = [];
             foreach ($types as $type) {
+                if ($type == '') continue;
                 $selectedTypes[] = $this->Restaurants->DishTypes->findOrCreate(['name' => ucfirst($type)]);
             }
 
@@ -113,7 +114,6 @@ class RestaurantsController extends AppController
             $resto->dish_types = $selectedTypes;
 
             if ($this->Restaurants->save($resto)) {
-                Cache::deleteMany(['my_restaurants', 'restaurants', 'dish_types']);
                 $this->Flash->success(__("Restaurant sauvegardé avec succès !"));
                 return $this->redirect(['_name' => 'resto:view']);
             } else {
@@ -140,7 +140,6 @@ class RestaurantsController extends AppController
             ->firstOrFail();
 
         if ($this->Restaurants->delete($resto)) {
-            Cache::deleteMany(['dishes', 'restaurants', 'my_restaurants']);
             $this->Flash->success(__("Restaurant supprimé avec succès !"));
         } else {
             $this->Flash->error(__("Une erreur s'est produite lors de la suppression du restaurant."));

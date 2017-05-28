@@ -33,10 +33,13 @@ class OrdersController extends AppController
      */
     public function index () {
         $orders = $this->Orders->find()
-            ->where(['user_id' => $this->Auth->user('id')])
+            ->contain(['Reviews'])
+            ->where(['Orders.user_id' => $this->Auth->user('id')])
             ->cache($this->Auth->user('id') . '-orders');
 
-        $this->set(compact('orders'));
+        $this->paginate = ['limit' => 20];
+
+        $this->set(['orders' => $this->paginate($orders)]);
     }
 
     /**
@@ -75,7 +78,7 @@ class OrdersController extends AppController
             return $this->response->withType('application/json')
                 ->withStringBody(json_encode([
                     'success' => false,
-                    'message' => "<i class='material-icons left amber-text'>warning</i> Vous devez être connecté afin de pouvoir passer une commande.
+                    'message' => "<i class='material-icons left amber-text'>warning</i> Connexion requise.
                     <a class='btn-flat blue-text waves-effect right' href='" . Router::url(['_name' => 'users:sign'], true) . "' >
                         <i class='material-icons right'>arrow_forward</i> Connexion
                     </a>
@@ -87,13 +90,14 @@ class OrdersController extends AppController
             $order = [];
             $order['payment'] = $this->request->getData('payment');
             $order['date'] = new Time($this->request->getData('date'));
-            $order['date']->timezone = 'Europe/Paris';
+            $order['date']->setTimezone('Europe/Paris');
             $order['user_id'] = $this->Auth->user('id');
-            $order['total'] = 0;
             $order['dishes'] = [];
 
-            foreach ($this->request->getData('dishes') as $dish) {
-                $order['total'] += $dish['selling_price'] * $dish['amount'];
+            $dishes = $this->request->getData('dishes');
+            foreach ($dishes as $dish) {
+                if ($dish['restaurant_id'] !== $dishes[0]['restaurant_id']) continue;
+
                 $order['dishes'][] = [
                     'id' => $dish['id'],
                     '_joinData' => [
@@ -106,11 +110,14 @@ class OrdersController extends AppController
                 'associated' => ['Dishes._joinData']
             ]);
 
-            if ($this->Orders->save($order)) {
-                $message = __('<i class="material-icons left green-text">check</i> Commande enregistrée avec succès !');
+            if ($order = $this->Orders->save($order)) {
+                $message = "<i class='material-icons left green-text'>check</i> Commande enregistrée !
+                            <a class='btn-flat blue-text waves-effect right' href='" . Router::url(['_name' => 'orders:view', 'id' => $order->id], true) . "' >
+                                <i class='material-icons right'>arrow_forward</i> Voir
+                            </a>";
+
                 $code = 200;
                 $success = true;
-                Cache::deleteMany([$this->Auth->user('id') . '-last-orders', $this->Auth->user('id') . '-orders']);
             } else {
                 $message = __("<i class='material-icons left red-text'>close</i> Une erreur s'est produite lors de l'enregistrement de votre commande.");
                 $code = 422;

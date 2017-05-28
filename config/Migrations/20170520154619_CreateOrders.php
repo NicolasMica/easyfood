@@ -25,11 +25,6 @@ class CreateOrders extends AbstractMigration
             'null' => false,
         ]);
 
-        $table->addColumn('total', 'string', [
-            'default' => null,
-            'null' => false,
-        ]);
-
         $table->addColumn('user_id', 'integer', [
             'default' => null,
             'limit' => 11,

@@ -802,6 +802,15 @@
                                     </p>
                                 </div>
 
+                                <div style="Margin-left: 20px;Margin-right: 20px;">
+                                    <div style="line-height:20px;font-size:1px">&nbsp;</div>
+                                </div>
+
+                                <div style="Margin-left: 20px;Margin-right: 20px;">
+                                    <p style="Margin-top: 0;Margin-bottom: 0;font-family: roboto,tahoma,sans-serif;"><span class="font-roboto"><span style="color:#666666">Cordialement, EasyFood.</span></span>
+                                    </p>
+                                </div>
+
                             </div>
                             <!--[if (mso)|(IE)]></td><td class="layout__edges">&nbsp;</td></tr></table><![endif]-->
                         </div>

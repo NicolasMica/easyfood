@@ -1,7 +1,11 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\User;
+use ArrayObject;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Cache\Cache;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -157,6 +161,10 @@ class UsersTable extends Table
         return $validator;
     }
 
+    /**
+     * @param Validator $validator
+     * @return Validator
+     */
     public function validationResetPassword(Validator $validator) {
         $validator
             ->notEmpty('password', __("Ce champ est obligatoire"))
@@ -183,5 +191,21 @@ class UsersTable extends Table
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
 
         return $rules;
+    }
+
+    public function findAuth (Query $query, array $options) {
+        return $query->select(['id', 'email', 'password', 'role_id'])->contain([
+            'Roles' => function (Query $query) {
+                return $query->select(['id', 'name', 'level']);
+            }
+        ]);
+    }
+
+    public function afterSave (Event $event, User $entity, ArrayObject $options) {
+        Cache::delete($entity->id . '-users');
+    }
+
+    public function afterDelete (Event $event, User $entity, ArrayObject $options) {
+        Cache::delete($entity->id . '-users');
     }
 }

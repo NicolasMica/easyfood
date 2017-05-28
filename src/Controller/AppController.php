@@ -16,6 +16,8 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Mailer\Email;
+use Cake\Network\Exception\UnauthorizedException;
 use Cake\ORM\TableRegistry;
 use DateTime;
 
@@ -58,7 +60,8 @@ class AppController extends Controller
             ],
             'authenticate' => [
                 'Form' => [
-                    'fields' => ['username' => 'email', 'password' => 'password']
+                    'fields' => ['username' => 'email', 'password' => 'password'],
+                    'finder' => 'auth'
                 ]
             ],
             'authError' => __("Vous devez être connecté pour accéder à cette page"),
@@ -82,11 +85,11 @@ class AppController extends Controller
     {
         if ($this->Cookie->check('auth_token') && !$this->Auth->user()) {
             $token = TableRegistry::get('Tokens')->find('all')
-                ->contain('Users')
+                ->contain(['Users.Roles'])
                 ->where([
-                    'name' => 'auth_token',
-                    'content' => $this->Cookie->read('auth_token'),
-                    'expires >' => new DateTime()
+                    'Tokens.name' => 'auth_token',
+                    'Tokens.content' => $this->Cookie->read('auth_token'),
+                    'Tokens.expires >' => new DateTime()
                 ])->first();
 
             if ($token) {
@@ -110,5 +113,13 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
+    }
+
+    /**
+     * Vérifie si l'utilisateur courant à le niveau d'habilitation suffisant
+     * @param $level - Authentication level
+     */
+    protected function authorize ($level) {
+        if ($this->Auth->user('role.level') < $level) throw new UnauthorizedException();
     }
 }

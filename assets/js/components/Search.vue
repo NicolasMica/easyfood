@@ -42,7 +42,7 @@
                     <!-- Price Range -->
                     <div class="col-xs-12 col-sm-6">
                         <div class="input-field">
-                            <label for="frmPriceRange" class="active">Filtrer par prix</label>
+                            <label for="frmPriceRange" class="active">Filtrer par prix (en euros)</label>
                             <br>
                             <div id="frmPriceRange"></div>
                         </div>
@@ -76,7 +76,7 @@
             }
         },
         computed: {
-            ...Vuex.mapGetters(['dishes', 'queryResult'])
+            ...Vuex.mapGetters(['dishes', 'orders'])
         },
         methods: {
             ...Vuex.mapActions(['loadOptions', 'updateQuery']),
@@ -112,22 +112,31 @@
              */
             filter (query) {
                 let resultSet = this.dishes.filter(dish => {
+
+                    // Check same restaurant constraint
+                    if (this.orders.length > 0) {
+                        if (this.orders.find(item => item.restaurant_id !== dish.restaurant_id)) return false
+                    }
+
+                    // Check dish_types constraint
                     if (query.dishTypes.length > 0) {
                         let dishTypes = query.dishTypes.find(item => item.id === dish.dish_type.id)
                         if (dishTypes === undefined) return false
                     }
 
+                    // Check cities constraint
                     if (query.cities.length > 0) {
                         let cities = query.cities.find(item => item.id === dish.restaurant.city_id)
                         if (cities === undefined) return false
                     }
 
+                    // Check restaurants constraint
                     if (query.restaurants.length > 0) {
                         let restaurants = query.restaurants.find(item => item.id === dish.restaurant.id)
                         if (restaurants === undefined) return false
                     }
 
-                    return !(query.price.min > dish.selling_price || query.price.max < dish.selling_price);
+                    return !(query.price.min > dish.selling_price || query.price.max < dish.selling_price)
                 })
 
                 this.updateQuery(resultSet)
@@ -144,13 +153,16 @@
                 })
             }).catch((error) => {
                 console.error(error)
-                Materialize.toast("<i class='material-icons left red-text'>close</i>Une erreur s'est produite ! Le chargement des critères de recherche à échoué.", 3000)
+                this.toast("<i class='material-icons left red-text'>close</i>Une erreur s'est produite ! Le chargement des critères de recherche à échoué.")
             }).then(() => {
                 this.loading = false
             })
 
+            /**
+             * Configure le slider une fois les produits chargés
+             */
             Event.listen('dishes_loaded', () => {
-                // Supprime les doublons
+                // Supprime les doublons de prix
                 let prices = this.dishes.map(item => parseFloat(item.selling_price))
                 prices = prices.filter((value, index, array) => array.indexOf(value) === index)
                 // Ordonne dans l'ordre croissant
@@ -174,6 +186,11 @@
                     range: {  'min': this.form.price.min, ...prices, 'max': this.form.price.max }
                 })
             })
+
+            /**
+             * Actualise le filtre de recherche
+             */
+            Event.listen('order_updated', () => this.filter(this.form))
         },
         mounted () {
             let _this = this

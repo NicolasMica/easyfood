@@ -40,7 +40,7 @@
                         <span class="green-text">{{ parseFloat(item.selling_price * item.amount).toFixed(2) }} €</span>
                     </p>
                     <div class="secondary-content">
-                        <a href="#!" @click.prevent="destroyOrder(item) && toast('Plat supprimé du panier avec succès !')">
+                        <a href="#!" @click.prevent="destroy(item)">
                             <i class="material-icons red-text waves-effect">delete</i>
                         </a>
                     </div>
@@ -58,10 +58,12 @@
 
 <script type="text/babel">
     import Vuex from 'vuex'
-    import 'materialize-clockpicker/src/js/materialize.clockpicker'
+    import mixins from '../modules/mixins'
+    import '../modules/materialize.clockpicker'
 
     export default {
         name: 'Cart',
+        mixins: [mixins],
         data () {
             return {
                 loading: false,
@@ -86,10 +88,11 @@
              * @returns {number}
              */
             timestamp () {
+                if (this.time === null || this.date === null) return null
                 let date = new Date(this.date)
                 let time = this.time.split(':')
                 date.setHours(time[0], time[1])
-                return parseInt(date.getTime() / 1000);
+                return parseInt(date.getTime() / 1000)
             },
             submittable () {
                 return this.orders.length > 0 && this.date !== null && this.time !== null
@@ -97,14 +100,6 @@
         },
         methods: {
             ...Vuex.mapActions(['storeOrder', 'removeOrder', 'destroyOrder', 'submitOrder']),
-            /**
-             * Materialize.toast shortcut wrapper
-             * @param message - Message à afficher
-             * @param delay - Délais d'affichage
-             */
-            toast (message, delay = 3000) {
-                Materialize.toast(message, delay)
-            },
             /**
              * Soumet la commande (submitOrder wrapper)
              */
@@ -114,9 +109,9 @@
                     payment: this.payment
                 }).then(response => {
                     if (response.success) this.reset()
-                    this.toast(response.message, 5000)
+                    this.toast(response.message, null, 5000)
                 }).catch(error => {
-                    this.toast(error.message, 5000)
+                    this.toast(error.message, null, 5000)
                 })
             },
             /**
@@ -129,6 +124,15 @@
                 $('.datepicker').val(null)
                 $('.timepicker').val(null)
                 Materialize.updateTextFields()
+            },
+            /**
+             * Supprime un produit du panier & actualise le filtre de recherche
+             * @param item - Produit à supprimer du panier
+             */
+            destroy (item) {
+                this.toast('Plat supprimé du panier avec succès !')
+                this.destroyOrder(item)
+                Event.fire('order_updated')
             }
         },
         mounted () {

@@ -53,6 +53,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->connect('/villes', ['controller' => 'Cities', 'action' => 'index'], ['_name' => 'cities']);
 
+    // ORDERS
     $routes->scope('/commande', ['_namePrefix' => 'orders:', 'controller' => 'Orders'], function (RouteBuilder $routes) {
 
         $routes->connect('/', ['action' => 'add', '_method' => 'POST'], ['_name' => 'add']);
@@ -67,24 +68,23 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     });
 
+    // DISHES
     $routes->scope('/plats', ['_namePrefix' => 'dishes:', 'controller' => 'Dishes'], function (RouteBuilder $routes) {
 
         $routes->connect('/', ['action' => 'index'], ['_name' => 'index']);
-
-        $routes->connect('/recherche', ['action' => 'search'], ['_name' => 'search']);
 
         $routes->connect('/types', ['action' => 'types'], ['_name' => 'types']);
 
     });
 
-    $routes->connect('/restaurants/:resto/plats/supprimer/:plat', ['controller' => 'Dishes', 'action' => 'delete'], [
+    $routes->connect('/restaurants/:resto/plats/:plat/supprimer', ['controller' => 'Dishes', 'action' => 'delete'], [
         '_name' => 'dishes:delete',
         'pass' => ['resto', 'plat'],
         'resto' => '[0-9]+',
         'plat' => '[0-9]+'
     ]);
 
-    $routes->connect('/restaurants/:resto/plats/modifier/:plat', ['controller' => 'Dishes', 'action' => 'save'], [
+    $routes->connect('/restaurants/:resto/plats/:plat/modifier', ['controller' => 'Dishes', 'action' => 'save'], [
         '_name' => 'dishes:edit',
         'pass' => ['resto', 'plat'],
         'resto' => '[0-9]+',
@@ -97,7 +97,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         'resto' => '[0-9]+'
     ]);
 
-
+    // RESTAURANTS
     $routes->scope('/restaurants', ['_namePrefix' => 'resto:', 'controller' => 'Restaurants'], function (RouteBuilder $routes) {
 
         $routes->connect('/', ['action' => 'index'], ['_name' => 'index']);
@@ -120,6 +120,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     });
 
+    // USERS
     $routes->scope('/utilisateurs', ['_namePrefix' => 'users:', 'controller' => 'Users'], function (RouteBuilder $routes) {
 
         $routes->connect('/authentification', ['action' => 'sign'], ['_name' => 'sign']);
@@ -142,6 +143,72 @@ Router::scope('/', function (RouteBuilder $routes) {
         $routes->connect('/preferences/mot-de-passe', ['action' => 'password'], ['_name' => 'password']);
 
         $routes->connect('/preferences/suppression', ['action' => 'delete'], ['_name' => 'delete', '_method' => 'DELETE']);
+    });
+
+    // REVIEWS
+    $routes->scope('/avis', ['_namePrefix' => 'reviews:', 'controller' => 'Reviews'], function (RouteBuilder $routes) {
+
+        $routes->connect('/:order/rediger', ['action' => 'save'], [
+                '_name' => 'save',
+                '_method' => ['GET', 'POST', 'PUT', 'PATCH'],
+                'pass' => ['order'],
+                'order' => '[0-9]+'
+            ]);
+
+        $routes->connect('/:order', ['action' => 'view'], [
+            '_name' => 'view',
+            '_method' => ['GET', 'POST', 'PUT', 'PATCH'],
+            'pass' => ['order'],
+            'order' => '[0-9]+'
+        ]);
+
+    });
+
+    $routes->prefix('admin', ['_namePrefix' => 'admin:'], function (RouteBuilder $routes) {
+
+        $routes->connect('/cache', ['controller' => 'App', 'action' => 'cache'], [
+            '_name' => 'app:cache',
+            '_method' => 'DELETE'
+        ]);
+
+        $routes->connect('/avis', ['controller' => 'Reviews', 'action' => 'index'], [
+            '_name' => 'reviews:index',
+            '_method' => 'GET'
+        ]);
+
+        $routes->connect('/avis/:review', ['controller' => 'Reviews', 'action' => 'save'], [
+            '_name' => 'reviews:save',
+            '_method' => ['GET', 'POST', 'PUT', 'PATCH'],
+            'pass' => ['review'],
+            'review' => '[0-9]+'
+        ]);
+
+        $routes->connect('/avis/:review/valider', ['controller' => 'Reviews', 'action' => 'validate'], [
+            '_name' => 'reviews:validate',
+            '_method' => ['POST', 'PUT', 'PATCH'],
+            'pass' => ['review'],
+            'review' => '[0-9]+'
+        ]);
+
+        $routes->connect('/plats', ['controller' => 'Dishes', 'action' => 'index'], [
+            '_name' => 'dishes:index',
+            '_method' => 'GET'
+        ]);
+
+        $routes->connect('/plats/:dish', ['controller' => 'Dishes', 'action' => 'save'], [
+            '_name' => 'dishes:save',
+            '_method' => ['GET', 'POST', 'PUT', 'PATCH'],
+            'pass' => ['dish'],
+            'order' => '[0-9]+'
+        ]);
+
+        $routes->connect('/plats/:dish/valider', ['controller' => 'Dishes', 'action' => 'validate'], [
+            '_name' => 'dishes:validate',
+            '_method' => ['POST', 'PUT', 'PATCH'],
+            'pass' => ['dish'],
+            'dish' => '[0-9]+'
+        ]);
+
     });
 
     /**

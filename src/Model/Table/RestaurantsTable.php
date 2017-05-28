@@ -1,6 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Restaurant;
+use ArrayObject;
+use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -13,6 +16,7 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\BelongsTo $Cities
  * @property \Cake\ORM\Association\BelongsTo $Users
  * @property \Cake\ORM\Association\HasMany $Dishes
+ * @property \Cake\ORM\Association\HasMany $Reviews
  * @property \Cake\ORM\Association\BelongsToMany $DishTypes
  *
  * @method \App\Model\Entity\Restaurant get($primaryKey, $options = [])
@@ -52,6 +56,9 @@ class RestaurantsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('Dishes', [
+            'foreignKey' => 'restaurant_id'
+        ]);
+        $this->hasMany('Reviews', [
             'foreignKey' => 'restaurant_id'
         ]);
         $this->belongsToMany('DishTypes', [
@@ -115,5 +122,13 @@ class RestaurantsTable extends Table
     public function beforeFind(Event $event, Query $query)
     {
         $query->orderAsc('Restaurants.name');
+    }
+
+    public function afterSave (Event $event, Restaurant $entity, ArrayObject $options) {
+        Cache::deleteMany(['my_restaurants', 'restaurants', 'dish_types']);
+    }
+
+    public function afterDelete (Event $event, Restaurant $entity, ArrayObject $options) {
+        Cache::deleteMany(['dishes', 'restaurants', 'my_restaurants']);
     }
 }

@@ -73,8 +73,8 @@
         },
         mounted () {
 
-            let values = Object.values(this.value)
-            let items = Object.values(this.tags)
+            let values = Object.values(this.value).sort()
+            let items = Object.values(this.tags).sort()
 
             for (let value of values)
                 this.selected.push(value.toLowerCase())

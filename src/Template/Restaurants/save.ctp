@@ -56,7 +56,18 @@ $this->Html->script($this->Asset->path('/js/tags.js'), ['block' => true]);
                     <?php foreach ($resto->dishes as $dish): ?>
                         <li class="collection-item avatar">
                             <div class="circle" style="background-image: url(<?= $dish->picture ?>)"></div>
-                            <span><?= $dish->name ?></span>
+                            <span>
+                                <?= $dish->name ?>
+                                <?php if (!$dish->isNew()): ?>
+                                    <?php if ($dish->active): ?>
+                                        <i class="material-icons green-text" title="Validé">check</i>
+                                    <?php elseif ($dish->pendding): ?>
+                                        <i class="material-icons amber-text" title="En attente">access_time</i>
+                                    <?php else: ?>
+                                        <i class="material-icons red-text" title="Invalidé">close</i>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </span>
                             <p><small class="grey-text text-darken-1"><?= $dish->dish_type->name ?></small></p>
                             <div class="secondary-content right-align">
                                 <span class="green-text"><?= $dish->selling_price ?> €</span>

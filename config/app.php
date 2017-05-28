@@ -210,8 +210,8 @@ return [
      */
     'Email' => [
         'default' => [
-            'transport' => 'default',
-            'from' => 'you@localhost',
+            'transport' => 'mailtrap',
+            'from' => 'nicolas@micallef.pro',
             'charset' => 'utf-8',
             'headerCharset' => 'utf-8',
         ],

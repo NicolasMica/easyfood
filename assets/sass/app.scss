@@ -11,12 +11,18 @@
 // Variables;
 @import "~materialize-css/sass/components/variables";
 
+$nav-height: 100px;
+$card-min-height: 330px;
+$tabs-underline-color: color('green', 'lighten-1');
+$tabs-text-color: color('green', 'base');
+$tabs-bg-color: color('gray', 'lighten-3');
+
 // Reset
 @import "~materialize-css/sass/components/normalize";
 
 // components
 @import "~materialize-css/sass/components/global";
-//@import "~materialize-css/sass/components/badges";
+@import "~materialize-css/sass/components/badges";
 @import "~materialize-css/sass/components/icons-material-design";
 //@import "~materialize-css/sass/components/grid";
 @import "~materialize-css/sass/components/navbar";
@@ -25,7 +31,7 @@
 @import "~materialize-css/sass/components/transitions";
 @import "~materialize-css/sass/components/cards";
 @import "~materialize-css/sass/components/toast";
-//@import "~materialize-css/sass/components/tabs";
+@import "~materialize-css/sass/components/tabs";
 @import "~materialize-css/sass/components/tooltip";
 @import "~materialize-css/sass/components/buttons";
 @import "~materialize-css/sass/components/dropdown";
@@ -50,8 +56,6 @@
 @import "~materialize-css/extras/noUiSlider/nouislider";
 
 @import "~flexboxgrid/dist/flexboxgrid.min";
-
-$nav-height: 100px;
 
 // Flexbox overwrite
 .container {
@@ -82,6 +86,10 @@ $nav-height: 100px;
 
 .col .card {
     width: 100%;
+}
+
+.picker__frame {
+    margin: 0 0 0 auto;
 }
 
 body{
@@ -143,6 +151,14 @@ body{
     .autocomplete-content {
         margin-top: 0;
     }
+
+    .materialize-textarea {
+        margin-bottom: 0;
+    }
+}
+
+#app .card {
+    align-items: stretch;
 }
 
 .card, .card-panel {
@@ -160,6 +176,11 @@ body{
 
 .card-action .row {
     margin: 0;
+}
+
+.card-reveal .rates p {
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
 .strong-text {

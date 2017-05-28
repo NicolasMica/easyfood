@@ -1,6 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Order;
+use ArrayObject;
+use Cake\Cache\Cache;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -50,6 +54,8 @@ class OrdersTable extends Table
             'targetForeignKey' => 'dish_id',
             'joinTable' => 'dishes_orders'
         ]);
+
+        $this->hasOne('Reviews');
     }
 
     /**
@@ -85,8 +91,16 @@ class OrdersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsin(['user_id'], 'users'));
 
         return $rules;
+    }
+
+    public function afterSave (Event $event, Order $entity, ArrayObject $options) {
+        Cache::deleteMany([$entity->user_id . '-last-orders', $entity->user_id . '-orders']);
+    }
+
+    public function afterDelete (Event $event, Order $entity, ArrayObject $options) {
+        Cache::deleteMany([$entity->user_id . '-last-orders', $entity->user_id . '-orders']);
     }
 }

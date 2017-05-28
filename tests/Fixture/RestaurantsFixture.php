@@ -54,8 +54,8 @@ class RestaurantsFixture extends TestFixture
             'address' => 'Lorem ipsum dolor sit amet',
             'city_id' => 1,
             'user_id' => 1,
-            'created' => '2017-04-24 20:02:48',
-            'modified' => '2017-04-24 20:02:48'
+            'created' => '2017-05-28 15:07:47',
+            'modified' => '2017-05-28 15:07:47'
         ],
     ];
 }

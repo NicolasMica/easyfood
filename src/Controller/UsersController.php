@@ -2,8 +2,10 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Cache\Cache;
 use Cake\I18n\Time;
 use Cake\Mailer\Email;
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
@@ -47,9 +49,11 @@ class UsersController extends AppController
         }
 
         $cities = TableRegistry::get('Cities')->find('list', [
-            'keyField' => 'id',
-            'valueField' => 'name'
-        ])->toArray();
+                'keyField' => 'id',
+                'valueField' => 'name'
+            ])
+            ->cache('cities')
+            ->toArray();
 
         $cities = ['' => 'Ville'] + $cities;
 
@@ -147,13 +151,11 @@ class UsersController extends AppController
                     $regToken->save($token);
 
                     $email = new Email();
-                    $email->setTransport('mailtrap')
-                        ->setLayout(null)
+                    $email->setLayout(null)
                         ->setTemplate('password')
                         ->setEmailFormat('both')
                         ->setSubject("Demande de réinitialisation de mot de passe")
                         ->setTo($user->get('email'), $user->get('fullname'))
-                        ->setFrom('easyfood.dev', 'EasyFood')
                         ->setViewVars([
                             'link' => Router::url(['_name' => 'users:reset', 'token' => $key], true)
                         ])
@@ -218,9 +220,10 @@ class UsersController extends AppController
      */
     public function profile () {
         $user = TableRegistry::get('Users')->find()
-        ->contain(['Roles'])
-        ->where(['Users.id' => $this->Auth->user('id')])
-        ->first();
+            ->contain(['Roles'])
+            ->where(['Users.id' => $this->Auth->user('id')])
+            ->cache($this->Auth->user('id') . '-users')
+            ->first();
 
         $pass = $this->request->session()->consume('formErrors');
 
@@ -237,13 +240,20 @@ class UsersController extends AppController
         }
 
         $cities = TableRegistry::get('Cities')->find('list', [
-            'keyField' => 'id',
-            'valueField' => 'name'
-        ])->toArray();
+                'keyField' => 'id',
+                'valueField' => 'name'
+            ])
+            ->cache('cities')
+            ->toArray();
 
         $orders = TableRegistry::get('Orders')->find()
-            ->where(['user_id' => $this->Auth->user('id')])
+            ->where(['Orders.user_id' => $this->Auth->user('id')])
             ->limit(10)
+            ->contain([
+                'Reviews' => function (Query $query) {
+                    return $query->select(['id', 'active', 'order_id', 'restaurant_id', 'modified']);
+                }
+            ])
             ->cache($this->Auth->user('id') . '-last-orders')
             ->all();
 
@@ -255,6 +265,10 @@ class UsersController extends AppController
      */
     public function password () {
         if ($this->request->is(['post', 'put'])) {
+
+            $this->Flash->warning(__("Action impossible pour la démonstration"));
+            return $this->redirect($this->referer());
+
             $userReg = TableRegistry::get('Users');
             $user = $userReg->get($this->Auth->user('id'));
             $patch = $userReg->patchEntity($user, $this->request->getData(), ['validate' => 'password']);
@@ -274,6 +288,10 @@ class UsersController extends AppController
      */
     public function delete () {
         if ($this->request->is('DELETE')) {
+
+            $this->Flash->warning(__("Action impossible pour la démonstration"));
+            return $this->redirect($this->referer());
+
             $userReg = TableRegistry::get('Users');
             $user = $userReg->get($this->Auth->user('id'));
             if ($userReg->delete($user)) {

@@ -26,6 +26,12 @@ class CreateReviews extends AbstractMigration
             'null' => false,
         ]);
 
+        $table->addColumn('design', 'integer', [
+            'default' => null,
+            'limit' => 11,
+            'null' => false,
+        ]);
+
         $table->addColumn('price', 'integer', [
             'default' => null,
             'limit' => 11,
@@ -44,25 +50,30 @@ class CreateReviews extends AbstractMigration
             'null' => false,
         ]);
 
+        $table->addColumn('content', 'text', [
+            'default' => null,
+            'null' => false
+        ]);
+
         $table->addColumn('active', 'boolean', [
             'default' => 0,
             'null' => false,
         ]);
-
-        $table->addColumn('user_id', 'integer', [
-            'default' => null,
-            'limit' => 11,
-            'null' => false,
-        ])->addForeignKey('user_id', 'users', 'id', [
-            'delete'=> 'CASCADE',
-            'update'=> 'CASCADE'
-        ]);;
 
         $table->addColumn('restaurant_id', 'integer', [
             'default' => null,
             'limit' => 11,
             'null' => false,
         ])->addForeignKey('restaurant_id', 'restaurants', 'id', [
+            'delete'=> 'CASCADE',
+            'update'=> 'CASCADE'
+        ]);
+
+        $table->addColumn('order_id', 'integer', [
+            'default' => null,
+            'limit' => 11,
+            'null' => false,
+        ])->addForeignKey('order_id', 'orders', 'id', [
             'delete'=> 'CASCADE',
             'update'=> 'CASCADE'
         ]);
