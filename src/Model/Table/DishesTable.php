@@ -148,10 +148,22 @@ class DishesTable extends Table
         return $rules;
     }
 
+    /**
+     * Finder personnalisé retournant les plats validés
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
     public function findPublished (Query $query, array $options) {
         return $query->where(['active' => true]);
     }
 
+    /**
+     * Finder personnalisé retournant les plats en attente de validation
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
     public function findQueue (Query $query, array $options)
     {
         $subquery = $this->query()
@@ -171,22 +183,46 @@ class DishesTable extends Table
             ]);
     }
 
+    /**
+     * Vérifie que la valeur du champ correspond à celle d'un prix
+     * @param $value
+     * @param array $context
+     * @return bool
+     */
     public function validatePrice ($value, array $context) {
         return (bool) preg_match('#^([1-9][0-9]*|0)(\.[0-9]{0,2})?$#', $value);
     }
 
+    /**
+     * Vérifie la taille de l'image
+     * @param $value
+     * @param array $context
+     * @return bool
+     */
     public function validatePictureSize ($value, array $context) {
         $size = getimagesize($value['tmp_name']);
 
         return $size[0] <= 600 && $size[1] <= 600;
     }
 
+    /**
+     * Vérifie la forme de l'image
+     * @param $value
+     * @param array $context
+     * @return bool
+     */
     public function validatePictureSquare ($value, array $context) {
         $size = getimagesize($value['tmp_name']);
 
         return $size[0] === $size[1];
     }
 
+    /**
+     * Vérifie le format d'une image
+     * @param $value
+     * @param array $context
+     * @return bool
+     */
     public function validatePictureFormat ($value, array $context) {
         return in_array($value['type'], ['image/jpeg', 'image/jpg', 'image/png']);
     }

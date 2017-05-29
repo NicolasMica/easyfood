@@ -23,6 +23,10 @@ class AppController extends BaseController
         $this->authorize(2);
     }
 
+    /**
+     * Supprime le cahce de toute l'application
+     * @return \Cake\Http\Response|null
+     */
     public function cache () {
         $this->request->allowMethod('DELETE');
         $this->authorize(3);

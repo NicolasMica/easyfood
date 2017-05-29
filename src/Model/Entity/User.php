@@ -50,6 +50,11 @@ class User extends Entity
         'password'
     ];
 
+    /**
+     * Surcharge du setter du champ password pour implémenter le hash
+     * @param $password - Valeur du champ
+     * @return bool|string - Valeur hashé du champ
+     */
     protected function _setPassword($password)
     {
         if (strlen($password) > 0) {
@@ -57,6 +62,10 @@ class User extends Entity
         }
     }
 
+    /**
+     * Attribut virtuel correspondant au nom complet de l'utilisateur
+     * @return string - Nom complet
+     */
     public function _getFullname () {
         return $this->_properties['firstname'] . ' ' . $this->_properties['lastname'];
     }

@@ -10,7 +10,7 @@ export default class Event {
     }
 
     /**
-     * Fire an event
+     * Emet un évènement
      * @param event - Event name
      * @param playload - Event playload
      */
@@ -19,7 +19,7 @@ export default class Event {
     }
 
     /**
-     * Listen to an event
+     * Ecoute un évènement
      * @param event - Event name
      * @param callback - Callback function
      */

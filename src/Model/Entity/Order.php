@@ -34,6 +34,10 @@ class Order extends Entity
         'id' => false
     ];
 
+    /**
+     * Attribut virtuel correspondant au montant total de la commande
+     * @return int|string - Montant total
+     */
     public function _getTotal () {
         $total = 0;
 

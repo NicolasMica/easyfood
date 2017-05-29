@@ -94,6 +94,10 @@
                 date.setHours(time[0], time[1])
                 return parseInt(date.getTime() / 1000)
             },
+            /**
+             * Indique si les conditions sont réunies pour soumettre la commande
+             * @returns {boolean}
+             */
             submittable () {
                 return this.orders.length > 0 && this.date !== null && this.time !== null
             }

@@ -3,6 +3,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\City;
 use ArrayObject;
+use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;

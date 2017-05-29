@@ -8,7 +8,7 @@ class DishesController extends AppController
 {
 
     /**
-     * Index method
+     * Liste les plats en attente de validation
      *
      * @return \Cake\Http\Response|null
      */
@@ -31,7 +31,7 @@ class DishesController extends AppController
     }
 
     /**
-     * Save method
+     * Sauvegarde le refus d'un plat et le signal à l'utilisateur
      *
      * @param string|null $id Dish id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.

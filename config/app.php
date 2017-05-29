@@ -211,7 +211,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'mailtrap',
-            'from' => 'nicolas@micallef.pro',
+            'from' => 'no-reply@easyfood.dev',
             'charset' => 'utf-8',
             'headerCharset' => 'utf-8',
         ],

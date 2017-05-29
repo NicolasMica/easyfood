@@ -40,8 +40,16 @@ class Dish extends Entity
         'id' => false
     ];
 
-    protected $_virtual = ['picture', 'rejected', 'pendding'];
+    /**
+     * Liste d'attributs virtuels utilisés lors de la conversion en JSON
+     * @var array
+     */
+    protected $_virtual = ['picture'];
 
+    /**
+     * Attribut virtuel indiquant si le plat est refusé
+     * @return bool
+     */
     public function _getRejected () {
         if ($this->_properties['active']) return false;
 
@@ -50,6 +58,10 @@ class Dish extends Entity
         return false;
     }
 
+    /**
+     * Attribut virtuel indiquant si le plat est en attente de validation
+     * @return bool
+     */
     public function _getPendding () {
         if ($this->_properties['active']) return false;
 
@@ -66,6 +78,10 @@ class Dish extends Entity
         return true;
     }
 
+    /**
+     * Attribut virtuel indiquant l'URL vers l'image du plat
+     * @return string - URL absolue vers l'image du plat
+     */
     public function _getPicture () {
         if (isset($this->_properties['id'])) {
             $dir = new Folder(WWW_ROOT . DS . 'storage' . DS . 'dishes' . DS);

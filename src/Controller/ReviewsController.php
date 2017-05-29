@@ -67,6 +67,10 @@ class ReviewsController extends AppController
         $this->set(compact('review'));
     }
 
+    /**
+     * Affiche un résumé de la commande et son évaluation
+     * @param $orderId - Identifiant de la commande associée à l'évaluation
+     */
     public function view ($orderId) {
         $review = $this->Reviews->find()
             ->where([

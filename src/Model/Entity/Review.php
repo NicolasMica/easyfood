@@ -42,6 +42,10 @@ class Review extends Entity
         'id' => false
     ];
 
+    /**
+     * Attribut virtuel indiquant si l'évaluation est refusée
+     * @return bool
+     */
     public function _getRejected () {
         if ($this->_properties['active']) return false;
 
@@ -50,6 +54,10 @@ class Review extends Entity
         return false;
     }
 
+    /**
+     * Attribut virtuel indiquant si l'évaluation est en attente de validation
+     * @return bool
+     */
     public function _getPendding () {
         if ($this->_properties['active']) return false;
 

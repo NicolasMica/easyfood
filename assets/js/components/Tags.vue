@@ -36,15 +36,26 @@
             }
         },
         computed: {
+            /**
+             * Tableau contenant les tags pas encore utilisés
+             *  @returns array
+             */
             available () {
                 if (this.query.length < this.minLength) return []
                 return this.items.filter(item => item.toLowerCase().indexOf(this.query.toLowerCase()) >= 0)
             },
+            /**
+             * Indique si le label doit être "actif" ou non
+             * @returns bool
+             */
             activeLabel () {
                 return this.focus === true || this.selected.length > 0 || this.query.length > 0 ? 'active' : null
             }
         },
         methods: {
+            /**
+             * Ajoute un tag à la liste s'il n'existe pas déjà
+             */
             add (name, event = null) {
                 // Prevent default enter behavior
                 if (event !== null && event.keyCode === 13) {
@@ -61,6 +72,9 @@
 
                 this.query = ''
             },
+            /**
+             * Supprime un tag de la liste
+             */
             remove (name) {
                 name = name.toLowerCase()
 

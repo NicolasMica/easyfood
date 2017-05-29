@@ -15,7 +15,7 @@ class ReviewsController extends AppController
 {
 
     /**
-     * Index method
+     * Liste les évaluations en attente de validation
      *
      * @return \Cake\Http\Response|null
      */
@@ -34,6 +34,11 @@ class ReviewsController extends AppController
         $this->set('_serialize', ['reviews']);
     }
 
+    /**
+     * Sauvegarde le refus d'une évaluation et le signal à l'utilisateur
+     * @param $id - Identifiant de l'évaluation
+     * @return \Cake\Http\Response|null
+     */
     public function save ($id) {
         $rejected_review = $this->Reviews->RejectedReviews->newEntity();
         $review = $this->Reviews->find()
@@ -94,6 +99,11 @@ class ReviewsController extends AppController
         $this->set('_serialize', ['review']);
     }
 
+    /**
+     * Valide l'évaluation
+     * @param $id - Identifiant de l'évaluation
+     * @return \Cake\Http\Response|null
+     */
     public function validate ($id) {
         $this->request->allowMethod(['POST', 'PUT', 'PATCH']);
 

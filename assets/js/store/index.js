@@ -14,7 +14,7 @@ const ajax = axios.create({
         Accept: 'application/json',
         'X-CSRF-Token': window.App.token
     },
-    baseURL: (process.env.NODE_ENV !== 'production') ? '//easyfood.dev' : '//nicolas.micallef.pro/easyfood'
+    baseURL: window.location.pathname
 })
 
 const state = {

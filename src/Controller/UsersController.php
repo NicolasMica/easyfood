@@ -266,9 +266,6 @@ class UsersController extends AppController
     public function password () {
         if ($this->request->is(['post', 'put'])) {
 
-            $this->Flash->warning(__("Action impossible pour la démonstration"));
-            return $this->redirect($this->referer());
-
             $userReg = TableRegistry::get('Users');
             $user = $userReg->get($this->Auth->user('id'));
             $patch = $userReg->patchEntity($user, $this->request->getData(), ['validate' => 'password']);
@@ -288,9 +285,6 @@ class UsersController extends AppController
      */
     public function delete () {
         if ($this->request->is('DELETE')) {
-
-            $this->Flash->warning(__("Action impossible pour la démonstration"));
-            return $this->redirect($this->referer());
 
             $userReg = TableRegistry::get('Users');
             $user = $userReg->get($this->Auth->user('id'));

@@ -27,6 +27,10 @@
             }
         },
         methods: {
+            /**
+             * Définit le nombre d'étoiles
+             * @param index
+             */
             set (index) {
                 if (this.readonly === false) {
                     this.rate = index

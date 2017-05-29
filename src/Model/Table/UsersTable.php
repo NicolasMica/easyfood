@@ -117,7 +117,7 @@ class UsersTable extends Table
     }
 
     /**
-     * Password validation rules.
+     * Règle de validation du mot de passe
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
@@ -162,6 +162,7 @@ class UsersTable extends Table
     }
 
     /**
+     * Règle de validation de réinitialisation de mot de passe
      * @param Validator $validator
      * @return Validator
      */
@@ -193,6 +194,12 @@ class UsersTable extends Table
         return $rules;
     }
 
+    /**
+     * Finder personnalisé pour l'authentification
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
     public function findAuth (Query $query, array $options) {
         return $query->select(['id', 'email', 'password', 'role_id'])->contain([
             'Roles' => function (Query $query) {

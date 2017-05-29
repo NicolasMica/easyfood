@@ -155,6 +155,12 @@ class ReviewsTable extends Table
         return $rules;
     }
 
+    /**
+     * Finder personnalisé retournant les évaluations en attente de validation
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
     public function findQueue (Query $query, array $options)
     {
         $subquery = $this->query()
