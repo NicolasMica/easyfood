@@ -193,8 +193,8 @@ return [
         'mailtrap' => [
             'host' => 'smtp.mailtrap.io',
             'port' => 2525,
-            'username' => '2db979315e628a',
-            'password' => 'ef65fe91af7fef',
+            'username' => '',
+            'password' => '',
             'className' => 'smtp'
         ]
     ],
@@ -210,7 +210,7 @@ return [
      */
     'Email' => [
         'default' => [
-            'transport' => 'mailtrap',
+            'transport' => 'default',
             'from' => 'no-reply@easyfood.dev',
             'charset' => 'utf-8',
             'headerCharset' => 'utf-8',

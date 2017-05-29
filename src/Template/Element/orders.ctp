@@ -15,9 +15,9 @@
             <?php if ($orders):
                 foreach ($orders as $order): ?>
                     <tr>
-                        <td><?= $order->id ?></td>
+                        <td class="center-align"><?= $order->id ?></td>
                         <td><?= ($order->payment) ? 'Espece' : 'Carte bancaire' ?></td>
-                        <td>Le <?= $order->date->format('d/m/Y') ?> à <?= $order->created->format('H:i') ?></td>
+                        <td>Le <?= $order->created->format('d/m/Y') ?> à <?= $order->created->format('H:i') ?></td>
                         <td><?= $order->total ?> €</td>
                         <td>
                             <a href="<?= $this->Url->build(['_name' => 'orders:view', 'id' => $order->id]) ?>" class="btn-flat waves-effect">
