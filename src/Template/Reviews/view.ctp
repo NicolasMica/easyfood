@@ -53,10 +53,6 @@ if (!function_exists('review_stars')) {
                             <label class="active">Courtoisie du livreur</label>
                             <p><?= review_stars($review->employee) ?></p>
                         </div>
-                        <div class="col-xs-12 input-field">
-                            <label class="active">Commentaire</label>
-                            <textarea class="materialize-textarea" readonly disabled><?= $review->content ?></textarea>
-                        </div>
                     </div>
                     <div class="input-field">
                         <label class="active">Commentaire</label>
