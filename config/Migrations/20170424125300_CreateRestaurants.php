@@ -40,15 +40,6 @@ class CreateRestaurants extends AbstractMigration
             'update'=> 'CASCADE'
         ]);
 
-        $table->addColumn('restaurant_type_id', 'integer', [
-            'default' => null,
-            'limit' => 11,
-            'null' => true,
-        ])->addForeignKey('restaurant_type_id', 'restaurant_types', 'id', [
-            'delete'=> 'SET_NULL',
-            'update'=> 'CASCADE'
-        ]);
-
         $table->addColumn('user_id', 'integer', [
             'default' => null,
             'limit' => 11,

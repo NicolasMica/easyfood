@@ -68,7 +68,7 @@ class RestaurantsController extends AppController
             $resto = $this->Restaurants->find()
                 ->contain([
                     'Dishes' => function (Query $query) {
-                        return $query->select(['id', 'name', 'selling_price', 'restaurant_id', 'active']);
+                        return $query->select(['id', 'name', 'selling_price', 'restaurant_id', 'active', 'modified']);
                     },
                     'Dishes.DishTypes' => function (Query $query) {
                         return $query->select(['id', 'name']);
