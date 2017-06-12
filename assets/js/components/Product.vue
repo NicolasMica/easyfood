@@ -35,8 +35,8 @@
         <div :id="'restaurant-' + product.id" class="card-content">
             <span class="card-title">{{ product.restaurant.name }}</span>
             <div class="rates">
-                <rate :label="review.label" :value="review.value" v-for="review in reviews" readonly></rate>
-                <p v-if="reviews === false">Ce restaurant n'as pas encore de note</p>
+                <rate :label="review.label" :value="review.value" v-for="review in reviews" :key="review.id" readonly></rate>
+                <p v-if="reviews === false">Ce restaurant n'a pas encore de note</p>
             </div>
         </div>
         <div class="card-tabs">
