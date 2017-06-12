@@ -143,24 +143,4 @@ class DishesController extends AppController
 
         return $this->redirect(['_name' => 'resto:edit', 'id' => $resto]);
     }
-
-    public function stats () {
-        $dishes = $this->Dishes->find()
-            ->contain('Orders')
-            ->all();
-
-/*        SELECT dishes.*, (
-            SELECT COUNT(*)
-            FROM dishes_orders
-            WHERE dishes.id = dishes_orders.dish_id
-           ) AS quantite
-            FROM dishes
-            ORDER BY quantite DESC
-            LIMIT 10;
-*/
-
-
-        debug($dishes);
-        die();
-    }
 }
