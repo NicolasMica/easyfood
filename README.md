@@ -35,10 +35,12 @@ Live demo https://nicolas.micallef.pro/easyfood (sorry the website isn't transla
 - Cart managment
 - Registering, login (/w cookies), logout, password recover, profile managment
 - Order history, order reviews
+- Restaurants CRUD (restaurant owner)
+- Dishes CRUD (restaurant owner)
 - Admin panel (validate reviews & dishes)
 ### Demo credentials
 
-#### Simple user
+#### Customer
 - **Login:** client@easyfood.dev
 - **Password:** demodemo
 #### Restaurant owner
